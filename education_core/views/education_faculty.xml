@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_education_faculty_kanban">
+        <field name="name">education.faculty.kanban</field>
+        <field name="model">education.faculty</field>
+        <field name="arch" type="xml">
+            <kanban class="education_faculty_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="last_name"/>
+                <field name="email"/>
+                <field name="mobile"/>
+                <field name="image"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_res_partner_kanban">
+                            <div class="o_kanban_image">
+                                <t t-if="record.image.raw_value">
+                                    <img t-att-src="kanban_image('education.faculty', 'image', record.id.raw_value)"/>
+                                </t>
+                                <t t-if="!record.image.raw_value">
+                                    <img t-att-src='_s + "/base/static/src/img/avatar.png"'/>
+                                </t>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/> <field name="last_name"/></strong>
+                                <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                <ul>
+                                    <li t-if="record.mobile.raw_value">
+                                        <i class="fa fa-phone"/>
+                                        <field name="mobile"/>
+                                    </li>
+                                    <li t-if="record.email.raw_value">
+                                        <i class="fa fa-envelope"/>
+                                        <a t-attf-href="mailto:#{record.email.value}">
+                                            <field name="email"/>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="view_education_faculty_tree" model="ir.ui.view">
+        <field name="name">education.faculty.tree</field>
+        <field name="model">education.faculty</field>
+        <field name="arch" type="xml">
+            <tree string="Faculty">
+                <field name="name"/>
+                <field name="last_name"/>
+                <field name="gender"/>
+                <field name="date_of_birth"/>
+                <field name="blood_group"/>
+                <field name="email"/>
+                <field name="phone"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_faculty_form" model="ir.ui.view">
+        <field name="name">education.faculty.form</field>
+        <field name="model">education.faculty</field>
+        <field name="arch" type="xml">
+            <form string="Faculty">
+                <header>
+                     <button name="create_employee" type="object" class="oe_highlight"
+                            string="Create Employee" groups="base.group_user"
+                            help="Click to create employee for this faculty"
+                            attrs="{'invisible': [('employee_id', '!=',False)]}"
+                            />
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_left oe_avatar" />
+                    <div class="oe_title">
+                        <h1>
+                            <table>
+                                <tr>
+                                    <td style="padding-right:10px;"><field name="name" required="1" placeholder="First Name" /></td>
+                                    <td style="padding-right:10px;"><field name="last_name" required="1" placeholder="Last Name"/></td>
+                                </tr>
+                            </table>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Faculty Details">
+                            <group>
+                                <group>
+                                    <field name="father_name"/>
+                                    <field name="mother_name"/>
+                                    <field name="guardian_name"/>
+
+                                </group>
+                                <group>
+                                    <field name="degree"/>
+                                    <field name="gender"/>
+                                    <field name="date_of_birth"/>
+                                    <field name="blood_group"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Contact Details">
+                            <group>
+                                <group>
+                                    <field name="email"/>
+                                    <field name="employee_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="phone"/>
+                                    <field name="mobile"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Subjects">
+                            <field name="subject_lines"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="faculty_search" model="ir.ui.view">
+        <field name="name">Faculty</field>
+        <field name="model">education.faculty</field>
+        <field name="arch" type="xml">
+            <search string="Search Faculties">
+                <field name="degree"/>
+                <field name="gender"/>
+                <group expand='0' string='Group by...'>
+                    <filter string='Degree' icon="fa-user" domain="[]" context="{'group_by' : 'degree'}"/>
+                    <filter string='Gender' icon="fa-genderless" domain="[]" context="{'group_by' : 'gender'}"/>
+               </group>
+           </search>
+        </field>
+    </record>
+
+    <record id="action_faculty" model="ir.actions.act_window">
+        <field name="name">Faculty</field>
+        <field name="res_model">education.faculty</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="faculty_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first faculty here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_education_faculty" name="Faculty" sequence="15"
+              parent="menu_education_admission" action="action_faculty"/>
+
+</odoo>

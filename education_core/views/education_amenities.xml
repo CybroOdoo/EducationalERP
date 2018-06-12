@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_education_amenities_tree" model="ir.ui.view">
+        <field name="name">education.amenities.tree</field>
+        <field name="model">education.amenities</field>
+        <field name="arch" type="xml">
+            <tree string="Amenities">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_amenities_form" model="ir.ui.view">
+        <field name="name">education.amenities.form</field>
+        <field name="model">education.amenities</field>
+        <field name="arch" type="xml">
+            <form string="Amenities">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_education_amenities" model="ir.actions.act_window">
+        <field name="name">Amenities</field>
+        <field name="res_model">education.amenities</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first amenities here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="action_education_amenities" parent="menu_education_main_menu"
+              id="menu_action_education_amenities" sequence="5"/>
+
+</odoo>

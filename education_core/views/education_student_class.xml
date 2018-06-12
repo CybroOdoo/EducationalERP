@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_education_student_class_tree" model="ir.ui.view">
+        <field name="name">education.student.class.tree</field>
+        <field name="model">education.student.class</field>
+        <field name="arch" type="xml">
+            <tree string="Assign Class">
+                <field name="class_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_student_class_form" model="ir.ui.view">
+        <field name="name">education.student.class.form</field>
+        <field name="model">education.student.class</field>
+        <field name="arch" type="xml">
+            <form string="Assign Class">
+                <header>
+                    <button name="get_student_list" type="object"
+                            string="Get Students" groups="base.group_user"
+                            help="Click to get student list" states="draft"/>
+                    <button name="%(education_core.application_create_student)d" string="Assign Class"
+                                type="action" class="oe_highlight"
+                                context="{'default_id': active_id, 'default_student_class': class_id,
+                                'default_assigned_by': assigned_by}"
+                                help="Click to assign class for selected students"
+                                states="draft"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet string="Assign Students">
+                    <group>
+                        <group>
+                            <field name="class_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="assigned_by" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                            <field name="admitted_class" attrs="{'invisible': [('admitted_class', '=', False)]}"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Student List">
+                             <field name="student_list" attrs="{'readonly': [('state', '=', 'done')]}"
+                                    context="{'default_class_id': class_id}">
+                                 <tree string="Student List" editable="bottom">
+                                     <field name="student_id"/>
+                                     <field name="class_id"/>
+                                 </tree>
+                             </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_student_class" model="ir.actions.act_window">
+        <field name="name">Assign Class</field>
+        <field name="res_model">education.student.class</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Assign students to class from here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_education_student_class" name="Assign Class" sequence="25"
+              parent="menu_education_admission" action="action_student_class"/>
+
+</odoo>

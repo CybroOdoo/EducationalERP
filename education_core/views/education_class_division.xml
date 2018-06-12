@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_education_class_division_tree" model="ir.ui.view">
+        <field name="name">education.class.division.tree</field>
+        <field name="model">education.class.division</field>
+        <field name="arch" type="xml">
+            <tree string="Class Division">
+                <field name="name"/>
+                <field name="academic_year_id"/>
+                <field name="actual_strength"/>
+                <field name="faculty_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_class_division_form" model="ir.ui.view">
+        <field name="name">education.division.form</field>
+        <field name="model">education.class.division</field>
+        <field name="arch" type="xml">
+            <form string="Class Division">
+                <sheet string="Class">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="view_students" type="object" widget="statinfo"
+                                class="oe_stat_button" icon="fa-user" attrs="{'invisible': [('student_count', '=', 0)]}">
+                            <field name="student_count" widget="statinfo" string="Students"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="actual_strength"/>
+                        </group>
+                        <group>
+                            <field name="academic_year_id"/>
+                            <field name="faculty_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="class_id"/>
+                        </group>
+                        <group>
+                            <field name="division_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Students">
+                            <field name="student_ids" nolabel="1">
+                                <tree string="Syllabus Items" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="class_id"/>
+                                    <field name="gender"/>
+                                    <field name="date_of_birth"/>
+                                    <field name="blood_group"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Amenities">
+                            <field name="amenities_ids" nolabel="1">
+                                <tree string="Amenities" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_education_class_division_tree" model="ir.actions.act_window">
+        <field name="name">Class Division</field>
+        <field name="res_model">education.class.division</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first class division here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="action_education_class_division_tree" parent="menu_education_admission"
+              id="menu_action_education_class_division" sequence="20"/>
+
+</odoo>

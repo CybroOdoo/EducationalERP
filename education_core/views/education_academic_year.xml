@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_education_academic_year_tree" model="ir.ui.view">
+        <field name="name">education.academic.year.tree</field>
+        <field name="model">education.academic.year</field>
+        <field name="arch" type="xml">
+            <tree string="Academic Year">
+                <field name="name"/>
+                <field name="ay_code"/>
+                <field name="ay_start_date"/>
+                <field name="ay_end_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_academic_year_form" model="ir.ui.view">
+        <field name="name">education.academic.year.form</field>
+        <field name="model">education.academic.year</field>
+        <field name="arch" type="xml">
+            <form string="Academic Year">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="ay_start_date"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="ay_code"/>
+                            <field name="ay_end_date"/>
+                            <field name="active"/>
+                        </group>
+                        <field name="ay_description" placeholder="Enter the description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_education_academic_year" model="ir.actions.act_window">
+        <field name="name">Academic Year</field>
+        <field name="res_model">education.academic.year</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first academic year here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="action_education_academic_year" parent="menu_education_main_menu"
+              id="menu_action_education_academic" sequence="2"/>
+
+</odoo>

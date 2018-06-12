@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model='ir.ui.view' id='education_documents_form_view'>
+        <field name="name">education.documents.form</field>
+        <field name="model">education.documents</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                     <button name="verify_document" type="object" class="oe_highlight"
+                            string="Verify" groups="base.group_user"
+                            help="Click to verify the document"
+                            states="draft,correction"/>
+                     <button name="need_correction" type="object" class="oe_highlight"
+                            string="Need Correction" groups="base.group_user"
+                            help="Need correction of the document"
+                            states="draft"/>
+                    <button name="hard_copy_returned" type="object" class="oe_highlight"
+                            string="Hard copy Returned" groups="base.group_user"
+                            help="Hard copy of documents returned"
+                            attrs="{'invisible':['|', ('has_hard_copy', '=', False), ('state', '!=', 'done')]}"/>
+
+                     <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="reference" attrs="{'readonly': [('state', 'in', ('done','returned'))]}"/>
+                            <field name="has_hard_copy" string="Hard copy received" attrs="{'readonly': [('state', 'in', ('done','returned'))]}"/>
+                        </group>
+                        <group>
+                            <field name="document_name" attrs="{'readonly': [('state', 'in', ('done','returned'))]}"/>
+                        </group>
+                    </group>
+                    <group name="hard_copy_receive" string="Hard copy Received" attrs="{'invisible': [('has_hard_copy', '=',False)]}">
+                        <group name="hard_copy_location" attrs="{'readonly': [('state', 'in', ('done','returned'))]}">
+                            <field name="location_id" attrs="{'required': [('has_hard_copy', '=',True)]}"/>
+                            <field name="location_note"/>
+                        </group>
+                        <group attrs="{'readonly': [('state', 'in', ('done','returned'))]}">
+                            <field name="submitted_date" attrs="{'required': [('has_hard_copy', '=',True)]}"/>
+                            <field name="received_by" attrs="{'required': [('has_hard_copy', '=',True)]}"/>
+                        </group>
+                    </group>
+                        <separator/>
+                    <group name="attachment_file" string="Attachment File">
+                        <field name="doc_attachment_id" widget="many2many_binary" attrs="{'readonly': [('state', 'in', ('done','returned'))]}" class="oe_inline"/>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Verification" attrs="{'invisible': [('verified_by', '=',False)]}">
+                            <group attrs="{'readonly': [('state', 'in', ('done','returned'))]}">
+                                <field name="application_ref" invisible="1"/>
+                                <field name="verified_date" readonly="1"/>
+                                <field name="verified_by" readonly="1"/>
+                                <field name="responsible_verified"/>
+                            </group>
+                        </page>
+                        <page string="Hard copy Returned" attrs="{'invisible': [('state', '!=','returned')]}">
+                            <group>
+                                <field name="returned_date"/>
+                                <field name="returned_by"/>
+                                <field name="responsible_returned"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='education_documents_tree_view'>
+        <field name="name">education.documents.tree</field>
+        <field name="model">education.documents</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="application_ref"/>
+                <field name="document_name"/>
+                <field name="description"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

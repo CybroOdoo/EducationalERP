@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_student_id_card">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-xs-2" style="margin:auto;">
+                                </div>
+                                <center>
+                                    <div class="col-xs-8" style="margin:auto">
+                                        <table class="table table-condensed" style="border: 3px solid black !important;">
+                                            <tr>
+                                                <td width="40%">
+                                                    <p style="text-align:center;padding-top:10px;">
+                                                        <img t-if="not o.image" t-att-src="'/web/static/src/img/placeholder.png'" height="120" border="1" width="120"/>
+                                                        <img t-if="o.image" t-att-src="'data:image/png;base64,%s' % to_text(o.image)" height="120" border="1" width="120"/>
+                                                    </p>
+                                                    <p style="text-align:center;">
+                                                        <strong><span t-field="o.name"/></strong>
+                                                    </p>
+                                                </td>
+                                                <td width="60%">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <p style="text-align:right;padding-top:30px;"><strong>Ad No : </strong></p>
+                                                                <p style="text-align:right;"><strong>Class : </strong></p>
+                                                                <p style="text-align:right;"><strong>Contact : </strong></p>
+                                                                <p style="text-align:right;"><strong>Sex : </strong></p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="text-align:left;padding-top:30px;padding-left:10px;"  t-field="o.ad_no"/>
+                                                                <p style="text-align:left;padding-left:10px;" t-field="o.class_id.name"/>
+                                                                <p style="text-align:left;padding-left:10px;" t-field="o.mobile"/>
+                                                                <p style="text-align:left;padding-left:10px;" t-field="o.gender"/>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

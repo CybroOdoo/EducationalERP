@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="action_student_id_card"
+            model="education.student"
+            string="Student ID Card"
+            report_type="qweb-pdf"
+            name="education_core.report_student_id_card"
+            file="education_core.report_student_id_card"
+        />
+
+        <report
+            id="action_faculty_id_card"
+            model="education.faculty"
+            string="Faculty ID Card"
+            report_type="qweb-pdf"
+            name="education_core.report_faculty_id_card"
+            file="education_core.report_faculty_id_card"
+        />
+
+        <!--<report-->
+            <!--id="action_student_application_report"-->
+            <!--model="education.application"-->
+            <!--string="Student Application"-->
+            <!--report_type="qweb-html"-->
+            <!--name="education_core.report_student_application"-->
+            <!--file="education_core.report_student_application"-->
+        <!--/>-->
+
+    </data>
+</odoo>

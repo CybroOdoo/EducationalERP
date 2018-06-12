@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_education_class_tree" model="ir.ui.view">
+        <field name="name">education.class.tree</field>
+        <field name="model">education.class</field>
+        <field name="arch" type="xml">
+            <tree string="Standard">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_class_form" model="ir.ui.view">
+        <field name="name">education.class.form</field>
+        <field name="model">education.class</field>
+        <field name="arch" type="xml">
+            <form string="Standard">
+                <group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </group>
+                <notebook>
+                        <page string="Syllabus">
+                            <field name="syllabus_ids" nolabel="1">
+                                <tree string="Syllabus Items" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="subject_id" required="1"/>
+                                    <field name="total_hours"/>
+                                    <field name="description"/>
+                                    <!--<field name="company_id"/>-->
+                                </tree>
+                            </field>
+                        </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_education_class_tree" model="ir.actions.act_window">
+        <field name="name">Standard</field>
+        <field name="res_model">education.class</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first class here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="action_education_class_tree" parent="menu_education_class_conf"
+              id="menu_action_education_class" sequence="1"/>
+
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model='ir.ui.view' id='reject_reason_form_view'>
+        <field name="name">application.reject.reason.form</field>
+        <field name="model">application.reject.reason</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='reject_reason_tree_view'>
+        <field name="name">application.reject.reason.tree</field>
+        <field name="model">application.reject.reason</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_reject_reason" model="ir.actions.act_window">
+        <field name="name">Reject Reasons</field>
+        <field name="res_model">application.reject.reason</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first reject reason here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_education_reject_reason" name="Reject Reason"
+              parent="menu_education_application_conf" action="action_reject_reason"/>
+
+
+</odoo>
