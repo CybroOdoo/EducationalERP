@@ -23,8 +23,8 @@
 {
     'name': 'Educational ERP Core',
     'version': '11.0.1.0.0',
-    'summary': """complete Educational modules""",
-    'description': 'Main module of Education Core.',
+    'summary': """Core Module of Educational ERP""",
+    'description': 'Core Module of Educational ERP',
     'category': 'Educational',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',

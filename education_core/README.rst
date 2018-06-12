@@ -15,16 +15,14 @@ Features
 Technical Notes
 ===============
 This module manage these Models.
-    --> Student Application - "education.application"
-    --> Students - "education.student"
-    --> Faculty - "education.faculty"
-    --> Class Division - "education.class.division"
-    --> Class - "education.class"
-    --> Division - "education.division"
-    --> Educational Institute - "res.company"
-    --> Other Educational Institute - "education.institute"
-    --> Academic Year - "education.academic.year"
-    --> Student Documents - "education.documents"
+* Student Application - "education.application"
+* Students - "education.student"
+* Faculty - "education.faculty"
+* Class Division - "education.class.division"
+* Division - "education.division"
+* Educational Institute - "res.company"
+* Other Educational Institute - "education.institute"
+* Student Documents - "education.documents"
 
 Contacts
 ========
