@@ -37,8 +37,8 @@
     ],
     'demo': [],
     'images': [
-        'static/description/back_banner.png',
-        'static/description/front_banner.jpg'
+        'static/description/banner_back.png',
+        'static/description/banner_front.jpg'
     ],
     'license': 'AGPL-3',
     'installable': True,
