@@ -16,7 +16,7 @@
                                             <table class="table table-condensed">
                                                 <tr>
                                                     <td>
-                                                        <strong><span>Student's Name:</span></strong>
+                                                        <span>Student's Name:</span>
                                                     </td>
                                                     <td>
                                                         <span t-field="o.name"/>
@@ -24,33 +24,25 @@
                                                         <span t-field="o.last_name"/>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr t-if="o.father_name">
                                                     <td>
-                                                        <strong><span>Father's Name:</span></strong>
+                                                        <span>Father's Name:</span>
                                                     </td>
                                                     <td>
-                                                        <span t-if="o.father_name" t-field="o.name"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <strong><span>Mother's Name:</span></strong>
-                                                    </td>
-                                                    <td>
-                                                        <span t-if="o.mother_name" t-field="o.mother_name"/>
+                                                        <span t-field="o.name"/>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr t-if="o.mother_name">
                                                     <td>
-                                                        <strong><span>Guardian's Name:</span></strong>
+                                                        <span>Mother's Name:</span>
                                                     </td>
                                                     <td>
-                                                        <span t-if="o.guardian_name" t-field="o.guardian_name.name"/>
+                                                        <span t-field="o.mother_name"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                        <strong><span t-if="o.academic_year_id">Academic Year:</span></strong>
+                                                        <span t-if="o.academic_year_id">Academic Year:</span>
                                                     </td>
                                                     <td style="text-align:left;" class="col-xs-4">
                                                         <span t-if="o.academic_year_id" t-field="o.academic_year_id.name"/>
@@ -58,12 +50,13 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                        <strong><span t-if="o.admission_class">Admission Class:</span></strong>
+                                                        <span t-if="o.admission_class">Admission Class:</span>
                                                     </td>
                                                     <td style="text-align:left;" class="col-xs-4">
                                                         <span t-if="o.admission_class" t-field="o.admission_class.name"/>
                                                     </td>
                                                 </tr>
+
                                             </table>
                                         </div>
                                         <div class="col-xs-4" style="margin:auto">
@@ -77,7 +70,7 @@
                                             <tr>
                                                 <td class="col-xs-4">
                                                     <p style="text-align:left; padding-left:10px;">
-                                                        <strong><span>Communication Address:</span></strong>
+                                                    <span>Communication Address:</span>
                                                     </p>
                                                 </td>
                                                 <td class="col-xs-8">
@@ -93,7 +86,7 @@
                                             <tr t-if="not o.is_same_address">
                                                 <td class="col-xs-4">
                                                     <p style="text-align:left; padding-left:10px;">
-                                                        <strong><span>Permanent Address:</span></strong>
+                                                    <span>Permanent Address:</span>
                                                     </p>
                                                 </td>
                                                 <td class="col-xs-8">
@@ -106,87 +99,86 @@
                                                     <t t-if="o.per_country_id"> <span t-field="o.per_country_id.name"/>,</t>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.gender">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.gender">Sex:</span></strong>
+                                                    <span t-if="o.gender">Sex:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.gender" t-field="o.gender"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.religion_id">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.religion_id">Religion:</span></strong>
+                                                    <span t-if="o.religion_id">Religion:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.religion_id" t-field="o.religion_id.name"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.caste_id">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.caste_id">Caste:</span></strong>
+                                                    <span t-if="o.caste_id">Caste:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.caste_id" t-field="o.caste_id.name"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.date_of_birth">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span>Date of Birth:</span></strong>
+                                                    <span>Date of Birth:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.date_of_birth" t-field="o.date_of_birth"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.blood_group">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.blood_group">Blood Group:</span></strong>
+                                                    <span t-if="o.blood_group">Blood Group:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.blood_group" t-field="o.blood_group"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.nationality">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.nationality">Nationality:</span></strong>
+                                                    <span t-if="o.nationality">Nationality:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.nationality" t-field="o.nationality.name"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.mother_tongue">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.mother_tongue">Mother Tongue:</span></strong>
+                                                    <span t-if="o.mother_tongue">Mother Tongue:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.mother_tongue" t-field="o.mother_tongue.name"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.mobile">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.mobile">Mobile:</span></strong>
+                                                    <span t-if="o.mobile">Mobile:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.mobile" t-field="o.mobile"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.phone">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.phone">Phone:</span></strong>
+                                                    <span t-if="o.phone">Phone:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.phone" t-field="o.phone"/>
                                                 </td>
                                             </tr>
-                                            <tr t-if="o.email">
+                                            <tr>
                                                 <td style="text-align:left; padding-left:10px;" class="col-xs-4">
-                                                    <strong><span t-if="o.email">Email:</span></strong>
+                                                    <span t-if="o.email">Email:</span>
                                                 </td>
                                                 <td style="text-align:left;" class="col-xs-4">
                                                     <span t-if="o.email" t-field="o.email"/>
                                                 </td>
                                             </tr>
-                                            <tr></tr>
                                         </table>
                                     </div>
 
