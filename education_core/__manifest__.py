@@ -22,7 +22,7 @@
 ###################################################################################
 {
     'name': 'Educational ERP Core',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.0.1',
     'summary': """Core Module of Educational ERP""",
     'description': 'Core Module of Educational ERP',
     'category': 'Educational',
@@ -54,6 +54,7 @@
         'views/education_subject.xml',
         'views/education_syllabus.xml',
         'views/education_amenities.xml',
+        'views/application_analysis.xml',
         'reports/report.xml',
         'reports/student_id_card.xml',
         'reports/student_application_report.xml',
