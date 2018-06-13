@@ -54,8 +54,10 @@
         'views/education_subject.xml',
         'views/education_syllabus.xml',
         'views/education_amenities.xml',
+        'views/application_analysis.xml',
         'reports/report.xml',
         'reports/student_id_card.xml',
+        'reports/student_application_report.xml',
         'reports/faculty_id_card.xml',
     ],
     'demo': [

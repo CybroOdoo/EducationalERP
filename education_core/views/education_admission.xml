@@ -158,6 +158,28 @@
         </field>
     </record>
 
+    <record id="view_education_application_graph" model="ir.ui.view">
+        <field name="name">education.application.graph</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <graph string="Application">
+                <field name="admission_class"/>
+                <field name="academic_year_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_education_application_pivot" model="ir.ui.view">
+        <field name="name">education.application.pivot</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <pivot string="Application">
+                <field name="admission_class" type="row"/>
+                <field name="admission_date" interval="month" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="application_search" model="ir.ui.view">
         <field name="name">Student Application</field>
         <field name="model">education.application</field>
@@ -193,7 +215,7 @@
         <field name="res_model">education.application</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
         <field name="search_view_id" ref="application_search"/>
         <field name="context">{'search_default_new_application': 1}</field>
         <field name="help" type="html">

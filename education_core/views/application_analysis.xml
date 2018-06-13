@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_application_graph" model="ir.ui.view">
+        <field name="name">education.application.graph</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <graph string="Application">
+                <field name="academic_year_id"/>
+                <field name="academic_year_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_application_pivot" model="ir.ui.view">
+        <field name="name">education.application.pivot</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <pivot string="Application">
+                <field name="academic_year_id" type="row"/>
+                <field name="admission_date" interval="month" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+
+    <record id="action_application_report" model="ir.actions.act_window">
+        <field name="name">Application Analysis</field>
+        <field name="res_model">education.application</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="context">{'search_default_new_application': 1}</field>
+    </record>
+
+    <menuitem name="Reports"
+              id="menu_application_report" parent="menu_education_root" sequence="6"/>
+    <menuitem action="action_application_report" parent="menu_application_report"
+              id="menu_application_report_analysis" />
+
+
+</odoo>
