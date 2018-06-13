@@ -4,7 +4,7 @@
 
         <template id="assets_backend_attendance" name="attendance assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-                <link rel="stylesheet" href="/education_attendance/static/src/css/attendance.css"/>
+                <link rel="stylesheet" href="/education_attendances/static/src/css/attendance.css"/>
             </xpath>
         </template>
 
@@ -212,16 +212,16 @@
         <menuitem id="student_attendance_root_menu" name="Attendance"
                   sequence="12"/>
 
-        <menuitem id="student_attendance_main_menu" parent="education_attendance.student_attendance_root_menu" name="Attendance"
+        <menuitem id="student_attendance_main_menu" parent="education_attendances.student_attendance_root_menu" name="Attendance"
                   sequence="3"/>
 
-        <menuitem id="student_attendance_sub_menu" parent="education_attendance.student_attendance_main_menu"
+        <menuitem id="student_attendance_sub_menu" parent="education_attendances.student_attendance_main_menu"
                   action="act_attendance_view" name="Attendance" sequence="10"/>
 
-        <menuitem id="student_attendance_report_main" parent="education_attendance.student_attendance_main_menu"
+        <menuitem id="student_attendance_report_main" parent="education_attendances.student_attendance_main_menu"
                   name="Reports" sequence="11"/>
 
-        <menuitem id="student_attendance_report" parent="education_attendance.student_attendance_report_main"
+        <menuitem id="student_attendance_report" parent="education_attendances.student_attendance_report_main"
                   action="act_attendance_report_view" name="Report" sequence="0"/>
 
     </data>

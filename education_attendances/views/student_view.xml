@@ -30,7 +30,7 @@
             <field name="inherit_id" ref="education_core.view_education_student_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
-                    <button name="education_attendance.view_attendance_students" type="action" class="oe_stat_button" icon="fa-calendar" string="Attendance"/>
+                    <button name="education_attendances.view_attendance_students" type="action" class="oe_stat_button" icon="fa-calendar" string="Attendance"/>
                 </xpath>
             </field>
         </record>
@@ -41,7 +41,7 @@
             <field name="inherit_id" ref="education_core.view_education_class_division_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
-                    <button name="education_attendance.view_class_wise_attendance" type="action" class="oe_stat_button" icon="fa-calendar" string="Attendance"/>
+                    <button name="education_attendances.view_class_wise_attendance" type="action" class="oe_stat_button" icon="fa-calendar" string="Attendance"/>
                 </xpath>
             </field>
         </record>
