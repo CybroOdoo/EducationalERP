@@ -49,12 +49,15 @@ class EducationClassDivision(models.Model):
     _name = 'education.class.division'
     _description = "Class room"
 
-    @api.multi
-    def get_name(self):
+    @api.model
+    def create(self, vals):
         """Return the name as a str of class + division"""
-        for record in self:
-            if record.class_id and record.division_id:
-                record.name = str(record.class_id.name + '-' + record.division_id.name)
+        # res = super(EducationClassDivision, self).create(vals)
+        class_id = self.env['education.class'].browse(vals['class_id'])
+        division_id = self.env['education.division'].browse(vals['division_id'])
+        name = str(class_id.name + '-' + division_id.name)
+        vals['name'] = name
+        return super(EducationClassDivision, self).create(vals)
 
     @api.multi
     def view_students(self):
@@ -82,7 +85,7 @@ class EducationClassDivision(models.Model):
                 'student_count': student_count
             })
 
-    name = fields.Char(string='Name', compute=get_name, store=True)
+    name = fields.Char(string='Name', readonly=True)
     actual_strength = fields.Integer(string='Class Strength', help="Total strength of the class")
     faculty_id = fields.Many2one('education.faculty', string='Class Faculty', help="Class teacher/Faculty")
     academic_year_id = fields.Many2one('education.academic.year', string='Academic Year',

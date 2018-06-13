@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_student_application">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <center>
+                                    <div class="col-xs-12" style="margin:auto">
+                                        <h2><span>Student Application Form/Online</span></h2>
+                                        <div class="col-xs-8" style="margin:auto">
+                                            <p style="padding-top:20px;"/>
+                                            <table class="table table-condensed">
+                                                <tr>
+                                                    <td>
+                                                        <strong><span>Student's Name:</span></strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.name"/>
+                                                        <span t-field="o.middle_name"/>
+                                                        <span t-field="o.last_name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong><span>Father's Name:</span></strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-if="o.father_name" t-field="o.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong><span>Mother's Name:</span></strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-if="o.mother_name" t-field="o.mother_name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong><span>Guardian's Name:</span></strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-if="o.guardian_name" t-field="o.guardian_name.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                        <strong><span t-if="o.academic_year_id">Academic Year:</span></strong>
+                                                    </td>
+                                                    <td style="text-align:left;" class="col-xs-4">
+                                                        <span t-if="o.academic_year_id" t-field="o.academic_year_id.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                        <strong><span t-if="o.admission_class">Admission Class:</span></strong>
+                                                    </td>
+                                                    <td style="text-align:left;" class="col-xs-4">
+                                                        <span t-if="o.admission_class" t-field="o.admission_class.name"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-xs-4" style="margin:auto">
+                                            <p style="text-align:center;padding-top:20px;"><strong>DATE : <span t-field="o.admission_date"/> </strong></p>
+                                            <img t-if="not o.image" t-att-src="'/education_core/static/src/img/placeholder.jpg'" height="120" border="1" width="120"/>
+                                            <img t-if="o.image" t-att-src="'data:image/png;base64,%s' % to_text(o.image)" height="120" border="1" width="80"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12" style="margin:auto">
+                                        <table class="table" >
+                                            <tr>
+                                                <td class="col-xs-4">
+                                                    <p style="text-align:left; padding-left:10px;">
+                                                        <strong><span>Communication Address:</span></strong>
+                                                    </p>
+                                                </td>
+                                                <td class="col-xs-8">
+                                                    <p style="text-align:left; padding-left:10px;"/>
+                                                    <t t-if="o.street"> <span t-field="o.street"/>, </t>
+                                                    <t t-if="o.street2"> <span t-field="o.street2"/>, </t>
+                                                    <t t-if="o.city"> <span t-field="o.city"/>,</t>
+                                                    <t t-if="o.zip"> <span t-field="o.zip"/>,</t>
+                                                    <t t-if="o.state_id"> <span t-field="o.state_id.name"/>,</t>
+                                                    <t t-if="o.country_id"> <span t-field="o.country_id.name"/>,</t>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="not o.is_same_address">
+                                                <td class="col-xs-4">
+                                                    <p style="text-align:left; padding-left:10px;">
+                                                        <strong><span>Permanent Address:</span></strong>
+                                                    </p>
+                                                </td>
+                                                <td class="col-xs-8">
+                                                    <p style="text-align:left; padding-left:10px;"/>
+                                                    <t t-if="o.per_street"> <span t-field="o.per_street"/>,</t>
+                                                    <t t-if="o.per_street2"> <span t-field="o.per_street2"/>,</t>
+                                                    <t t-if="o.per_city"> <span t-field="o.per_city"/>,</t>
+                                                    <t t-if="o.per_zip"> <span t-field="o.per_zip"/>,</t>
+                                                    <t t-if="o.per_state_id"> <span t-field="o.per_state_id.name"/>,</t>
+                                                    <t t-if="o.per_country_id"> <span t-field="o.per_country_id.name"/>,</t>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.gender">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.gender">Sex:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.gender" t-field="o.gender"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.religion_id">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.religion_id">Religion:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.religion_id" t-field="o.religion_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.caste_id">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.caste_id">Caste:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.caste_id" t-field="o.caste_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.date_of_birth">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span>Date of Birth:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.date_of_birth" t-field="o.date_of_birth"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.blood_group">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.blood_group">Blood Group:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.blood_group" t-field="o.blood_group"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.nationality">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.nationality">Nationality:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.nationality" t-field="o.nationality.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.mother_tongue">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.mother_tongue">Mother Tongue:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.mother_tongue" t-field="o.mother_tongue.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.mobile">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.mobile">Mobile:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.mobile" t-field="o.mobile"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.phone">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.phone">Phone:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.phone" t-field="o.phone"/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.email">
+                                                <td style="text-align:left; padding-left:10px;" class="col-xs-4">
+                                                    <strong><span t-if="o.email">Email:</span></strong>
+                                                </td>
+                                                <td style="text-align:left;" class="col-xs-4">
+                                                    <span t-if="o.email" t-field="o.email"/>
+                                                </td>
+                                            </tr>
+                                            <tr></tr>
+                                        </table>
+                                    </div>
+
+                                </center>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
