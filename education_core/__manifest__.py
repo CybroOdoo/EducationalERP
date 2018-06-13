@@ -22,7 +22,7 @@
 ###################################################################################
 {
     'name': 'Educational ERP Core',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.0.1',
     'summary': """Core Module of Educational ERP""",
     'description': 'Core Module of Educational ERP',
     'category': 'Educational',
