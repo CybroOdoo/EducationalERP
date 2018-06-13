@@ -20,14 +20,5 @@
             file="education_core.report_faculty_id_card"
         />
 
-        <!--<report-->
-            <!--id="action_student_application_report"-->
-            <!--model="education.application"-->
-            <!--string="Student Application"-->
-            <!--report_type="qweb-html"-->
-            <!--name="education_core.report_student_application"-->
-            <!--file="education_core.report_student_application"-->
-        <!--/>-->
-
     </data>
 </odoo>
