@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_exam_results_students" model="ir.actions.act_window">
+            <field name="name">Exam Results Student</field>
+            <field name="res_model">education.exam.results</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('student_id', '=', active_id)]</field>
+            <field name="context">{'search_default_group_exam_id':1}</field>
+        </record>
+
+
+        <record id="student_smart_button_exam_form" model="ir.ui.view">
+            <field name="name">student_smart_button_exam_form.form</field>
+            <field name="model">education.student</field>
+            <field name="inherit_id" ref="education_core.view_education_student_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="education_exam.view_exam_results_students" type="action" class="oe_stat_button" icon="fa-archive" string="Exam Results"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
