@@ -58,12 +58,14 @@ class EducationTimeTable(models.Model):
                      str(i.class_division.name) + "/" + str(i.academic_year.name)
 
     @api.onchange('class_division')
+    @api.constrains('class_division')
     def onchange_class_division(self):
         """To get class and division details from Class Division model"""
         for i in self:
             i.class_name = i.class_division.class_id
             i.division_name = i.class_division.division_id
             i.academic_year = i.class_division.academic_year_id
+            # i.write({'academic_year': i.class_division.academic_year_id})
 
 
 class EducationTimeTableSchedule(models.Model):
