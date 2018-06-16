@@ -28,7 +28,7 @@
     'category': 'Educational',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
-    'website': "",
+    'website': "http://www.educationalerp.com",
     'depends': ['base', 'mail', 'stock', 'education_theme', 'hr_recruitment'],
     'data': [
         'security/education_security.xml',
@@ -63,7 +63,7 @@
     'demo': [
         'demo/education_data.xml',
     ],
-    'images': ['static/description/banner.png'],
+    'images': ['static/description/banner.jpg'],
     'license': 'AGPL-3',
     'installable': True,
     'auto_install': False,
