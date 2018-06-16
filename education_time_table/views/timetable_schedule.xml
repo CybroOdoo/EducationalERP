@@ -53,7 +53,7 @@
             <field name="name">education.timetable.schedule.search</field>
             <field name="model">education.timetable.schedule</field>
             <field name="arch" type="xml">
-                <search string="Time Table Schedule">
+                <search string="Timetable Schedule">
                     <filter string="Weekday" name="weekday" domain="[('week_day','=',context_today().weekday())]"/>
                     <separator/>
                     <group expand="1" string="Group By">
@@ -85,7 +85,7 @@
                 sequence="2"/>
         <menuitem
                 id="education_time_table_schedule_sub_menu"
-                name="Time Table Schedule"
+                name="TimetableSchedule"
                 parent="education_time_table_schedule_main_menu"
                 action="action_education_time_table_schedule"/>
     </data>

@@ -26,7 +26,7 @@ from odoo import models, fields, api, _
 
 class EducationTimeTable(models.Model):
     _name = 'education.timetable'
-    _description = 'Time Table'
+    _description = 'Timetable'
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char(compute='get_name')
@@ -70,7 +70,7 @@ class EducationTimeTable(models.Model):
 
 class EducationTimeTableSchedule(models.Model):
     _name = 'education.timetable.schedule'
-    _description = 'Time Table Schedule'
+    _description = 'Timetable Schedule'
 
     period_id = fields.Many2one('timetable.period', string="Period", required=True,)
     time_from = fields.Float(string='From', required=True,
@@ -109,7 +109,7 @@ class EducationTimeTableSchedule(models.Model):
 
 class TimetablePeriod(models.Model):
     _name = 'timetable.period'
-    _description = 'Time Table Period'
+    _description = 'Timetable Period'
 
     name = fields.Char(string="Name", required=True,)
     time_from = fields.Float(string='From', required=True,

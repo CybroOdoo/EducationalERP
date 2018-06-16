@@ -23,14 +23,16 @@
 
 {
     'name': 'Educational Time Table',
-    'version': '11.0.1.0.0',
+    'version': '11.0.2.0.0',
     'category': 'Extra Tools',
-    'summary': 'Time table for Education erp',
+    'summary': 'Timetable for Education erp',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'website': "https://www.openhrms.com",
     'depends': ['base', 'education_core'],
     'data': [
+
+        'security/ir.model.access.csv',
         'views/education_time_table.xml',
         'views/timetable_schedule.xml',
         'views/period_configuration_view.xml',

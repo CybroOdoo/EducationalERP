@@ -1,7 +1,7 @@
-Educational Time Table V11
-==========================
+Educational Timetable V11
+=========================
 
-Time Table app for Educational ERP
+Timetable app for Educational ERP
 
 Contacts
 ========

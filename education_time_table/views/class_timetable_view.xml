@@ -18,7 +18,7 @@
             <field name="inherit_id" ref="education_core.view_education_class_division_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
-                    <button name="education_time_table.action_education_time_table_view_class_division_wise" type="action" class="oe_stat_button" icon="fa-calendar" string="Time Table"/>
+                    <button name="education_time_table.action_education_time_table_view_class_division_wise" type="action" class="oe_stat_button" icon="fa-calendar" string="Timetable"/>
                 </xpath>
             </field>
     </record>
@@ -40,7 +40,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='image']" position="before">
                     <div class="oe_button_box" name="button_box">
-                        <button name="education_time_table.action_education_time_table_view_faculty_wise" type="action" class="oe_stat_button" icon="fa-calendar" string="Time Table"/>
+                        <button name="education_time_table.action_education_time_table_view_faculty_wise" type="action" class="oe_stat_button" icon="fa-calendar" string="Timetable"/>
                     </div>
                 </xpath>
             </field>

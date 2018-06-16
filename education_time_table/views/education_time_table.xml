@@ -145,15 +145,15 @@
 
         <menuitem
                 id="education_time_table_main_menu"
-                name="Time Table"/>
+                name="Timetable"/>
         <menuitem
                 id="education_time_table_sub_menu"
-                name="Time Table"
+                name="Timetable"
                 parent="education_time_table_main_menu"
                 sequence="1"/>
         <menuitem
                 id="education_time_table_sub_sub_menu"
-                name="Time Table"
+                name="Timetable"
                 parent="education_time_table_sub_menu"
                 action="action_education_time_table"/>
     </data>

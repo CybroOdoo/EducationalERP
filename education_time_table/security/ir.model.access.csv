@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_education_timetable,access.education.timetable,education_time_table.model_education_timetable,education_core.group_education_faculty,1,1,1,0
+access_education_timetable_schedule,access.education.timetable.schedule,education_time_table.model_education_timetable_schedule,education_core.group_education_faculty,1,1,1,0
+access_education_timetable_period,access.education.timetable.period,education_time_table.model_timetable_period,education_core.group_education_faculty,1,1,1,0
