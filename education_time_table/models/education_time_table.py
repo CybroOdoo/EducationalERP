@@ -71,6 +71,7 @@ class EducationTimeTable(models.Model):
 class EducationTimeTableSchedule(models.Model):
     _name = 'education.timetable.schedule'
     _description = 'Timetable Schedule'
+    _rec_name = 'period_id'
 
     period_id = fields.Many2one('timetable.period', string="Period", required=True,)
     time_from = fields.Float(string='From', required=True,

@@ -85,7 +85,7 @@
                 sequence="2"/>
         <menuitem
                 id="education_time_table_schedule_sub_menu"
-                name="TimetableSchedule"
+                name="Timetable Schedule"
                 parent="education_time_table_schedule_main_menu"
                 action="action_education_time_table_schedule"/>
     </data>
