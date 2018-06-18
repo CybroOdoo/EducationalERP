@@ -28,7 +28,7 @@
     'summary': 'Timetable for Education erp',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
-    'website': "https://www.cybrosys.com",
+    'website': "http://www.educationalerp.com",
     'depends': ['base', 'education_core'],
     'data': [
 
