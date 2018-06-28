@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_edu_mess3_tree" model="ir.ui.view">
+            <field name="name">mess.food.form</field>
+            <field name="model">mess.food</field>
+            <field name="arch" type="xml">
+                <form string="Mess">
+                    <field name="mess_rel"/>
+                    <field name="break_fast"/>
+                    <field name="lunch" />
+                    <field name="snack"/>
+                    <field name="supper"/>
+                    <field name="week_list"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_edu_mess_tree" model="ir.ui.view">
+            <field name="name">education.mess.tree</field>
+            <field name="model">education.mess</field>
+            <field name="arch" type="xml">
+                <tree string="Mess">
+                    <field name="mess_name"/>
+                    <field name="mess_code"/>
+                    <field name="hostel"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_edu_mess_form" model="ir.ui.view">
+            <field name="name">education.mess</field>
+            <field name="model">education.mess</field>
+            <field name="arch" type="xml">
+                <form string="Hostel">
+                     <sheet>
+                        <group col="4" name="main">
+                            <field name="mess_name"/>
+                            <field name="mess_code"/>
+                            <field name="hostel" />
+                            <field name="company_id"  groups="base.group_multi_company"/>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Food Menu">
+                                <field name="food_menu">
+                                    <tree string="Food Menu" editable="bottom">
+                                        <field name="week_list"/>
+                                        <field name="break_fast"/>
+                                        <field name="lunch"/>
+                                        <field name="snack"/>
+                                        <field name="supper"/>
+                                    </tree>
+                                 </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_edu_mess">
+            <field name="name">Mess</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">education.mess</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+             <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create Mess.
+                </p>
+             </field>
+        </record>
+
+        <record id="view_food_item_tree" model="ir.ui.view">
+            <field name="name">food.item.tree</field>
+            <field name="model">food.item</field>
+            <field name="arch" type="xml">
+                <tree string="Food Items" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_edu_food_item">
+            <field name="name">Food Items</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">food.item</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+             <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create Food Item.
+                </p>
+             </field>
+        </record>
+
+    </data>
+</odoo>

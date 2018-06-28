@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--main menu-->
+        <menuitem id="menu_edu_hostel_mgmnt" name="Hostel"/>
+        <menuitem id="child_edu_hostel_mgmnt" parent="menu_edu_hostel_mgmnt"  name="Hostel"/>
+        <!--Hostel configuration menu-->
+        <menuitem id="child_edu_hostel" parent="child_edu_hostel_mgmnt" name="Hostel"
+            action="action_edu_hostel" sequence="1"/>
+         <!--Hostel configuration menu-->
+        <menuitem id="child_edu_conf" parent="menu_edu_hostel_mgmnt" name="Configuration"
+            sequence="22" groups="group_hostel_management_manager"/>
+        <menuitem id="child_edu_room" parent="child_edu_conf" name="Room"
+            action="action_edu_room" sequence="2" />
+        <menuitem id="child_edu_room_amenity" parent="child_edu_conf" name="Amenities"
+            action="education_core.action_education_amenities" sequence="4" />
+
+        <menuitem id="child_edu_floor" parent="child_edu_conf" name="Floor"
+            action="action_edu_floor" sequence="3" />
+
+         <menuitem id="child_edu_admision" parent="child_edu_hostel_mgmnt" name="Admission"
+            sequence="1" />
+        <menuitem id="child_edu_admision1" parent="child_edu_admision" name="Students"
+            sequence="1" action="action_edu_hostel_member"/>
+        <menuitem id="child_edu_mess" parent="child_edu_hostel_mgmnt" name="Mess"
+            sequence="10"  />
+        <menuitem id="child_edu_mess1" parent="child_edu_mess" name="Mess"
+            sequence="1" action="action_edu_mess" />
+        <menuitem id="child_edu_mess2" parent="child_edu_mess" name="Food Item"
+            sequence="2" action="action_edu_food_item" />
+
+        <menuitem id="child_edu_leaves" parent="child_edu_hostel_mgmnt" name="Leaves"
+            sequence="5"  />
+        <menuitem id="child_edu_leaves1" parent="child_edu_leaves" name="Leaves"
+            sequence="1" action="action_edu_leave" />
+
+
+    </data>
+</odoo>

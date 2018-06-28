@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_edu_floor_form" model="ir.ui.view">
+            <field name="name">education.floor.form</field>
+            <field name="model">education.floor</field>
+            <field name="arch" type="xml">
+                <form string="Floor">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="floor_no"/>
+                                <field name="responsible"/>
+                            </group>
+                            <group>
+                                <field name="hostel"/>
+                                <field name="company_id"  groups="base.group_multi_company"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_edu_floor_tree" model="ir.ui.view">
+            <field name="name">education.floor.tree</field>
+            <field name="model">education.floor</field>
+            <field name="arch" type="xml">
+                <tree string="Floor" editable="top">
+                    <field name="floor_no"/>
+                    <field name="hostel"/>
+                    <field name="responsible"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_edu_floor">
+            <field name="name">Floor</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">education.floor</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+             <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create Floors.
+                </p>
+             </field>
+        </record>
+
+    </data>
+</odoo>
