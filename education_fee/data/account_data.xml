@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--Journal Account-->
+        <record id="a_institutional_fee" model="account.account">
+            <field name="name">Institutional Fee</field>
+            <field name="user_type_id" ref="account.data_account_type_revenue"/>
+            <field name="code">20011011</field>
+            <field name="reconcile">True</field>
+        </record>
+        <record id="a_hostel_fee" model="account.account">
+            <field name="name">Hostel Fee</field>
+            <field name="user_type_id" ref="account.data_account_type_revenue"/>
+            <field name="code">20011012</field>
+            <field name="reconcile">True</field>
+        </record>
+        <record id="a_transportation_fee" model="account.account">
+            <field name="name">Transportation Fee</field>
+            <field name="user_type_id" ref="account.data_account_type_revenue"/>
+            <field name="code">20011013</field>
+            <field name="reconcile">True</field>
+        </record>
+        <record id="a_other_fee" model="account.account">
+            <field name="name">Other Fee</field>
+            <field name="user_type_id" ref="account.data_account_type_revenue"/>
+            <field name="code">20011014</field>
+            <field name="reconcile">True</field>
+        </record>
+
+
+
+        <!--Journal-->
+        <record id="account_journal_institutional_fee" model="account.journal">
+            <field name="name">Institutional Fee</field>
+            <field name="type">sale</field>
+            <field name="code">IFEE</field>
+            <field name="sequence_number_next">1</field>
+            <field name="default_credit_account_id" ref="a_institutional_fee"/>
+            <field name="default_debit_account_id" ref="a_institutional_fee"/>
+            <field name="refund_sequence" eval="True"/>
+            <field name="is_fee">True</field>
+        </record>
+        <record id="account_journal_hostel_fee" model="account.journal">
+            <field name="name">Hostel Fee</field>
+            <field name="type">sale</field>
+            <field name="code">HFEE</field>
+            <field name="sequence_number_next">1</field>
+            <field name="default_credit_account_id" ref="a_hostel_fee"/>
+            <field name="default_debit_account_id" ref="a_hostel_fee"/>
+            <field name="refund_sequence" eval="True"/>
+            <field name="is_fee">True</field>
+        </record>
+        <record id="account_journal_transportation_fee" model="account.journal">
+            <field name="name">Transportation Fee</field>
+            <field name="type">sale</field>
+            <field name="code">TFEE</field>
+            <field name="sequence_number_next">1</field>
+            <field name="default_credit_account_id" ref="a_transportation_fee"/>
+            <field name="default_debit_account_id" ref="a_transportation_fee"/>
+            <field name="refund_sequence" eval="True"/>
+            <field name="is_fee">True</field>
+        </record>
+
+        <record id="account_journal_other_fee" model="account.journal">
+            <field name="name">Other Fee</field>
+            <field name="type">sale</field>
+            <field name="code">OFEE</field>
+            <field name="sequence_number_next">1</field>
+            <field name="default_credit_account_id" ref="a_other_fee"/>
+            <field name="default_debit_account_id" ref="a_other_fee"/>
+            <field name="refund_sequence" eval="True"/>
+            <field name="is_fee">True</field>
+        </record>
+
+    </data>
+</odoo>

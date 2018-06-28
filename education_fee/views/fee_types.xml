@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fee_types_form" model="ir.ui.view">
+            <field name="name">education.fee.type.form</field>
+            <field name="model">education.fee.type</field>
+            <field name="arch" type="xml">
+                <form string="Fee Types">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Eg: Admission Fee"/>
+                                <field name="lst_price" string="Amount" required="1" widget="monetary"/>
+                            </group>
+                            <group>
+                                <field name="payment_type"/>
+                                <field name="interval" placeholder="Eg: Quarterly"/>
+                                <field name="category_id"/>
+                            </group>
+                            <field name="description_sale" placeholder="Details about the fee" string="Description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="fee_types_tree" model="ir.ui.view">
+            <field name="name">education.fee.type.tree</field>
+            <field name="model">education.fee.type</field>
+            <field name="arch" type="xml">
+                <tree string="Fee Types">
+                    <field name="name"/>
+                    <field name="lst_price" widget="monetary"/>
+                    <field name="payment_type"/>
+                    <field name="interval"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_fee_type_tree" model="ir.actions.act_window">
+            <field name="name">Fee Types</field>
+            <field name="res_model">education.fee.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="fee_types_tree"/>
+        </record>
+        <menuitem id="menu_action_fee_types" action="action_fee_type_tree"
+          parent="menu_fee_configuration"
+          sequence="2"/>
+    </data>
+</odoo>

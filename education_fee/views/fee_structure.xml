@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="fee_structure_form" model="ir.ui.view">
+            <field name="name">education.fee.structure.form</field>
+            <field name="model">education.fee.structure</field>
+            <field name="arch" type="xml">
+                <form string="Fee Structure" class="o_invoice_form">
+                <sheet string="Fee Structure">
+                    <h1 class="mt0">
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="fee_structure_name" placeholder="Eg:LKG and UKG"/>
+
+                            <field name="expire" invisible="1"/>
+                            <field name="category_id"/>
+                        </group>
+                        <group>
+                            <field name="academic_year"/>
+                            <!--<field name="class_id"/>-->
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Fee Heading">
+                            <field name="fee_type_ids" nolabel="1" widget="one2many_list" mode="tree">
+                                <tree string="Fee Types" editable="bottom">
+                                    <field name="fee_type"/>
+                                    <field name="payment_type"/>
+                                    <field name="fee_description"/>
+                                    <field name="interval" placeholder="Eg: Quarterly"/>
+                                    <field name="fee_amount" required="1" widget="monetary"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                            </group>
+                            <field name="comment" placeholder="Terms and conditions..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="fee_structure_tree" model="ir.ui.view">
+            <field name="name">education.fee.structure.tree</field>
+            <field name="model">education.fee.structure</field>
+            <field name="arch" type="xml">
+                <tree string="Fee Structure">
+                    <field name="fee_structure_name"/>
+                    <!--<field name="class_id"/>-->
+                    <field name="academic_year"/>
+                    <field name="category_id"/>
+                    <field name="amount_total"  widget="monetary"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_fee_structure_tree" model="ir.actions.act_window">
+            <field name="name">Fee Structure</field>
+            <field name="res_model">education.fee.structure</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="fee_structure_tree"/>
+        </record>
+        <menuitem
+          id="menu_fee_configuration"
+          parent="menu_education_fee_root" name="Configuration"
+          sequence="2"/>
+        <menuitem action="action_fee_structure_tree"
+          id="menu_action_fee_structure"
+          parent="menu_fee_configuration"
+          sequence="1"/>
+    </data>
+</odoo>
+

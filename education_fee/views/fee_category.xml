@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fee_category_form" model="ir.ui.view">
+            <field name="name">education.fee.category.form</field>
+            <field name="model">education.fee.category</field>
+            <field name="arch" type="xml">
+                <form string="Fee Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Eg: Institutional"/>
+                            </group>
+                            <group>
+                                <field name="journal_id"/>
+                            </group>
+                            <group>
+                                <field name="fee_structure"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="fee_category_tree" model="ir.ui.view">
+            <field name="name">education.fee.category.tree</field>
+            <field name="model">education.fee.category</field>
+            <field name="arch" type="xml">
+                <tree string="Fee Category">
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_fee_category_tree" model="ir.actions.act_window">
+            <field name="name">Fee Category</field>
+            <field name="res_model">education.fee.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="fee_category_tree"/>
+        </record>
+        <menuitem id="menu_action_fee_category" action="action_fee_category_tree"
+          parent="menu_fee_configuration"
+          sequence="3"/>
+    </data>
+</odoo>
