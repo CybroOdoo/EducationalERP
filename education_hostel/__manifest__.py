@@ -29,7 +29,7 @@
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'website': "http://www.educationalerp.com",
-    'depends': ['base', 'education_core', 'education_fee', 'education_transportation'],
+    'depends': ['base', 'education_core', 'education_fee'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
