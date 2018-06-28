@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="education_stage_data1" model="edu.stop">
+            <field name="name">ALBANY</field>
+        </record>
+
+        <record id="education_stage_data2" model="edu.stop">
+            <field name="name">ALLEGANY</field>
+        </record>
+
+        <record id="education_stage_data3" model="edu.stop">
+            <field name="name">BROOME</field>
+        </record>
+
+        <record id="education_stage_data4" model="edu.stop">
+            <field name="name">CATTARAUGUS</field>
+        </record>
+
+         <record id="education_stage_data1" model="education.stop">
+            <field name="stop_name" ref="education_stage_data1"/>
+            <field name="stop_sequence">1</field>
+            <field name="cost">100</field>
+        </record>
+
+        <record id="education_stage_data2" model="education.stop">
+            <field name="stop_name" ref="education_stage_data2"/>
+            <field name="stop_sequence">2</field>
+            <field name="cost">150</field>
+        </record>
+
+        <record id="education_stage_data3" model="education.stop">
+            <field name="stop_name" ref="education_stage_data3"/>
+            <field name="stop_sequence">3</field>
+            <field name="cost">200</field>
+        </record>
+
+        <record id="education_stage_data4" model="education.stop">
+            <field name="stop_name" ref="education_stage_data4"/>
+            <field name="stop_sequence">4</field>
+            <field name="cost">250</field>
+        </record>
+
+        <record id="education_trip" model="education.trip">
+            <field name="src_loc" ref="education_stage_data1"/>
+            <field name="dest_loc" ref="education_stage_data2"/>
+            <field name="name">ALBANY-->ALLEGANY</field>
+        </record>
+
+        <record id="education_trip_stage" model="education.trip_stop">
+            <field name="stop_name" ref="education_stage_data1"/>
+            <field name="stop_sequence">1</field>
+            <field name="cost">100</field>
+            <field name="stop_trip_rel" ref="education_trip"/>
+            <field name="morning_timing">00.00</field>
+            <field name="evening_timing">00.45</field>
+        </record>
+
+        <record id="education_trip_stage2" model="education.trip_stop">
+            <field name="stop_name" ref="education_stage_data2"/>
+            <field name="stop_sequence">2</field>
+            <field name="cost">150</field>
+            <field name="stop_trip_rel" ref="education_trip"/>
+            <field name="morning_timing">00.10</field>
+            <field name="evening_timing">00.35</field>
+        </record>
+
+         <record id="education_core.student_application_data1" model="education.application">
+            <field name="need_transportation_facility">1</field>
+        </record>
+
+    </data>
+</odoo>

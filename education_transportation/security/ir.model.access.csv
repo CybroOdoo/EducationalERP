@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_edu_stop_user,education.stop.user,model_education_stop,fleet.fleet_group_user,1,1,1,1
+access_education_trip_employee,education.trip.user,model_education_trip,fleet.fleet_group_user,1,1,1,1
+access_edu_stop_employee,edu.stop,model_edu_stop,fleet.fleet_group_user,1,1,1,1
+access_education_trip_stop_employee,education.trip_stop.user,model_education_trip_stop,fleet.fleet_group_user,1,1,1,1
+access_education_vehicle_employee,edu.vehicle.user,model_edu_vehicle,fleet.fleet_group_user,1,1,1,1
+access_education_student_user,education.student.user,model_education_student,fleet.fleet_group_user,1,1,0,1

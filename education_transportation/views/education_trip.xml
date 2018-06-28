@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="fleet_vehicle_inherit" model="ir.ui.view">
+            <field name="name">fleet.vehicle.form</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='driver_id']" position='before'>
+                    <field name="vehicle_number"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_edu_trip_tree" model="ir.ui.view">
+            <field name="name">education.trip.tree</field>
+            <field name="model">education.trip</field>
+            <field name="arch" type="xml">
+                <tree string="Route">
+                    <field name="name"/>
+                    <field name="total_students"/>
+                </tree>
+            </field>
+        </record>
+
+         <record id="view_edu_trip_kanaban" model="ir.ui.view">
+            <field name="name">education.trip.kanban</field>
+            <field name="model">education.trip</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_edu_hostel">
+                    <field name="color"/>
+                    <field name="name"/>
+                    <field name="total_students"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click ">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                        <span class="fa fa-bars fa-lg"/>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        <t t-if="widget.editable"><li><a type="edit">Edit</a></li></t>
+                                        <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <div class="row">
+                                        <div class="text-center">
+                                            <div class="text-center"><strong><field name="name"/></strong></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <div class="text-center">
+                                            <div t-if="record.total_students.value">Total Students:<field name="total_students"/></div>
+                                        </div>
+                                    </strong>
+                                </div>
+                            </div>
+                            </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_edu_trip_form" model="ir.ui.view">
+            <field name="name">education.trip.form</field>
+            <field name="model">education.trip</field>
+            <field name="arch" type="xml">
+                <form string="Route">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="student_view" type="object" icon="fa fa-group">
+                                <field string="Students" name="total_students" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Route"/>
+                            <h1>
+                                <field name="name" placeholder="Route.."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="src_loc"/>
+                                <field name="company_id" groups="base.group_multi_company" />
+                            </group>
+                            <group>
+                                <field name="academic_year_id" invisible="1"/>
+                                <field name="dest_loc"/>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Stage Details">
+                                <field name="stop">
+                                    <tree string="Stop" editable="bottom">
+                                         <field name="stop_name"/>
+                                         <field name="stop_sequence" readonly="1"/>
+                                         <field name="morning_timing" widget="float_time"/>
+                                         <field name="evening_timing" widget="float_time"/>
+                                         <field name="cost" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Vehicle Details">
+                                <field name="vehicle">
+                                    <tree string="Vehicles" editable="bottom">
+                                        <field name="vehicle"/>
+                                        <field name="vehicle_no" readonly="1"/>
+                                        <field name="driver" readonly="1"/>
+                                        <field name="morning_timing" widget="float_time"/>
+                                        <field name="evening_timing" widget="float_time"/>
+
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_edu_trip">
+            <field name="name">Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">education.trip</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+             <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create Route.
+                </p>
+             </field>
+        </record>
+
+        <menuitem name="Transportation" id="fleet.menu_root" web_icon="fleet,static/description/icon.png"/>
+        <menuitem name="Transportation" id="edu_trip" sequence="1" parent="fleet.menu_root"/>
+        <menuitem name="Route" id="edu_trip_1" parent="edu_trip" sequence="1" action="action_edu_trip"/>
+
+        <record id="view_edu_student_inherit0" model="ir.ui.view">
+            <field name="name">education.student.form</field>
+            <field name="model">education.student</field>
+            <field name="inherit_id" ref="education_core.view_education_student_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Transportation Details" attrs="{'invisible': [('need_transportation_facility','=',False)]}">
+                        <group>
+                            <group>
+                                <field name="trip_id"/>
+                                <field name="location"/>
+                            </group>
+                            <group>
+                                <field name="trans_cost"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//group[@name='amenity_info']" position='inside'>
+                    <group string="Transportation">
+                        <field name="need_transportation_facility"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_education_application_form3" model="ir.ui.view">
+            <field name="name">education.application.form</field>
+            <field name="model">education.application</field>
+            <field name="inherit_id" ref="education_core.view_education_application_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='amenity_info']" position='inside'>
+                    <group string="Transportation">
+                        <field name="need_transportation_facility"/>
+                    </group>
+                </xpath>
+            </field>
+          </record>
+
+         <record id="fleet.module_fleet_category" model="ir.module.category">
+            <field name="name">Transportation</field>
+            <field name="sequence">17</field>
+        </record>
+    </data>
+</odoo>

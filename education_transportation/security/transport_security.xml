@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="multi_company_fleet" model="ir.rule">
+        <field name="name">Transportation Multi Company</field>
+        <field name="model_id" ref="model_fleet_vehicle"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+
+     <record id="multi_company_stop" model="ir.rule">
+        <field name="name">Transportation Stage Multi Company</field>
+        <field name="model_id" ref="model_education_stop"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+     <record id="multi_company_trip" model="ir.rule">
+        <field name="name">Transportation Trip Multi Company</field>
+        <field name="model_id" ref="model_education_trip"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+
+</odoo>
