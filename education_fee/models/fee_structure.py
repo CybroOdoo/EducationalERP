@@ -41,8 +41,7 @@ class FeeStructure(models.Model):
     expire = fields.Boolean('Expire', default=False)
     amount_total = fields.Float('Amount', currency_field='company_currency_id', required=True, compute='compute_total')
     category_id = fields.Many2one('education.fee.category', string='Category', required=True,
-                                  default=lambda self: self.env['education.fee.category'].browse(1)
-                                  if self.env['education.fee.category'].browse(1) else False,
+                                  default=lambda self: self.env['education.fee.category'].search([], limit=1),
                                   domain=[('fee_structure', '=', True)])
 
 
@@ -89,8 +88,7 @@ class FeeType(models.Model):
                                                     'Yearly means the payment paid only one time uin year.')
 
     category_id = fields.Many2one('education.fee.category', string='Category', required=True,
-                                  default=lambda self: self.env['education.fee.category'].browse(1)
-                                  if self.env['education.fee.category'].browse(1) else False)
+                                  default=lambda self: self.env['education.fee.category'].search([], limit=1))
 
     @api.model
     def create(self, vals):

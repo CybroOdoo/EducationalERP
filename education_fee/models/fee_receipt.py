@@ -102,8 +102,7 @@ class FeeReceipts(models.Model):
     fee_structure = fields.Many2one('education.fee.structure', string='Fee Structure')
     is_fee = fields.Boolean(string='Is Fee', store=True, default=False)
     fee_category_id = fields.Many2one('education.fee.category', string='Category', required=True,
-                                      default=lambda self: self.env['education.fee.category'].browse(1)
-                                      if self.env['education.fee.category'].browse(1) else False)
+                                      default=lambda self: self.env['education.fee.category'].search([], limit=1))
     is_fee_structure = fields.Boolean('Have a fee structure?', related='fee_category_id.fee_structure')
     payed_line_ids = fields.One2many('payed.lines', 'partner_id', string='Payments Done',
                                    readonly=True, store=False)
