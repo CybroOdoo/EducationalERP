@@ -102,14 +102,12 @@ class FeeReceipts(models.Model):
     fee_structure = fields.Many2one('education.fee.structure', string='Fee Structure')
     is_fee = fields.Boolean(string='Is Fee', store=True, default=False)
     fee_category_id = fields.Many2one('education.fee.category', string='Category', required=True,
-                                      default=lambda self: self.env['education.fee.category'].search([
-                                          ('id', '=', 1)]), limit=1)
+                                      default=lambda self: self.env['education.fee.category'].browse(1))
     is_fee_structure = fields.Boolean('Have a fee structure?', related='fee_category_id.fee_structure')
     payed_line_ids = fields.One2many('payed.lines', 'partner_id', string='Payments Done',
                                    readonly=True, store=False)
     payed_from_date = fields.Date(string='From Date')
     payed_to_date = fields.Date(string='To Date')
-
 
     @api.model
     def create(self, vals):

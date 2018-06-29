@@ -21,7 +21,7 @@
 #
 ###################################################################################
 
-from . import fee_receipt
-from . import fee_structure
-from . import fee_category
 from . import fee_journal
+from . import fee_category
+from . import fee_structure
+from . import fee_receipt
