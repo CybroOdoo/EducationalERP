@@ -30,7 +30,7 @@
     "website": "http://www.educationalerp.com",
     'summary': 'Manage students fee',
     'description': """Manage students fee""",
-    "depends": ['base', 'account_invoicing', 'education_core'],
+    "depends": ['base', 'account', 'account_invoicing', 'education_core'],
     "data": [
         'data/account_data.xml',
         'security/ir.model.access.csv',

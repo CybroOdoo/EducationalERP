@@ -31,7 +31,8 @@ class FeeCategory(models.Model):
                                                    ' Like Institutuinal, Hostel, Transportation, Arts and Sports, etc')
     journal_id = fields.Many2one('account.journal', string='Journal', required=True,
                                  default=lambda self: self.env['account.journal'].search(
-                                     [('code', '=', 'IFEE')], limit=1),
+                                     [('code', '=', 'IFEE')], limit=1) if self.env['account.journal'].search(
+                                     [('code', '=', 'IFEE')], limit=1) else False,
                                  help='Setting up of unique journal for each category help to distinguish '
                                       'account entries of each category ')
     fee_structure = fields.Boolean('Have a fee structure?', required=True, default=False,
