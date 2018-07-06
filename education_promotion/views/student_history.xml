@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <record id="student_history_smart_button_form" model="ir.ui.view">
+            <field name="name">student.history.smart.button.form</field>
+            <field name="model">education.student</field>
+            <field name="inherit_id" ref="education_core.view_education_student_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="education_promotion.action_education_promotion_student_history" type="action" class="oe_stat_button" icon="fa-list-alt" string="Student History"/>
+                </xpath>
+            </field>
+    </record>
+
+        <record id="education_promotion_student_history_tree" model="ir.ui.view">
+            <field name="name">education.promotion.student.history.tree</field>
+            <field name="model">education.student.final.result</field>
+            <field name="arch" type="xml">
+                <tree string="Student History">
+                    <field name="student_id"/>
+                    <field name="final_result"/>
+                    <field name="division_id"/>
+                    <field name="academic_year"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_education_promotion_student_history" model="ir.actions.act_window">
+            <field name="name">Education Promotion</field>
+            <field name="res_model">education.student.final.result</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('student_id','=',active_id)]</field>
+
+        </record>
+
+    </data>
+</odoo>

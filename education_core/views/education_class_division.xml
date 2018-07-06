@@ -90,7 +90,7 @@
                     <notebook>
                         <page string="Students">
                             <field name="student_ids" nolabel="1">
-                                <tree string="Syllabus Items" editable="bottom">
+                                <tree string="Students" editable="bottom" create="false">
                                     <field name="name"/>
                                     <field name="class_id"/>
                                     <field name="gender"/>

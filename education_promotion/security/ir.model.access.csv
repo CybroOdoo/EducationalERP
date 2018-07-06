@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_education_promotion,access.education.promotion,education_promotion.model_education_promotion,education_core.group_education_faculty,1,1,1,0
+access_education_student_final_result,access.education.student.final.result,education_promotion.model_education_student_final_result,education_core.group_education_faculty,1,1,1,0
