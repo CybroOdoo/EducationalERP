@@ -31,7 +31,7 @@
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.educationalerp.com",
-    'depends': ['education_core'],
+    'depends': ['education_exam'],
     'data': [
         'views/education_promotion.xml',
         'views/academic_year_closing.xml',
