@@ -30,7 +30,7 @@ class EducationStudent(models.Model):
     _inherit = ['mail.thread']
     _inherits = {'res.partner': 'partner_id'}
     _description = 'Student record'
-    _rec_name = 'ad_no'
+    _rec_name = 'name'
 
     @api.multi
     def student_documents(self):
