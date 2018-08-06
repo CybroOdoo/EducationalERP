@@ -1,11 +1,16 @@
-Open HRMS Reminders Todo V11
-============================
+Educational Timetable V11
+=========================
 
-HR Reminder For OHRMS
+Timetable app for Educational ERP
+
+Contacts
+========
+* EducationalERP <http://educationalerp.com/>
+* Cybrosys Techno Solutions <https://www.cybrosys.com>
 
 Depends
 =======
-[hr] addon Odoo
+[education_core] addon Cybrosys
 
 Tech
 ====
@@ -14,13 +19,19 @@ Tech
 
 Installation
 ============
-- www.odoo.com/documentation/10.0/setup/install.html
+- www.odoo.com/documentation/11.0/setup/install.html
 - Install our custom addon
 
+License
+=======
+GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPLv3)
+(http://www.gnu.org/licenses/agpl.html)
 
 Bug Tracker
 ===========
-Bugs are tracked on GitHub Issues. In case of trouble, please check there if your issue has already been reported.
+Bugs are tracked on GitHub Issues. In case of trouble,
+please check there if your issue has already been reported.
+ Contact odoo@cybrosys.com
 
 Credits
 =======
@@ -29,7 +40,8 @@ Credits
 Author
 ------
 
-Developer: Treesa Maria Jude @ cybrosys, treesa@cybrosys.in
+Developers: Treesa Maria Jude <treesa@cybrosys.in>
+
 
 Maintainer
 ----------
