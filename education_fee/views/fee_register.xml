@@ -239,7 +239,7 @@
                             <field name="cash_rounding_id" groups="account.group_cash_rounding"/>
                         </group>
                         <group>
-                            <field name="fee_category_id"/>
+                            <field name="fee_category_id" required="1"/>
                             <field name="fee_structure" attrs="{'invisible':[('is_fee_structure','=',False)]}"/>
                         </group>
                         <group>

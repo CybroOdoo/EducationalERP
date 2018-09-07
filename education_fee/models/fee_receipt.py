@@ -101,8 +101,7 @@ class FeeReceipts(models.Model):
     class_division_id = fields.Many2one('education.class.division', string='Class')
     fee_structure = fields.Many2one('education.fee.structure', string='Fee Structure')
     is_fee = fields.Boolean(string='Is Fee', store=True, default=False)
-    fee_category_id = fields.Many2one('education.fee.category', string='Category', required=True,
-                                      default=lambda self: self.env['education.fee.category'].search([], limit=1))
+    fee_category_id = fields.Many2one('education.fee.category', string='Category')
     is_fee_structure = fields.Boolean('Have a fee structure?', related='fee_category_id.fee_structure')
     payed_line_ids = fields.One2many('payed.lines', 'partner_id', string='Payments Done',
                                    readonly=True, store=False)
@@ -113,10 +112,11 @@ class FeeReceipts(models.Model):
     def create(self, vals):
         """ Adding two field to invoice. is_fee use to display fee items only in fee tree view"""
         partner_id = self.env['res.partner'].browse(vals['partner_id'])
-        vals.update({
-            'is_fee': True,
-            'student_name': partner_id.name
-        })
+        if self.fee_category_id:
+            vals.update({
+                'is_fee': True,
+                'student_name': partner_id.name
+            })
         res = super(FeeReceipts, self).create(vals)
         return res
 
