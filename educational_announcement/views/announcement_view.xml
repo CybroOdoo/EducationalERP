@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_school_announcement_form" model="ir.ui.view">
+        <field name="name">school.announcement.form</field>
+        <field name="model">school.announcement</field>
+        <field name="arch" type="xml">
+            <form string="Announcements">
+                <header>
+                    <button string="Send" type="object" name="to_send" class="oe_highlight"
+                            attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="mail_send" string="Send e-mail" type="object" class="oe_highlight" attrs="{'invisible': [('state','not in',('to_send'))]}" groups="education_core.group_education_principal"/>
+                    <button string="undo" groups="education_core.group_education_principal" type="object"
+                            name="undo" class="oe_highlight" attrs="{'invisible': [('state','not in',('to_send'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_send,expired"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </group>
+                    <div>
+                        <group>
+                        <field name="is_announcement" />
+                        </group>
+                    </div>
+                    <div style="width:370px;">
+                        <group>
+                        <field name="to_assign"  attrs="{'invisible': [('is_announcement','not in', False)],'required': [('is_announcement','not in', True)]}"/>
+                        </group>
+                    </div>
+
+                        <div style="width:370px;">
+                            <group>
+                        <field name="expiry_date"  width="25%%"/>
+                            </group>
+                        </div>
+                    <group>
+                        <field name="announcement_reason"/>
+                    </group>
+                        <div>
+                            <group>
+                                <field name="attachment_id" widget="many2many_binary" class="oe_inline"/>
+                            </group>
+                        </div>
+                    <group>
+                        <group>
+                            <field name="requested_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="announcement" string="Letter">
+                            <field name="announcement"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+        <record id="view_school_announcement_tree" model="ir.ui.view">
+            <field name="name">school.announcement.tree</field>
+            <field name="model">school.announcement</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" colors="grey:state == 'rejected';green:state == 'approved';red:state == 'to_approve';">
+                    <field name="announcement_reason"/>
+                    <field name="requested_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_school_announcement" model="ir.actions.act_window">
+            <field name="name">Create Announcements</field>
+            <field name="res_model">school.announcement</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">{'readonly':[['state','=','to_send']]}</field>
+            <field name="help" type="html"><p class="oe_view_nocontent_create">
+                   Click to Create a new Announcement.
+                </p>
+            </field>
+        </record>
+        <menuitem id="school_announcement" name="Announcements"  sequence="15"/>
+        <menuitem id="school_announcement_sub_menu" name="Create announcements" groups="education_core.group_education_principal"
+                  action="action_school_announcement" parent="school_announcement"  sequence="1"/>
+
+       <record id="view_school_announcements_tree" model="ir.ui.view">
+            <field name="name">school.announcements.tree</field>
+            <field name="model">school.announcement</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="announcement_reason"/>
+                    <field name="requested_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+       </record>
+        <record id="action_announcements" model="ir.actions.act_window">
+            <field name="name">Announcements</field>
+            <field name="res_model">school.announcement</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[['state','=','to_send']]}</field>
+        </record>
+        <menuitem id="school_announcement_sub_menus" name="Announcements" action="action_announcements" parent="school_announcement"  sequence="2"/>
+  </data>
+</odoo>
+
