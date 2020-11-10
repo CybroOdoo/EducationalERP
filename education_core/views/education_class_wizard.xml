@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="application_student_class" model="ir.ui.view">
+        <field name="name">class.details.form</field>
+        <field name="model">class.details</field>
+        <field name="arch" type="xml">
+            <form string=">Class Details">
+                <group class="oe_title">
+                    <field name="student_class"/>
+                    <field name="class_id" options="{'no_create': True}"/>
+                    <field name="assigned_by"/>
+                </group>
+                <footer>
+                    <button name="action_assign_class" string="Assign" type="object" class="btn btn-sm btn-primary"/>
+                    <button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="application_create_student" model="ir.actions.act_window">
+        <field name="name">Class Details</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">class.details</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="application_student_class"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
