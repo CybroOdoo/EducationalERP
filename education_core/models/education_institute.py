@@ -23,7 +23,7 @@
 #
 ###############################################################################
 
-from odoo import fields, models
+from odoo import fields, models,api
 
 
 class EducationInstitute(models.Model):
@@ -73,3 +73,4 @@ class Religion(models.Model):
     _description = "Caste"
 
     name = fields.Char(string="Caste", required=True)
+

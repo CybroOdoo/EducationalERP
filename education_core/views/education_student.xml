@@ -87,7 +87,8 @@
                         <button name="student_documents" type="object" widget="statinfo"
                                 class="oe_stat_button" icon="fa-calendar" string="Documents"/>
                     </div>
-                    <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_128&quot;}"/>
+                    <field name="image_1920" widget="image" class="oe_avatar"
+                           options="{&quot;preview_image&quot;: &quot;image_128&quot;}"/>
                     <div class="oe_title">
                         <h3>
                             <field name="ad_no" attrs="{'invisible': [('ad_no', '=',False)]}"/>

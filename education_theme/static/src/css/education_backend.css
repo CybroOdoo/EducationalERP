@@ -627,3 +627,12 @@ background-color: rgba(95, 177, 141, 0.39)
     background-color: #5FB18D;
     border-color: #5FB18D;
 }
+div.o_boolean_toggle.custom-control.custom-checkbox > input.custom-control-input:checked + label.custom-control-label::before {
+    background-color: #5FB18D !important;
+}
+div.o_boolean_toggle.custom-control.custom-checkbox > label.custom-control-label::before {
+    background-color: #E25151 !important;
+}
+.o_DiscussSidebarItem_activeIndicator.o-item-active {
+    background-color: #5fb18d;
+}
