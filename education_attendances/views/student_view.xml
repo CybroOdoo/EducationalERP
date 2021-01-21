@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_attendance_students" model="ir.actions.act_window">
+            <field name="name">Attendance Report Student</field>
+            <field name="res_model">education.attendance.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('student_id', '=', active_id)]</field>
+            <field name="context">{'search_default_done_state': 1, 'search_default_today': 1}
+            </field>
+        </record>
+
+        <record id="view_class_wise_attendance" model="ir.actions.act_window">
+            <field name="name">Attendance Report Class</field>
+            <field name="res_model">education.attendance.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('division_id', '=', active_id)]</field>
+            <field name="context">{'search_default_today': 1}
+            </field>
+        </record>
+
+        <record id="student_smart_button_attendance_form" model="ir.ui.view">
+            <field name="name">student_smart_button_attendance_form.form</field>
+            <field name="model">education.student</field>
+            <field name="inherit_id" ref="education_core.view_education_student_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="education_attendances.view_attendance_students" type="action" class="oe_stat_button" icon="fa-calendar" string="Attendance"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="class_smart_button_attendance_form" model="ir.ui.view">
+            <field name="name">class_smart_button_attendance_form.form</field>
+            <field name="model">education.class.division</field>
+            <field name="inherit_id" ref="education_core.view_education_class_division_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="education_attendances.view_class_wise_attendance" type="action" class="oe_stat_button" icon="fa-calendar" string="Attendance"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

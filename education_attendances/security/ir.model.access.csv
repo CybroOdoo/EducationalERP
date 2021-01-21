@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_education_attendance,access.education.attendance,education_attendances.model_education_attendance,education_core.group_education_faculty,1,1,1,0
+access_education_attendance_line,access.education.attendance.line,education_attendances.model_education_attendance_line,education_core.group_education_faculty,1,1,1,0
+access_education_attendance,access.education.attendance,education_attendances.model_education_attendance,education_core.group_education_principal,1,1,1,1
+access_education_attendance_line,access.education.attendance.line,education_attendances.model_education_attendance_line,education_core.group_education_principal,1,1,1,1

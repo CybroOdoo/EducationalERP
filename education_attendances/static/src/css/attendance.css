@@ -1,0 +1,16 @@
+.table_header_box{
+    border: 1px solid #dcdcdc !important;
+    font-size: 10px;
+}
+.table_header_box .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #ffffff;
+}
+.table_header_box tfoot {
+    display: none;
+}
+.table_header_box .o_form_view .o_field_widget {
+    margin-bottom: 0px !important;
+}
+.table_header_box table.o_list_view.table.table-condensed.table-striped.o_list_view_ungrouped {
+    margin: 0px !important;
+}

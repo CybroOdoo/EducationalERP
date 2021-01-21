@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="education_time_table_schedule_form" model="ir.ui.view">
+            <field name="name">education.timetable.schedule.form</field>
+            <field name="model">education.timetable.schedule</field>
+            <field name="arch" type="xml">
+                <form string="Timetable Schedule">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="period_id"/>
+                                <label for="time_from" string="Period Time"/>
+                                <div>
+                                    <field name="time_from" widget="float_time" class="oe_inline"/> -
+                                    <field name="time_till" widget="float_time" class="oe_inline"/>
+                                </div>
+                                <field name="subject"/>
+                                <field name="faculty_id"/>
+
+                            </group>
+                            <group>
+                                <field name="timetable_id"/>
+                                <field name="class_division"/>
+                                <field name="week_day"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="education_time_table_schedule_tree" model="ir.ui.view">
+            <field name="name">education.timetable.schedule.tree</field>
+            <field name="model">education.timetable.schedule</field>
+            <field name="arch" type="xml">
+                <tree string="Timetable Schedule">
+                    <field name="period_id"/>
+                    <field name="time_from" optional="show"/>
+                    <field name="time_till" optional="show"/>
+                    <field name="subject"/>
+                     <field name="faculty_id"/>
+                    <field name="timetable_id" optional="show"/>
+                    <field name="week_day"/>
+                    <field name="class_division"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="education_time_table_schedule_search" model="ir.ui.view">
+            <field name="name">education.timetable.schedule.search</field>
+            <field name="model">education.timetable.schedule</field>
+            <field name="arch" type="xml">
+                <search string="Timetable Schedule">
+                    <filter string="Weekday" name="weekday" domain="[('week_day','=',context_today().weekday())]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Class" name="group_timetable_id" context="{'group_by':'timetable_id'}"/>
+                        <filter string="Class Division" name="group_class_division" context="{'group_by':'class_division'}"/>
+                        <filter string="Week" name="group_week_day" context="{'group_by':'week_day'}"/>
+                        <filter string="Faculty" name="group_faculty" context="{'group_by':'faculty_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_education_time_table_schedule" model="ir.actions.act_window">
+            <field name="name">Timetable Schedule</field>
+            <field name="res_model">education.timetable.schedule</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_weekday': 1,'search_default_group_timetable_id': 1, 'search_default_group_week_day': 1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    You have'nt created any Schedules yet.
+                </p>
+            </field>
+        </record>
+        <menuitem
+                id="education_time_table_schedule_main_menu"
+                name="Schedules"
+                parent="education_time_table_main_menu"
+                sequence="2"/>
+        <menuitem
+                id="education_time_table_schedule_sub_menu"
+                name="Timetable Schedule"
+                parent="education_time_table_schedule_main_menu"
+                action="action_education_time_table_schedule"/>
+    </data>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="action_student_id_card"
+            model="education.student"
+            string="Student ID Card"
+            report_type="qweb-pdf"
+            name="education_core.report_student_id_card"
+            file="education_core.report_student_id_card"
+        />
+
+        <report
+            id="action_faculty_id_card"
+            model="education.faculty"
+            string="Faculty ID Card"
+            report_type="qweb-pdf"
+            name="education_core.report_faculty_id_card"
+            file="education_core.report_faculty_id_card"
+        />
+
+        <record id="paperformat_student_application" model="report.paperformat">
+            <field name="name">Student Application A4</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">70</field>
+            <field name="margin_bottom">28</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">50</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="action_student_application_report"
+            model="education.application"
+            string="Student Application"
+            report_type="qweb-pdf"
+            paperformat="education_core.paperformat_student_application"
+            name="education_core.report_student_application"
+            file="education_core.report_student_application"
+        />
+
+    </data>
+</odoo>

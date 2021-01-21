@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="examination_valuation_form" model="ir.ui.view">
+            <field name="name">examination_valuation_form.form</field>
+            <field name="model">education.exam.valuation</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="valuation_completed" type="object"
+                                attrs="{'invisible': ['|', ('mark_sheet_created', '=', False),('state', '!=', 'draft')]}"
+                                class="oe_highlight" string="Completed"/>
+                        <button name="valuation_canceled" type="object"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}" string="Cancel"/>
+                        <button name="set_to_draft" type="object" attrs="{'invisible': [('state', '!=', 'completed')]}"
+                                string="Set to Draft"/>
+                        <field name="state" readonly="1" widget="statusbar" statusbar_visible="draft,completed"/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="exam_id"
+                                       attrs="{'readonly': ['|', ('mark_sheet_created', '=', True), ('state', '!=', 'draft')]}"/>
+                                <field name="subject_id" widget="selection"
+                                       attrs="{'readonly': ['|', ('mark_sheet_created', '=', True), ('state', '!=', 'draft')]}"/>
+                                <field name="teachers_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="mark" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="pass_mark" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="class_id"
+                                       attrs="{'readonly': ['|', ('mark_sheet_created', '=', True), ('state', '!=', 'draft')]}"/>
+                                <field name="division_id"
+                                       attrs="{'readonly': ['|', ('mark_sheet_created', '=', True), ('state', '!=', 'draft')]}"/>
+                                <field name="academic_year" invisible="1"/>
+                                <field name="mark_sheet_created" invisible="1"/>
+                            </group>
+                        </group>
+                        <div style="padding-bottom: 10px;">
+                            <button style="padding: 1px 5px;"
+                                    attrs="{'invisible': ['|', ('mark_sheet_created', '=', True), ('state', '=', 'cancel')]}"
+                                    string="Create Mark Sheet" name="create_mark_sheet" type="object"
+                                    class="oe_highlight"/>
+                        </div>
+                        <notebook attrs="{'invisible': [('mark_sheet_created', '=', False)]}">
+                            <page string="Mark Sheet">
+                                <field name="valuation_line" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree create="0" editable="bottom">
+                                        <field name="student_id" invisible="1"/>
+                                        <field name="student_name" readonly="1"/>
+                                        <field name="mark_scored"/>
+                                        <field name="pass_or_fail" widget="boolean_toggle"/>
+                                        <field name="valuation_id" invisible="1"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <field name="student_id"/>
+                                                <field name="mark_scored"/>
+                                                <field name="pass_or_fail" widget="boolean_toggle"/>
+                                                <field name="valuation_id" invisible="1"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="examination_valuation_tree" model="ir.ui.view">
+            <field name="name">examination_valuation_tree.tree</field>
+            <field name="model">education.exam.valuation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="exam_id"/>
+                    <field name="subject_id"/>
+                    <field name="class_id"/>
+                    <field name="division_id"/>
+                    <field name="teachers_id"/>
+                    <field name="state"/>
+                    <field name="academic_year" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="act_exam_valuation_view" model="ir.actions.act_window">
+            <field name="name">Exam Valuation</field>
+            <field name="res_model">education.exam.valuation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="examination_valuation_menu" parent="education_exam.examination_main_menu"
+                  action="act_exam_valuation_view" name="Exam Valuation" sequence="18"/>
+
+    </data>
+</odoo>
