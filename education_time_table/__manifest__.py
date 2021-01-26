@@ -4,8 +4,7 @@
 #
 #    Cybrosys Technologies Pvt. Ltd.
 #    Copyright (C) 2020-TODAY Cybrosys Technologies (<https://www.cybrosys.com>)
-#    Author: Treesa Maria Jude(treesa@cybrosys.in)
-#            Hajaj Roshan(hajaj@cybrosys.in)
+#    Author: Hajaj Roshan(hajaj@cybrosys.in)
 #
 #    This program is free software: you can modify
 #    it under the terms of the GNU Affero General Public License (AGPL) as

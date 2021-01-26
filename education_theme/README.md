@@ -32,9 +32,8 @@ Credits
 Author
 ------
 
-Developers: Avinash Nk <avinash@cybrosys.in>\
-            Sanjith Rashin <sanjith@cybrosys.in>\
-            Hajaj Roshan (hajaj@cybrosys.in)
+Developers: Sanjith Rashin <sanjith@cybrosys.in>\
+            Hajaj Roshan <hajaj@cybrosys.in>
 
 
 Maintainer

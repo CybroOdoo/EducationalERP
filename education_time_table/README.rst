@@ -40,9 +40,7 @@ Credits
 Author
 ------
 
-Developers: Treesa Maria Jude
-
-Hajaj Roshan <hajaj@cybrosys.in>
+Developers: Hajaj Roshan <hajaj@cybrosys.in>
 
 
 Maintainer
