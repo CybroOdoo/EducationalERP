@@ -33,8 +33,7 @@ Credits
 Author
 ------
 
-Developer: Avinash Nk
-           Hajaj Roshan <hajaj@cybrosys.in>
+Developer: Hajaj Roshan <hajaj@cybrosys.in>
 
 Maintainer
 ----------
