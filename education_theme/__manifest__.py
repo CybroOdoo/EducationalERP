@@ -35,10 +35,8 @@
     'data': [
         'views/education_theme.xml',
     ],
-    'demo': [],
     'images': [
-        'static/description/banner_back.png',
-        'static/description/banner_front.png'
+        'static/description/banner.png',
     ],
     'license': 'AGPL-3',
     'installable': True,

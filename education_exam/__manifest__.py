@@ -41,7 +41,7 @@
         'views/exam_results.xml',
         'views/student_view.xml',
     ],
-    'images': ['static/description/banner.jpg'],
+    'images': ['static/description/banner.png'],
     'license': 'AGPL-3',
     'demo': [],
     'installable': True,

@@ -31,16 +31,13 @@
     'website': "http://www.educationalerp.com",
     'depends': ['base', 'education_core'],
     'data': [
-
         'security/ir.model.access.csv',
         'views/education_time_table.xml',
         'views/timetable_schedule.xml',
         'views/period_configuration_view.xml',
         'views/class_timetable_view.xml',
-
     ],
-
-    'images': ['static/description/banner.jpg'],
+    'images': ['static/description/banner.png'],
     'license': 'AGPL-3',
     'installable': True,
     'auto_install': False,
