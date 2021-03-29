@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_school_announcement_form" model="ir.ui.view">
+            <field name="name">school.announcement.form</field>
+            <field name="model">school.announcement</field>
+            <field name="arch" type="xml">
+                <form string="Announcements">
+                    <header>
+                        <button string="Confirm" type="object" name="to_send" class="oe_highlight"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="mail_schedule" string="Schedule E-mail" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['|', ('state','not in',['to_send']), ('scheduled_date','=',False)]}"/>
+                        <button name="mail_send" string="Send Now" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state','not in',['to_send', 'pending'])]}"/>
+                        <button string="Reset to draft" groups="education_core.group_education_principal" type="object"
+                                name="undo" class="oe_highlight"
+                                attrs="{'invisible': [('state','not in',['to_send'])]}"/>
+                        <button string="Resend" type="object"
+                                name="mail_resend" class="oe_highlight"
+                                attrs="{'invisible': [('state','not in',['failed'])]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,to_send,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="announcement_subject" widget="text_emojis"/>
+                        </group>
+                        <div style="width:370px;">
+                            <group>
+                                <field name="to_assign"/>
+                            </group>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="requested_date" readonly="1"/>
+                                <field name="expiry_date"/>
+                                <field name="scheduled_date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="announcement" string="Mail Body">
+                                <field name="body_html" widget="html"/>
+                                <group>
+                                    <field name="attachment_ids" widget="many2many_binary" class="oe_inline"
+                                           nolabel="1"/>
+                                </group>
+                            </page>
+                            <page name="failure_reason" string="Failure Reason"
+                                  attrs="{'invisible':[('failure_reason', '=', False)]}">
+                                <field name="failure_reason"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_school_announcement_tree" model="ir.ui.view">
+            <field name="name">school.announcement.tree</field>
+            <field name="model">school.announcement</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="state == 'failed'"
+                      decoration-muted="state=='expired'"
+                      decoration-success="state=='done'"
+                      sample="1" decoration-info="state == 'draft'">
+                    <field name="announcement_subject"/>
+                    <field name="requested_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_school_announcement" model="ir.actions.act_window">
+            <field name="name">Announcements</field>
+            <field name="res_model">school.announcement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">{'readonly':[['state','=','to_send']]}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to Create a new Announcement.
+                </p>
+            </field>
+        </record>
+        <menuitem id="school_announcement" name="Announcements" sequence="15"/>
+        <menuitem id="school_announcement_sub_menu" name="Announcements"
+                  groups="education_core.group_education_principal"
+                  action="action_school_announcement" parent="school_announcement" sequence="1"/>
+        <menuitem id="school_announcement_configuration" name="Configuration"
+                  parent="school_announcement" sequence="2"/>
+    </data>
+</odoo>
+
