@@ -108,6 +108,7 @@ class EducationClassDivision(models.Model):
                                     string='Amenities')
     student_count = fields.Integer(string='Students Count',
                                    compute='_get_student_count')
+    active = fields.Boolean(string="Active", default=True)
 
     @api.constrains('actual_strength')
     def validate_strength(self):

@@ -74,6 +74,7 @@
                     <field name="student_name"/>
                     <field name="class_id"/>
                     <field name="division_id"/>
+                    <field name="overall_pass"/>
                     <field name="academic_year" invisible="1"/>
                 </tree>
             </field>

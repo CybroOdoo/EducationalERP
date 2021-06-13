@@ -4,5 +4,6 @@ access_results_subject_line,access.results.subject.line,education_exam.model_res
 access_education_exam_valuation,access.education.exam.valuation,education_exam.model_education_exam_valuation,education_core.group_education_faculty,1,1,1,0
 access_exam_valuation_line,access.exam.valuation.line,education_exam.model_exam_valuation_line,education_core.group_education_faculty,1,1,1,0
 access_education_exam,access.education.exam,education_exam.model_education_exam,education_core.group_education_faculty,1,1,1,0
+access_education_exam_principal,access.education.exam.principal,education_exam.model_education_exam,education_core.group_education_principal,1,1,1,1
 access_education_subject_line,access.education.subject.line,education_exam.model_education_subject_line,education_core.group_education_faculty,1,1,1,0
 access_education_exam_type,access.education.exam.type,education_exam.model_education_exam_type,education_core.group_education_faculty,1,1,1,0

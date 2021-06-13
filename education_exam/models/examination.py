@@ -52,7 +52,6 @@ class EducationExam(models.Model):
         default='draft')
     academic_year = fields.Many2one('education.academic.year',
                                     string='Academic Year',
-                                    related='division_id.academic_year_id',
                                     store=True)
     company_id = fields.Many2one(
         'res.company', string='Company',
