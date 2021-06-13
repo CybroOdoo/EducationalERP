@@ -3,8 +3,8 @@
 #    A part of Educational ERP Project <https://www.educationalerp.com>
 #
 #    Cybrosys Technologies Pvt. Ltd.
-#    Copyright (C) 2020-TODAY Cybrosys Technologies (<https://www.cybrosys.com>)
-#    Author: Hajaj Roshan (hajaj@cybrosys.in)
+#    Copyright (C) 2021-TODAY Cybrosys Technologies (<https://www.cybrosys.com>)
+#    Author: Hajaj Roshan(hajaj@cybrosys.in)
 #
 #    This program is free software: you can modify
 #    it under the terms of the GNU Affero General Public License (AGPL) as
@@ -20,26 +20,22 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 ###############################################################################
-
 {
-    'name': 'Educational Exam Management',
-    'version': '14.0.1.0.1',
-    'summary': """Sneak the Examination management in Educational ERP""",
-    'description': 'An easy way to handle the examinations in an educational '
-                   'system with better reports and exam valuation and exam result '
-                   'facilities',
+    'name': 'Educational Promotion',
+    'version': '14.0.1.0.0',
+    'summary': 'Promotion of students after each Academic year',
+    'description': 'Promotion of students after each Academic year',
     'category': 'Industries',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.educationalerp.com",
-    'depends': ['education_core'],
+    'depends': ['education_exam'],
     'data': [
         'security/ir.model.access.csv',
-        'views/examination.xml',
-        'views/exam_valuation.xml',
-        'views/exam_results.xml',
-        'views/student_view.xml',
+        'views/education_promotion.xml',
+        'views/academic_year_closing.xml',
+        'views/student_history.xml',
     ],
     'images': ['static/description/banner.png'],
     'license': 'AGPL-3',

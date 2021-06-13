@@ -29,7 +29,7 @@
                                 <field name="division_id"
                                        attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('school_class_division_wise', 'not in', ['division'])], 'required': [('school_class_division_wise', 'in', ['division'])]}"/>
                                 <field name="academic_year"
-                                       attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': ['|', ('school_class_division_wise', 'in', ['division']), ('exam_type', '=', False)], 'required': [('division_id', '=', False)]}"/>
+                                       attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('exam_type', '=', False)], 'required': [('division_id', '=', False)]}"/>
                                 <field name="school_class_division_wise" invisible="1"/>
                                 <field name="class_division_hider" invisible="1"/>
                             </group>
