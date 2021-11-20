@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="action_education_time_table_view_class_division_wise" model="ir.actions.act_window">
+            <field name="name">timetable.schedule.class.wise</field>
+            <field name="res_model">education.timetable.schedule</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('class_division', '=', active_id)]</field>
+            <field name="context">{'search_default_group_class_division':1,'search_default_group_week_day': 1}</field>
+    </record>
+
+
+    <record id="class_smart_button_time_table_form" model="ir.ui.view">
+            <field name="name">class.smart.button.timetable.form</field>
+            <field name="model">education.class.division</field>
+            <field name="inherit_id" ref="education_core.view_education_class_division_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="education_time_table.action_education_time_table_view_class_division_wise"
+                            type="action" class="oe_stat_button" icon="fa-calendar" string="Timetable"/>
+                </xpath>
+            </field>
+    </record>
+
+    <record id="action_education_time_table_view_faculty_wise" model="ir.actions.act_window">
+            <field name="name">Timetable Schedule</field>
+            <field name="res_model">education.timetable.schedule</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('faculty_id', '=', active_id)]</field>
+            <field name="context">{'search_default_weekday': 1,'search_default_group_faculty': 1}</field>
+    </record>
+
+    <record id="faculty_smart_button_time_table_form" model="ir.ui.view">
+            <field name="name">faculty.smart.button.timetable.form</field>
+            <field name="model">education.faculty</field>
+            <field name="inherit_id" ref="education_core.view_education_faculty_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='image']" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="education_time_table.action_education_time_table_view_faculty_wise"
+                                type="action" class="oe_stat_button" icon="fa-calendar" string="Timetable"/>
+                    </div>
+                </xpath>
+            </field>
+    </record>
+
+</odoo>

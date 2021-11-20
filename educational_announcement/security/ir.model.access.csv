@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_school_announcment_principal,school_announcement principal,model_school_announcement,education_core.group_education_principal,1,1,1,1
+access_school_announcment_hod,school_announcement hod,model_school_announcement,education_core.group_education_hod,1,1,0,0
+access_school_announcment_faculty,school_announcement staff,model_school_announcement,education_core.group_education_faculty,1,0,0,0

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="student_attendance_form" model="ir.ui.view">
+            <field name="name">student_attendance_form.form</field>
+            <field name="model">education.attendance</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="attendance_done" type="object"
+                                attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('attendance_created', '=', False)]}"
+                                class="oe_highlight" string="Done"/>
+                        <button name="set_to_draft" type="object" attrs="{'invisible': [('state', '=', 'draft')]}"
+                                string="Set to Draft" groups="education_core.group_education_principal"/>
+                        <field name="state" readonly="1" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="division_id" attrs="{'readonly': [('attendance_created', '=', True)]}"/>
+                                <field name="faculty_id" attrs="{'readonly': [('attendance_created', '=', True)]}"/>
+                                <field name="class_id" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="academic_year" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="date" attrs="{'readonly': [('attendance_created', '=', True)]}"/>
+                                <field name="attendance_created" invisible="1"/>
+                                <field name="all_marked_morning" invisible="1"/>
+                                <field name="all_marked_afternoon" invisible="1"/>
+                            </group>
+                        </group>
+                        <div style="padding-bottom: 10px;">
+                            <button style="padding: 1px 5px;background: #5fb18e !important;border-color: #63b892 !important;"
+                                    string="Create Attendance Table"
+                                    name="create_attendance_line" type="object"
+                                    attrs="{'invisible': [('attendance_created', '=', True)]}" class="oe_highlight"/>
+                        </div>
+                        <div style="height: 30px;" attrs="{'invisible': [('attendance_created', '=', False)]}">
+                            <div style="width: 78%;float:left;text-align:right;padding-right: 75px;"
+                                 attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('all_marked_morning', '=', True)]}">
+                                <button style="padding: 1px 5px;background-color: #5fb18d !important;border-color: #5fb18d !important;"
+                                        string="Mark All" name="mark_all_present_morning" type="object"
+                                        class="oe_highlight"/>
+                            </div>
+                            <div style="width: 78%;float:left;text-align:right;padding-right: 75px;"
+                                 attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('all_marked_morning', '=', False)]}">
+                                <button style="padding: 1px 5px;background-color: #e25151;border-color: #e0e0e0;color:#575751;"
+                                        string="Un Mark" name="un_mark_all_present_morning" type="object"
+                                        class="oe_highlight"/>
+                            </div>
+                            <div style="width:22%;float:left;padding-left:1%;"
+                                 attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('all_marked_afternoon', '=', True)]}">
+                                <button style="padding: 1px 5px;background-color: #5fb18d !important;border-color: #5fb18d !important;"
+                                        string="Mark All" name="mark_all_present_afternoon" type="object"
+                                        class="oe_highlight"/>
+                            </div>
+                            <div style="width:22%;float:left;padding-left:1%;"
+                                 attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('all_marked_afternoon', '=', False)]}">
+                                <button style="padding: 1px 5px;background-color: #e25151;border-color: #e0e0e0;color:#575751;"
+                                        string="Un Mark" name="un_mark_all_present_afternoon" type="object"
+                                        class="oe_highlight"/>
+                            </div>
+                        </div>
+                        <div class="table_header_box" attrs="{'invisible': [('attendance_created', '=', False)]}">
+                            <field name="attendance_line" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree editable="bottom" create="false" delete="false">
+                                    <field name="student_id" invisible="1"/>
+                                    <field name="student_name" readonly="1" style=" width: 500px; "/>
+                                    <field name="present_morning"/>
+                                    <field name="present_afternoon"/>
+                                    <field name="class_id" invisible="1"/>
+                                    <field name="division_id" invisible="1"/>
+                                    <field name="date" invisible="1"/>
+                                </tree>
+                            </field>
+                        </div>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="student_attendance_tree" model="ir.ui.view">
+            <field name="name">student_attendance_tree.tree</field>
+            <field name="model">education.attendance</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="division_id"/>
+                    <field name="class_id"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="student_attendance_search" model="ir.ui.view">
+            <field name="name">student_attendance_search.search</field>
+            <field name="model">education.attendance</field>
+            <field name="arch" type="xml">
+                <search string="Students Attendants">
+                    <filter string="Today" name="today" domain="[('date','=',time.strftime('%%Y-%%m-%%d'))]"/>
+                    <separator/>
+                    <filter string="Done" name="done_state" domain="[('state','!=','draft')]"/>
+                    <separator/>
+                    <filter string="Current Academic Year" name='current_academic_year'
+                            domain="[('academic_year.ay_start_date', '&lt;=', context_today().strftime('%Y-%m-%d')),
+                            ('academic_year.ay_end_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Class" name="group_class_id" context="{'group_by':'class_id'}"/>
+                        <filter string="Division" name="group_division_id" context="{'group_by':'division_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="act_attendance_view" model="ir.actions.act_window">
+            <field name="name">Attendance</field>
+            <field name="res_model">education.attendance</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="context">{'search_default_today': 1, 'search_default_group_class_id': 1}</field>
+        </record>
+
+        <record id="student_attendance_line_form" model="ir.ui.view">
+            <field name="name">student_attendance_line_form.form</field>
+            <field name="model">education.attendance.line</field>
+            <field name="arch" type="xml">
+                <form create="0" delete="0" edit="0">
+                    <sheet>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <group>
+                            <group string="Student Details">
+                                <field name="student_id" invisible="1"/>
+                                <field name="student_name"/>
+                                <field name="class_id"/>
+                                <field name="division_id"/>
+                            </group>
+                            <group string="Leave Status (✔️️ = Present)">
+                                <field name="present_morning" readonly="1"/>
+                                <field name="present_afternoon" readonly="1"/>
+                                <field name="date"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="student_attendance_line_tree" model="ir.ui.view">
+            <field name="name">student_attendance_line_tree.tree</field>
+            <field name="model">education.attendance.line</field>
+            <field name="arch" type="xml">
+                <tree create="0" delete="0">
+                    <field name="student_id" invisible="1"/>
+                    <field name="student_name"/>
+                    <field name="class_id"/>
+                    <field name="division_id"/>
+                    <field name="date"/>
+                    <field name="half_day_absent" string="Half Day(#Leaves)" sum="Total"/>
+                    <field name="full_day_absent" string="Full Day(#Leaves)" sum="Total"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="student_attendance_line_search" model="ir.ui.view">
+            <field name="name">student_attendance_line_search.search</field>
+            <field name="model">education.attendance.line</field>
+            <field name="arch" type="xml">
+                <search string="Students Attendants">
+                    <filter string="Current Academic Year" name='current_academic_year'
+                            domain="[('academic_year.ay_start_date', '&lt;=', context_today().strftime('%Y-%m-%d')),
+                            ('academic_year.ay_end_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <filter string="Today" name="today" domain="[('date','=',time.strftime('%%Y-%%m-%%d'))]"/>
+                    <separator/>
+                    <filter string="Done" name="done_state" domain="[('state','!=','draft')]"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Class" name="group_class_id" context="{'group_by':'class_id'}"/>
+                        <filter string="Division" name="group_division_id" context="{'group_by':'division_id'}"/>
+                        <filter string="Day" name="group_date" context="{'group_by':'date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="act_attendance_report_view" model="ir.actions.act_window">
+            <field name="name">Attendance Report</field>
+            <field name="res_model">education.attendance.line</field>
+            <field name="view_mode">pivot,tree,form</field>
+            <field name="target">current</field>
+            <field name="context">{'search_default_current_academic_year': 1, 'search_default_done_state': 1,
+                'search_default_group_class_id': 1, 'search_default_group_division_id':1, 'search_default_group_date':1}
+            </field>
+        </record>
+
+        <menuitem id="student_attendance_root_menu" name="Attendance"
+                  sequence="12"/>
+
+        <menuitem id="student_attendance_main_menu" parent="education_attendances.student_attendance_root_menu"
+                  name="Attendance"
+                  sequence="3"/>
+
+        <menuitem id="student_attendance_sub_menu" parent="education_attendances.student_attendance_main_menu"
+                  action="act_attendance_view" name="Attendance" sequence="10"/>
+
+        <menuitem id="student_attendance_report_main" parent="education_attendances.student_attendance_main_menu"
+                  name="Reports" sequence="11"/>
+
+        <menuitem id="student_attendance_report" parent="education_attendances.student_attendance_report_main"
+                  action="act_attendance_report_view" name="Report" sequence="0"/>
+
+    </data>
+</odoo>
