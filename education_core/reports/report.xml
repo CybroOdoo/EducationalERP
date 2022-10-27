@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="action_student_id_card" model="ir.actions.report">
+            <field name="name">Student ID Card</field>
+            <field name="model">education.student</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">education_core.report_student_id_card</field>
+            <field name="report_file">education_core.report_student_id_card</field>
+            <field name="print_report_name">'Student Card - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_education_student"/>
+        </record>
+
+        <record id="action_faculty_id_card" model="ir.actions.report">
+            <field name="name">Faculty ID Card</field>
+            <field name="model">education.faculty</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">education_core.report_faculty_id_card</field>
+            <field name="report_file">education_core.report_faculty_id_card</field>
+            <field name="print_report_name">'Faculty Card - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_education_faculty"/>
+        </record>
+
+        <record id="paperformat_student_application" model="report.paperformat">
+            <field name="name">Student Application A4</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">70</field>
+            <field name="margin_bottom">28</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">50</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_student_application_report" model="ir.actions.report">
+            <field name="name">Student Application</field>
+            <field name="model">education.application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="paperformat_id" ref="education_core.paperformat_student_application"/>
+            <field name="report_name">education_core.report_student_application</field>
+            <field name="report_file">education_core.report_student_application</field>
+            <field name="print_report_name">'Student Application - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_education_application"/>
+        </record>
+    </data>
+</odoo>

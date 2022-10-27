@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_education_application_tree" model="ir.ui.view">
+        <field name="name">education.application.tree</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <tree string="Student Application">
+                <field name="application_no"/>
+                <field name="name"/>
+                <field name="last_name"/>
+                <field name="gender"/>
+                <field name="date_of_birth"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="blood_group"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_application_form" model="ir.ui.view">
+        <field name="name">education.application.form</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <form string="Student Application">
+                <header>
+                    <button name="send_to_verify" type="object" class="oe_highlight"
+                            string="Send for Verification" groups="base.group_user"
+                            help="Click to send the application for verification purpose"
+                            states="draft"/>
+                    <button name="application_verify" type="object" class="oe_highlight"
+                            string="Verify Application" groups="base.group_user"
+                            help="Click to verify the application and documents"
+                            states="verification"/>
+                    <button name="create_student" string="Create Student"
+                            type="object" class="oe_highlight"
+                            help="Click to create Student"
+                            states="approve"/>
+                    <button name="%(education_core.application_reject_action)d" string="Reject"
+                            type="action"
+                            context="{'default_application_id': active_id}"
+                            states="approve"/>
+                    <button name="re_request" string="Re Request" type="object" states="reject"
+                            class="btn-secondary"
+                            help="Apply for admission again"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,verify,approve,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="document_view" type="object" icon="fa-list-ol">
+                            <field string="Documents" name="document_count" widget="statinfo"/>
+                        </button>
+
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <field name="image" widget="image" class="oe_left oe_avatar"/>
+                    <div class="oe_title">
+                        <h3>
+                            <field name="application_no"/>
+                        </h3>
+                        <h1>
+                            <table>
+                                <tr>
+                                    <td style="padding-right:10px;">
+                                        <field name="name" placeholder="First Name" required="1"
+                                               attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field name="middle_name" placeholder="Middle Name"
+                                               attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field name="last_name" placeholder="Last Name" required="1"
+                                               attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h1>
+                    </div>
+                    <separator/>
+                    <group string="Admission Details">
+                        <group>
+                            <field name="academic_year_id" required="1" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="admission_date" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="admission_class" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="sec_lang" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="medium" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="prev_school" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                    </group>
+                    <separator string="Personal Details"/>
+                    <group>
+                        <group>
+                            <field name="date_of_birth" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="blood_group" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="mother_tongue" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="father_name" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="guardian_name" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="gender" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="nationality" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="religion_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="caste_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="mother_name" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <separator string="Contact Address"/>
+                        <group>
+                            <div class="o_address_format">
+                                <field name="street" required="1" placeholder="Street..." class="o_address_street"
+                                       attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"
+                                       attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="city" placeholder="City" class="o_address_city"
+                                       attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                       options='{"no_open": True}' attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"
+                                       attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options='{"no_open": True, "no_create": True}'
+                                       attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            </div>
+                        </group>
+                        <label for="is_same_address" class="oe_inline"/>
+                        <field name="is_same_address" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        <div name="permanent_address"
+                             attrs="{'readonly': [('state', '=', 'done')],'invisible': [('is_same_address','=', True)]}">
+                            <separator string="Permanent Address"/>
+                            <group>
+                                <div class="o_address_format">
+                                    <field name="per_street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="per_street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="per_city" placeholder="City" class="o_address_city"/>
+                                    <field name="per_state_id" class="o_address_state" placeholder="State"
+                                           options='{"no_open": True}'/>
+                                    <field name="per_zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="per_country_id" placeholder="Country" class="o_address_country"
+                                           options='{"no_open": True, "no_create": True}'/>
+                                </div>
+                            </group>
+                        </div>
+                    </group>
+                    <separator string="Contact Details"/>
+                    <group name="contact_info">
+                        <group>
+                            <field name="email" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="phone" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="mobile" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                    </group>
+                    <group string="Reject Reason" attrs="{'invisible': [('reject_reason', '=',False)]}">
+                        <group>
+                            <field name="reject_reason" attrs="{'invisible': [('reject_reason', '=',False)]}"/>
+                        </group>
+                    </group>
+                    <group name="amenity_info">
+                        <!--Hostel and Transportation data-->
+                    </group>
+                    <separator string="Description"/>
+                    <field name="description"/>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_education_application_graph" model="ir.ui.view">
+        <field name="name">education.application.graph</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <graph string="Application">
+                <field name="admission_class"/>
+                <field name="academic_year_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_education_application_pivot" model="ir.ui.view">
+        <field name="name">education.application.pivot</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <pivot string="Application">
+                <field name="admission_class" type="row"/>
+                <field name="admission_date" interval="month" type="col"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="application_search" model="ir.ui.view">
+        <field name="name">Student Application</field>
+        <field name="model">education.application</field>
+        <field name="arch" type="xml">
+            <search string="Search Application">
+                <field name="admission_class"/>
+                <field name="medium"/>
+                <field name="sec_lang"/>
+                <field name="gender"/>
+                <field name="religion_id"/>
+                <field name="caste_id"/>
+                <field name="mother_tongue"/>
+                <filter string="New Application" name="new_application" domain="[('state','!=','done')]"/>
+                <filter string="Draft" name="draft_filter" domain="[('state','=','draft')]"/>
+                <filter string="Done" name="active" domain="[('state','=','done')]"/>
+                <filter string="Rejected" name="rejected" domain="[('state','=','reject')]"/>
+                <group expand='0' string='Group by...'>
+                    <filter string='Admission To' name="admission_class"
+                            domain="[]" context="{'group_by': 'admission_class'}"/>
+                    <filter string='Academic Year' name="academic_year"
+                            domain="[]" context="{'group_by': 'academic_year_id'}"/>
+                    <filter string='Gender' name="gender"
+                            domain="[]" context="{'group_by': 'gender'}"/>
+                    <filter string='Medium' name="medium"
+                            domain="[]" context="{'group_by': 'medium'}"/>
+                    <filter string='Religion' name="religion"
+                            domain="[]" context="{'group_by': 'religion_id'}"/>
+                    <filter string='Caste' name="caste"
+                            domain="[]" context="{'group_by' : 'caste_id'}"/>
+                    <filter string='Mother Tongue' name="mother_tongue"
+                            domain="[]" context="{'group_by': 'mother_tongue'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_student_application" model="ir.actions.act_window">
+        <field name="name">Student Application</field>
+        <field name="res_model">education.application</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="search_view_id" ref="application_search"/>
+        <field name="context">{'search_default_new_application': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first student application here.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_education_admission" name="Admission" parent="menu_education_root" sequence="5"/>
+    <menuitem id="menu_education_application" name="Application"
+              parent="menu_education_admission" action="action_student_application"/>
+</odoo>

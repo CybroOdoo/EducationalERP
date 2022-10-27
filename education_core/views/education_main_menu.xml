@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_education_root" name="Education" sequence="2"/>
+    <menuitem id="menu_education_main_menu" name="Configuration" parent="menu_education_root"/>
+    <menuitem id="menu_education_class_conf" name="Class" parent="menu_education_main_menu" sequence="0"/>
+    <menuitem id="menu_education_application_conf" name="Application" parent="menu_education_main_menu" sequence="1"/>
+
+</odoo>

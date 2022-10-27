@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_education_class_kanban">
+        <field name="name">education.class.division.kanban</field>
+        <field name="model">education.class.division</field>
+        <field name="arch" type="xml">
+            <kanban class="education_class_division_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="actual_strength"/>
+                <field name="academic_year_id"/>
+                <field name="faculty_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_res_partner_kanban">
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings" style="text-align:center !important;">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                <ul style="text-align:center !important;">
+                                    <li t-if="record.actual_strength.raw_value">
+                                        Strength : <field name="actual_strength"/>
+                                    </li>
+                                    <li t-if="record.academic_year_id.raw_value">
+                                        Academic Year : <field name="academic_year_id"/>
+                                    </li>
+                                    <li t-if="record.faculty_id.raw_value">
+                                        Faculty : <field name="faculty_id"/>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="view_education_class_division_tree" model="ir.ui.view">
+        <field name="name">education.class.division.tree</field>
+        <field name="model">education.class.division</field>
+        <field name="arch" type="xml">
+            <tree string="Class Division">
+                <field name="name"/>
+                <field name="academic_year_id"/>
+                <field name="actual_strength"/>
+                <field name="faculty_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_education_class_division_form" model="ir.ui.view">
+        <field name="name">education.division.form</field>
+        <field name="model">education.class.division</field>
+        <field name="arch" type="xml">
+            <form string="Class Division">
+                <sheet string="Class">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="view_students" type="object" widget="statinfo"
+                                class="oe_stat_button" icon="fa-user" attrs="{'invisible': [('student_count', '=', 0)]}">
+                            <field name="student_count" widget="statinfo" string="Students"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="actual_strength"/>
+                        </group>
+                        <group>
+                            <field name="academic_year_id"/>
+                            <field name="faculty_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="class_id"/>
+                        </group>
+                        <group>
+                            <field name="division_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Students">
+                            <field name="student_ids" nolabel="1">
+                                <tree string="Students" editable="bottom" create="false">
+                                    <field name="name"/>
+                                    <field name="class_id"/>
+                                    <field name="gender"/>
+                                    <field name="date_of_birth"/>
+                                    <field name="blood_group"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Amenities">
+                            <field name="amenities_ids" nolabel="1">
+                                <tree string="Amenities" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_education_class_division_tree" model="ir.actions.act_window">
+        <field name="name">Class Division</field>
+        <field name="res_model">education.class.division</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first class division here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="action_education_class_division_tree" parent="menu_education_admission"
+              id="menu_action_education_class_division" sequence="20"/>
+
+</odoo>
