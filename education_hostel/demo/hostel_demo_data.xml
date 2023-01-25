@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="education_hostel_data" model="education.hostel">
+            <field name="hostel_name">MEN'S HOSTEL</field>
+            <field name="hostel_code">MH</field>
+            <field name="phone">04943015006</field>
+             <field name="mobile">8606827707</field>
+            <field name="hostel_warden" ref="education_core.education_faculty_data"/>
+            <field name="hostel_floors">1</field>
+            <field name="room_rent">1000</field>
+            <field name="mess_fee">1000</field>
+            <field name="total">2000</field>
+        </record>
+
+        <record id="education_floor_data" model="education.floor">
+            <field name="floor_no">FLOOR 1</field>
+            <field name="hostel" ref="education_hostel_data"/>
+            <field name="responsible" ref="education_core.education_faculty_data"/>
+        </record>
+
+        <record id="education_room_data" model="education.room">
+            <field name="hostel" ref="education_hostel_data"/>
+            <field name="room_name">ROOM 1</field>
+            <field name="room_code">ROO1</field>
+            <field name="floor" ref="education_floor_data"/>
+            <field name="room_capacity">2</field>
+        </record>
+
+        <record id="education_hostel_room_amenity" model="room.amenity">
+            <field name="amenity_rel" ref="education_room_data"/>
+            <field name="amenity" ref="education_core.education_amenities_data1"/>
+            <field name="qty">1</field>
+        </record>
+
+        <record id="education_core.student_application_data1" model="education.application">
+            <field name="need_hostel">1</field>
+        </record>
+
+        <record id="hostel_food_item1" model="food.item">
+            <field name="name">Meals</field>
+        </record>
+
+        <record id="hostel_food_item2" model="food.item">
+            <field name="name">Chapati</field>
+        </record>
+
+        <record id="hostel_food_item3" model="food.item">
+            <field name="name">Masala Peanuts</field>
+        </record>
+
+        <record id="hostel_food_item4" model="food.item">
+            <field name="name">Idli</field>
+        </record>
+
+        <record id="hostel_mess1" model="education.mess">
+            <field name="mess_name">Mess 1</field>
+            <field name="mess_code">HM1</field>
+            <field name="hostel" ref="education_hostel_data"/>
+        </record>
+
+        <record id="hostel_mess_food" model="mess.food">
+            <field name="week_list">MO</field>
+            <field name="break_fast" ref="hostel_food_item4"/>
+            <field name="lunch" ref="hostel_food_item1"/>
+            <field name="supper" ref="hostel_food_item2"/>
+            <field name="snack" ref="hostel_food_item3"/>
+            <field name="mess_rel" ref="hostel_mess1"/>
+        </record>
+
+        <record id="education_hostel_member1" model="education.host_std">
+            <field name="member_type">is_student</field>
+            <field name="member_std_name" ref="education_core.student_data1"/>
+            <field name="image" type="base64" file="education_core/static/src/img/student2.jpeg"/>
+            <field name="father_name">Joseph Alex</field>
+            <field name="guardian_name">Joseph Alex</field>
+            <field name="gender">male</field>
+            <field name="date_of_birth">2000-07-11</field>
+            <field name="mobile">7736773676</field>
+            <field name="email">steve@cybrosys.in</field>
+            <field name="phone">+2547896</field>
+        </record>
+
+        <record id="education_hostel_member_allocate" model="education.room_member">
+            <field name="member_type">is_student</field>
+            <field name="hostel_room_rel" ref="education_hostel_data"/>
+            <field name="room_member_rel" ref="education_room_data"/>
+            <field name="floor" ref="education_floor_data"/>
+            <field name="student_id" ref="education_core.student_data1"/>
+            <field name="room_member" ref="education_hostel_member1"/>
+            <field name="allocated_date">2010-07-11</field>
+        </record>
+
+        <record id="education_hostel_member_leave" model="education.hostel_leave">
+            <field name="name" ref="education_hostel_member1"/>
+            <field name="hostel" ref="education_hostel_data"/>
+            <field name="leave_from">2010-08-09</field>
+            <field name="leave_to">2010-08-12</field>
+            <field name="reason">Going to home as I am sick</field>
+        </record>
+
+    </data>
+</odoo>
