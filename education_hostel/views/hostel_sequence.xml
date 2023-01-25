@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+
+        <record id="sequence_hostel_leave" model="ir.sequence">
+                <field name="name">Leave</field>
+                <field name="code">hostel.leave</field>
+                <field name="prefix">LR/</field>
+                <field name="padding">5</field>
+                <field name="number_next">1</field>
+                <field name="number_increment">1</field>
+        </record>
+
+        <record id="sequence_edu_member" model="ir.sequence">
+            <field name="name">Member</field>
+            <field name="code">education.host_std</field>
+            <field name="prefix">MR/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+    </data>
+</odoo>
