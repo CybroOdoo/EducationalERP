@@ -102,7 +102,7 @@ class EducationDocuments(models.Model):
     application_ref = fields.Many2one('education.application', invisible=1,
                                       copy=False)
     doc_attachment_id = fields.Many2many(
-        'ir.attachment', 'doc_attach_rel',
+        'ir.attachment', 'document_attach_rel',
         'doc_id', 'attach_id3',
         string="Attachment",
         help='You can attach the copy of your document',
