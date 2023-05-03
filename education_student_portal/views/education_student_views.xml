@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file used for adding two fields on education student model for creating users -->
+<odoo>
+    <record id="education_student_view_form" model="ir.ui.view">
+        <field name="name">
+            education.student.view.form.inherit.education.student.portal
+        </field>
+        <field name="model">education.student</field>
+        <field name="inherit_id"
+               ref="education_core.view_education_student_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='religion_id']" position="after">
+                <field name="partner_id"/>
+                <field name="student_user_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

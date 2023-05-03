@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_education_student_portal,access.education.student.portal,education_core.model_education_student,base.group_portal,1,1,0,0
+access_education_online_admission,access.education.online.admission,education_core.model_education_documents,base.group_public,1,1,1,0
+access_education_online_admission_portal,access.education.online.admission.portal,education_core.model_education_documents,base.group_portal,1,1,1,0
+access_ir_sequence_public,access.ir.sequence.public,base.model_ir_sequence,base.group_public,1,1,0,0
+access_ir_sequence_date_range_public,access.ir.sequence.date.range.public,base.model_ir_sequence_date_range,base.group_public,1,1,0,0
+access_ir_sequence_public,access.ir.sequence.public,base.model_ir_sequence,base.group_portal,1,1,0,0
+access_ir_sequence_date_range_public,access.ir.sequence.date.range.public,base.model_ir_sequence_date_range,base.group_portal,1,1,0,0

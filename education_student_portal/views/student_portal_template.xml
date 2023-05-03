@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- New portal design for student users. -->
+    <template id="student_portal">
+        <t t-call="portal.portal_layout">
+            <div class="card">
+                <div class="oe_inline row">
+                    <br/>
+                    <t t-if="values['student'].image_1920">
+                        <div style="display: block;margin-right: auto;"
+                             class="col-md-4">
+                            <img class="rounded-circle mr4 float-start o_portal_contact_img"
+                                 t-att-src="image_data_uri(values['student'].image_1920)"
+                                 style="width:250px;height:250px;"/>
+                        </div>
+                    </t>
+                    <div style="padding-top:25px;" class="col-md-8">
+                        <h3 style="margin-top: 76px;">
+                            <b t-esc="values['full_name']"/>
+                        </h3>
+                    </div>
+                </div>
+                <hr/>
+                <div style="margin-left:50px">
+                    <div>
+                        <h6 style="color:#2980B9">
+                            <u>BASIC DETAILS</u>
+                        </h6>
+                        <br/>
+                        <div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Gender</label>
+                                    <span style="margin-left:100px"
+                                          t-esc="values['gender']"/>
+                                </div>
+                                <div class="col-sm">
+                                    <label>Religion</label>
+                                    <span style="margin-left:80px"
+                                          t-esc="values['student'].religion_id.name"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Date of Birth</label>
+                                    <span style="margin-left:60px"
+                                          t-esc="values['student'].date_of_birth"/>
+                                </div>
+                                <div class="col-sm">
+                                    <label>Caste</label>
+                                    <span style="margin-left:100px"
+                                          t-esc="values['student'].caste_id.name"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Blood Group</label>
+                                    <span style="margin-left:60px"
+                                          t-esc="values['student'].blood_group"/>
+                                </div>
+                                <div class="col-sm">
+                                    <label>Nationality</label>
+                                    <span style="margin-left:60px"
+                                          t-esc="values['student'].nationality.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div style="margin-left:50px">
+                    <div>
+                        <h6 style="color:#2980B9">
+                            <u>CLASS DETAILS</u>
+                        </h6>
+                        <br/>
+                        <div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Class</label>
+                                    <span style="margin-left:100px"
+                                          t-esc="values['student'].class_id.name"/>
+                                </div>
+                                <div class="col-sm">
+                                    <label>Second Language</label>
+                                    <span style="margin-left:60px"
+                                          t-esc="values['student'].sec_lang.name"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Medium</label>
+                                    <span style="margin-left:80px"
+                                          t-esc="values['student'].medium.name"/>
+                                </div>
+                                <div class="col-sm">
+                                    <label>Academic Year</label>
+                                    <span style="margin-left:80px"
+                                          t-esc="values['student'].class_id.academic_year_id.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div style="margin-left:50px">
+                    <div>
+                        <h6 style="color:#2980B9">
+                            <u>CONTACT DETAILS</u>
+                        </h6>
+                        <br/>
+                        <div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Email</label>
+                                    <span style="margin-left:100px"
+                                          t-esc="values['student'].email"/>
+                                </div>
+                                <div class="col-sm">
+                                    <label>Phone</label>
+                                    <span style="margin-left:80px"
+                                          t-esc="values['student'].phone"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Address</label>
+                                    <span style="margin-left:80px"
+                                          t-esc="values['student'].per_city"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div style="margin-left:50px">
+                    <div>
+                        <h6 style="color:#2980B9">
+                            <u>GUARDIAN DETAILS</u>
+                        </h6>
+                        <br/>
+                        <div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Father</label>
+                                    <span style="margin-left:100px"
+                                          t-esc="values['student'].father_name"/>
+                                </div>
+                                <div class="col-sm">
+                                    <label>Mother</label>
+                                    <span style="margin-left:80px"
+                                          t-esc="values['student'].mother_name"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <label>Guardian</label>
+                                    <span style="margin-left:80px"
+                                          t-esc="values['student'].guardian_name.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+            </div>
+            <div id="student_portal_communication" class="mt-4">
+                <h2>Contact Us</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="values['student']"/>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
