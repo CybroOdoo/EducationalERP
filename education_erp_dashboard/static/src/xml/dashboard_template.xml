@@ -1,0 +1,6 @@
+<!-- Dashboard template -->
+<t t-name="EducationalDashboard">
+   <div class="oh_dashboards">
+       <div class="container-fluid my-5 o_hr_dashboard"/>
+   </div>
+</t>

@@ -1,0 +1,6 @@
+<odoo>
+    <menuitem id="education_erp_dashboard_menu_root" name="Educational Dashboard" web_icon="education_erp_dashboard,static/description/icon.png"/>
+    <menuitem id="erp_dashboard_details_menu" name="Dashboard"
+              action="education_erp_dashboard_action_id"
+              parent="education_erp_dashboard_menu_root"/>
+</odoo>
