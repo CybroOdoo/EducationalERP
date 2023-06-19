@@ -22,7 +22,7 @@
 ###############################################################################
 {
     'name': 'Educational ERP Theme',
-    'version': '15.0.1.0.0',
+    'version': '16.0.1.0.0',
     'summary': """Insight to Educational ERP""",
     'description': """In trio combination of red, green and yellow Educational ERP,
     opens the new gate way for management""",
@@ -46,6 +46,7 @@
     },
     'images': [
         'static/description/banner.png',
+        'static/description/theme_screenshot.png',
     ],
     'license': 'AGPL-3',
     'installable': True,

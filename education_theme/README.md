@@ -34,7 +34,8 @@ Author
 
 Developers: Sanjith Rashin <sanjith@cybrosys.in>\
             Hajaj Roshan <hajaj@cybrosys.in>\
-         V15 : Sneha Rose <odoo@cybrosys.com>
+            V15 : Sneha Rose <odoo@cybrosys.com>
+            V16: Viswanth k <odoo@cybrosys.com>
 
 
 Maintainer

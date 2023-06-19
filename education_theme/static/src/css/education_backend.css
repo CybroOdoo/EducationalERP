@@ -8,7 +8,7 @@
     background: #5fb18d;
 }
 .oe_kanban_action_a{
-    color: #fff !important;
+    color: #000000 !important;
 }
 .o_tooltip {
     background: #f3aa33 !important;
@@ -96,17 +96,14 @@
 .o_kanban_view.o_kanban_dashboard.o_salesteam_kanban .o_sales_dashboard > div > table > tbody > tr > td.o_main {
     background-color: #5fb18d !important;
 }
-.o_kanban_view.o_kanban_dashboard.o_kanban_ungrouped .o_kanban_card_header .o_kanban_card_header_title .o_primary, .o_kanban_view.o_kanban_dashboard.o_kanban_grouped .o_kanban_card_header .o_kanban_card_header_title .o_primary {
+.o_kanban_view.o_kanban_dashboard.o_kanban_ungrouped .o_kanban_card_header .o_kanban_card_header_title , .o_kanban_view.o_kanban_dashboard.o_kanban_grouped .o_kanban_card_header .o_kanban_card_header_title .o_primary {
     color: #5fb18d !important;
     font-weight: 700;
 }
 .o_tooltip.right::before, .o_tooltip.left::before   {
     border-right-color: #f3aa33;
 }
-.o_kanban_view.o_kanban_dashboard.o_kanban_ungrouped a, .o_kanban_view.o_kanban_dashboard.o_kanban_grouped a {
-    color: #5fb18d !important;
-    font-weight: bold;
-}
+
 .o_progressbar .o_progress .o_progressbar_complete {
     background-color: #5fb18d !important;
     height: 100%;
@@ -163,9 +160,7 @@
 .o_web_client > .o_main .o_sub_menu .o_sub_menu_logo {
     background: #fff !important;
 }
-.o_kanban_view.o_kanban_dashboard.o_salesteam_kanban .o_sales_dashboard > div > table > tbody > tr > td.o_warning:hover {
-    background-color: #3c926c !important;
-}
+
 .o_kanban_view.o_kanban_ungrouped {
     background: #fff !important;
 }
