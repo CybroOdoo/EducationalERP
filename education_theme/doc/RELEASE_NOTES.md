@@ -1,6 +1,11 @@
-## Module education_theme
+## Module <education_theme>
 
-#### 11.09.2022
+#### 01.09.2022
 #### Version 16.0.1.0.0
 ##### ADD
-- Initial commit for Educational ERP Project
+- Initial commit for Educational ERP Theme
+
+#### 17.05.2023
+#### Version 16.0.2.0.0
+##### UPDT
+- Style update for Educational ERP Theme
