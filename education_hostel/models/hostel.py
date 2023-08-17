@@ -63,7 +63,7 @@ class EducationHostel(models.Model):
     def create(self, vals):
         """overriding  the create method to show the validation error """
         res = super(EducationHostel, self).create(vals)
-        if vals['hostel_floors']:
+        if not vals['hostel_floors']:
             raise ValidationError(_('Enter the Total Floors'))
         if not vals['phone']:
             raise ValidationError(_('Enter the Phone Number'))

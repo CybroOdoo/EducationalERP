@@ -12,6 +12,7 @@
             <field name="room_rent">1000</field>
             <field name="mess_fee">1000</field>
             <field name="total">2000</field>
+            <field name="hostel_floors">3</field>
         </record>
 
         <record id="education_floor_data" model="education.floor">

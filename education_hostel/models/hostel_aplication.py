@@ -24,14 +24,14 @@ class StudentApplicationInherit(models.Model):
                         'street2': std.per_street2,
                         'city': std.per_city,
                         'state_id': std.per_state_id,
-                        'country': std.per_country_id,
+                        'country_id': std.per_country_id,
                         'zip': std.per_zip,
                         'date_of_birth': std.date_of_birth,
                         'blood_group': std.blood_group,
                         'email': std.email,
                         'mobile': std.mobile,
                         'phone': std.phone,
-                        'image': std.image,
+                        'image': std.image_1920,
                         'gender': std.gender,
                     }
                     self.env['education.host_std'].create(values)

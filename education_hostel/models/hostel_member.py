@@ -8,7 +8,8 @@ class EducationHostelMember(models.Model):
     _rec_name = 'hostel_admission_no'
     _description = "Hostel Member"
 
-    member_std_name = fields.Many2one('education.student', string="Admission No")
+    member_std_name = fields.Many2one('education.student', string="Admission No",
+                                      domain=[('need_hostel','=',True),('hostel','=',False)])
     member_fac_name = fields.Many2one('education.faculty', string="Name")
     name = fields.Char(string="Name")
     member_type = fields.Selection(string='Member Type',

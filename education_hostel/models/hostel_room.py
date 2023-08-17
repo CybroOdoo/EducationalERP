@@ -98,19 +98,6 @@ class EducationRoomMember(models.Model):
     hostel_room_rel = fields.Many2one('education.hostel', string="Hostel", related='room_member_rel.hostel')
     student_id = fields.Many2one('education.student', string="Student")
 
-    @api.onchange('hostel_room_rel')
-    def get_rooms(self):
-        """adding domain for room"""
-        hostel = None
-        if self.hostel_room_rel:
-            hostel = self.hostel_room_rel.id
-        return {
-            'domain': {
-                'room_member_rel': [('hostel', '=', hostel)]
-            }
-        }
-
-
 class EducationRoomAmenity(models.Model):
     _name = 'room.amenity'
     _description = "Amenity"

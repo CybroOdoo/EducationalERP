@@ -22,7 +22,7 @@
 ###################################################################################
 {
     'name': 'Educational Hostel Management',
-    'version': '15.0.1.0.0',
+    'version': '15.0.1.0.1',
     'summary': """Complete Hostel management""",
     'description': 'Hostel Management for Educational ERP',
     'category': 'Industries',
