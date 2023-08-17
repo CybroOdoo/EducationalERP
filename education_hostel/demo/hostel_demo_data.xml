@@ -84,7 +84,6 @@
         </record>
 
         <record id="education_hostel_member_allocate" model="education.room_member">
-            <field name="member_type">is_student</field>
             <field name="hostel_room_rel" ref="education_hostel_data"/>
             <field name="room_member_rel" ref="education_room_data"/>
             <field name="floor" ref="education_floor_data"/>
@@ -100,6 +99,5 @@
             <field name="leave_to">2010-08-12</field>
             <field name="reason">Going to home as I am sick</field>
         </record>
-
     </data>
 </odoo>

@@ -41,8 +41,8 @@
 
                         <group>
                             <group>
-                                <field name="member_std_name" attrs="{'invisible': [('member_type', '=', 'is_faculty')]}" />
-                                <field name="member_fac_name" attrs="{'invisible': [('member_type', '=', 'is_student')]}" />
+                                <field name="member_std_name" attrs="{'invisible': [('member_type', '=', 'is_faculty')]}"  options='{"no_open": True, "no_create": True}'/>
+                                <field name="member_fac_name" attrs="{'invisible': [('member_type', '=', 'is_student')]}"/>
                                 <label for="street" string="Address"/>
                                     <div class="o_address_format">
                                         <field name="street" placeholder="Street..." class="o_address_street"
