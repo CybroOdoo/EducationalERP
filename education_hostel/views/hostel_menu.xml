@@ -2,7 +2,9 @@
 <odoo>
     <data>
         <!--main menu-->
-        <menuitem id="menu_edu_hostel_mgmnt" name="Hostel"/>
+        <menuitem id="menu_edu_hostel_mgmnt"
+                  name="Hostel"
+        web_icon="education_hostel,static/description/icon.png"/>
         <menuitem id="child_edu_hostel_mgmnt" parent="menu_edu_hostel_mgmnt"  name="Hostel"  action="action_edu_hostel"/>
         <!--Hostel configuration menu-->
         <menuitem id="child_edu_hostel" parent="child_edu_hostel_mgmnt" name="Hostel"
@@ -14,10 +16,8 @@
             action="action_edu_room" sequence="2" />
         <menuitem id="child_edu_room_amenity" parent="child_edu_conf" name="Amenities"
             action="education_core.action_education_amenities" sequence="4" />
-
         <menuitem id="child_edu_floor" parent="child_edu_conf" name="Floor"
             action="action_edu_floor" sequence="3" />
-
          <menuitem id="child_edu_admision" parent="child_edu_hostel_mgmnt" name="Admission"
             sequence="1" />
         <menuitem id="child_edu_admision1" parent="child_edu_admision" name="Students"
