@@ -21,7 +21,7 @@
 ###############################################################################
 {
     'name': 'Educational ERP Theme',
-    'version': '16.0.2.0.0',
+    'version': '16.0.3.0.0',
     'summary': """Attractive and unique red-teal combination of backend-end 
                     theme for Education ERP""",
     'description': """In trio combination of red, teal and white Educational 

@@ -15,15 +15,18 @@
                                    t-att-data-menu-id="app.menuID"
                                    t-att-data-menu-xmlid="app.xmlID"
                                    t-att-data-action-id="app.actionID">
-                                    <img t-if="app.webIcon.includes('.png')"
-                                         t-att-title="app.name"
-                                         style="width: 40px !important;height: 40px !important;
-                                         border-radius: 10px !important;margin: 5px 5px 5px 5px;"
-                                         t-attf-src="data:image/png;base64,{{app.webIconData}}"/>
-                                    <img t-if="app.webIcon.includes('.svg')"
-                                         t-att-title="app.name"
-                                         style="width: 40px !important;height: 40px !important;border-radius: 10px !important;margin: 5px 5px 5px 5px;"
-                                         t-attf-src="data:image/svg+xml;base64,{{app.webIconData}}"/>
+                                    <t t-if="app.webIcon">
+                                        <img t-if="app.webIcon.includes('.png')"
+                                             t-att-title="app.name"
+                                             style="width: 40px !important;height: 40px !important;
+                                             border-radius: 10px !important;margin: 5px 5px 5px 5px;"
+                                             t-attf-src="data:image/png;base64,{{app.webIconData}}"
+                                        />
+                                        <img t-if="app.webIcon.includes('.svg')"
+                                             t-att-title="app.name"
+                                             style="width: 40px !important;height: 40px !important;border-radius: 10px !important;margin: 5px 5px 5px 5px;"
+                                             t-attf-src="data:image/svg+xml;base64,{{app.webIconData}}"/>
+                                    </t>
                                     <b class="a_app_menu_title">
                                         <t t-esc="app.name"/>
                                     </b>
