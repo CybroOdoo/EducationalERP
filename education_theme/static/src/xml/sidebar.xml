@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+     <!-- Sidebar App  -->
+    <t t-inherit="web.NavBar" t-inherit-mode="extension" owl="1">
+        <xpath expr="//nav[hasclass('o_main_navbar')]" position="after">
+            <div class="sidebar_panel" id="sidebar_panel">
+                <div class="sidebar">
+                    <ul class="sidebar_menu">
+                        <t t-foreach="menuService.getApps()" t-as="app"
+                           t-key="app_index">
+                            <li>
+                                <a role="menuitem" t-on-click="clickSidebar"
+                                   t-attf-href="#menu_id={{app.id}}"
+                                   class="dropdown-item o_app mt0"
+                                   t-att-data-menu-id="app.menuID"
+                                   t-att-data-menu-xmlid="app.xmlID"
+                                   t-att-data-action-id="app.actionID">
+                                    <t t-if="app.webIcon">
+                                        <img t-if="app.webIcon.includes('.png')"
+                                             t-att-title="app.name"
+                                             style="width: 40px !important;height: 40px !important;
+                                             border-radius: 10px !important;margin: 5px 5px 5px 5px;"
+                                             t-attf-src="data:image/png;base64,{{app.webIconData}}"
+                                        />
+                                        <img t-if="app.webIcon.includes('.svg')"
+                                             t-att-title="app.name"
+                                             style="width: 40px !important;height: 40px !important;border-radius: 10px !important;margin: 5px 5px 5px 5px;"
+                                             t-attf-src="data:image/svg+xml;base64,{{app.webIconData}}"/>
+                                    </t>
+                                    <b class="a_app_menu_title">
+                                        <t t-esc="app.name"/>
+                                    </b>
+                                </a>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+            </div>
+        </xpath>
+    </t>
+    <!--To add a new icon for home menu-->
+    <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown" position="replace">
+            <li class="dropdown" style="display:flex;">
+                <a id="openSidebar"
+                   style="display: block;cursor: pointer;margin-left: 25px;font-size: 24px;">
+                    <i class="fa fa-home fa-lg" t-on-click="openSidebar"/>
+                </a>
+            </li>
+        </xpath>
+    </t>
+</templates>

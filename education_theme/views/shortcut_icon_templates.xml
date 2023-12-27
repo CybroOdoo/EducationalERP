@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Template is for adding favicon icon of education erp-->
+    <template id="education_layout" inherit_id="web.layout"
+              name="Education layout" priority="17">
+        <xpath expr="//link[@rel='shortcut icon']" position="replace">
+            <link rel="favicon icon"
+                  href="/education_theme/static/src/img/favicon.ico"
+                  type="image/x-icon"/>
+        </xpath>
+    </template>
+</odoo>

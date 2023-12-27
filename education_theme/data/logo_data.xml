@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- To add education erp logo to company-->
+        <record id="base.main_company" model="res.company">
+            <field name="logo" type="base64"
+                   file="education_theme/static/src/img/education_logo.png"/>
+        </record>
+    </data>
+</odoo>
