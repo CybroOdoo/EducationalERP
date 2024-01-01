@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Tree view of Education Division-->
+    <record id="education_division_view_tree" model="ir.ui.view">
+        <field name="name">education.division.view.tree</field>
+        <field name="model">education.division</field>
+        <field name="arch" type="xml">
+            <tree string="Class Division" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <!--Menu action of Education Division-->
+    <record id="education_division_action" model="ir.actions.act_window">
+        <field name="name">Division</field>
+        <field name="res_model">education.division</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create your first division here.
+            </p>
+        </field>
+    </record>
+    <menuitem action="education_division_action" parent="menu_education_main_menu"
+              id="education_division_menu" sequence="20"/>
+</odoo>

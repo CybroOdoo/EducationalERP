@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Form view of Document Type-->
+    <record model='ir.ui.view' id='document_document_view_form'>
+        <field name="name">documents.document.view.form</field>
+        <field name="model">document.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!--Tree view of Document Type-->
+    <record model='ir.ui.view' id='document_document_view_tree'>
+        <field name="name">document.document.view.tree</field>
+        <field name="model">document.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <!--Menu action of Document Type-->
+    <record id="document_document_action" model="ir.actions.act_window">
+        <field name="name">Document Type</field>
+        <field name="res_model">document.document</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first document type here.
+            </p>
+        </field>
+    </record>
+    <menuitem id="document_document_menu" name="Document Type"
+              parent="menu_education_application_conf"
+              action="document_document_action"/>
+</odoo>

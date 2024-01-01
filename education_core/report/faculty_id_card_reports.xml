@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Report action of Education faculty ID card-->
+    <record id="action_faculty_id_card" model="ir.actions.report">
+        <field name="name">Faculty ID Card</field>
+        <field name="model">education.faculty</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_core.report_faculty_id_card</field>
+        <field name="report_file">education_core.report_faculty_id_card</field>
+        <field name="print_report_name">'Faculty Card - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_education_faculty"/>
+    </record>
+    <!--Faculty ID card template-->
+    <template id="report_faculty_id_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="row">
+                        <center>
+                            <div class="col-xs-8" style="margin:auto">
+                                <table class="table table-condensed"
+                                       style="border: 3px solid black !important;width:60%;height:200px">
+                                    <tr>
+                                        <td width="1%">
+                                            <p style="text-align:center;padding-top:10px;">
+                                                <img t-if="not o.image"
+                                                     t-att-src="'/web/static/src/img/placeholder.png'"
+                                                     style="height: 120px;width: 130px;"/>
+                                                <img t-if="o.image"
+                                                     t-attf-src="data:image/png;base64,{{o.image}}"
+                                                     style="height: 120px;width: 130px;"/>
+                                            </p>
+                                            <p style="text-align:center;margin-top:10px">
+                                                <strong>
+                                                    <span t-field="o.name"/>
+                                                    <span t-field="o.last_name"/>
+                                                </strong>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <table style="border-style: none;">
+                                                <td>
+                                                    <p style="text-align:right;">
+                                                        <strong>ID
+                                                            :
+                                                        </strong>
+                                                    </p>
+                                                    <p style="text-align:right;">
+                                                        <strong>
+                                                            Gender
+                                                            :
+                                                        </strong>
+                                                    </p>
+                                                    <p style="text-align:right;width:150px">
+                                                        <strong>
+                                                            Blood
+                                                            Group :
+                                                        </strong>
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align:left;padding-left:10px;"
+                                                       t-field="o.faculty_id"/>
+                                                    <p style="text-align:left;padding-left:10px;"
+                                                       t-field="o.gender"/>
+                                                    <p style="text-align:left;padding-left:10px;"
+                                                       t-field="o.blood_group"/>
+                                                </td>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

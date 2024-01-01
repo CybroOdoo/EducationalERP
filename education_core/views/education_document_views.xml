@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Form view of Education Document -->
+    <record model='ir.ui.view' id='education_document_view_form'>
+        <field name="name">education.document.view.form</field>
+        <field name="model">education.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_verify_document" type="object"
+                            class="oe_highlight"
+                            string="Verify" groups="base.group_user"
+                            help="Click to verify the document"
+                            invisible="state not in ['draft','correction']"/>
+                    <button name="action_need_correction" type="object"
+                            class="oe_highlight"
+                            string="Need Correction" groups="base.group_user"
+                            help="Need correction of the document"
+                            invisible="state != 'draft'"/>
+                    <button name="action_hard_copy_returned" type="object"
+                            class="oe_highlight"
+                            string="Hard copy Returned"
+                            groups="base.group_user"
+                            help="Hard copy of documents returned"
+                            invisible="has_hard_copy == False or state != 'done'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="application_ref_id"
+                                   readonly="state in ['done','returned']"/>
+                            <field name="has_hard_copy"
+                                   string="Hard copy received"
+                                   readonly="state in ['done','returned']"/>
+                        </group>
+                        <group>
+                            <field name="document_type_id"
+                                   readonly="state in ['done','returned']"/>
+                        </group>
+                    </group>
+                    <group name="hard_copy_receive" string="Hard copy Received"
+                           invisible="has_hard_copy == False">
+                        <group name="hard_copy_location"
+                               readonly="state in ['done','returned']">
+                            <field name="location_id"
+                                   required="has_hard_copy == True"/>
+                            <field name="location_note"/>
+                        </group>
+                        <group readonly="state in ['done','returned']">
+                            <field name="submitted_date"
+                                   required="has_hard_copy == True"/>
+                            <field name="received_by_id"
+                                   required="has_hard_copy == True"/>
+                        </group>
+                    </group>
+                    <separator/>
+                    <group name="attachment_file" string="Attachment File">
+                        <field name="doc_attachment_ids"
+                               widget="many2many_binary"
+                               readonly="state in ['done','returned']"
+                               class="oe_inline"/>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Verification"
+                              invisible="verified_by_id == False">
+                            <group readonly="state in ['done','returned']">
+                                <field name="application_ref_id" invisible="1"/>
+                                <field name="verified_date" readonly="1"/>
+                                <field name="verified_by_id" readonly="1"/>
+                                <field name="responsible_verified_id"/>
+                            </group>
+                        </page>
+                        <page string="Hard copy Returned"
+                              invisible="state != 'returned'">
+                            <group>
+                                <field name="returned_date"/>
+                                <field name="returned_by_id"/>
+                                <field name="responsible_returned_id"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"
+                           widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--Tree view of Education Document -->
+    <record model='ir.ui.view' id='education_document_view_tree'>
+        <field name="name">education.document.view.tree</field>
+        <field name="model">education.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="application_ref_id"/>
+                <field name="document_type_id"/>
+                <field name="description"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <!--Menu action of Education Document -->
+    <record id="education_document_action" model="ir.actions.act_window">
+        <field name="name">Documents</field>
+        <field name="res_model">education.document</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create your first class here.
+            </p>
+        </field>
+    </record>
+    <menuitem action="education_document_action"
+              parent="menu_education_class_conf"
+              id="education_document_menu" sequence="10"
+              groups="base.group_no_one"/>
+</odoo>

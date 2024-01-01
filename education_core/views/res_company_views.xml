@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Inheriting res company form for adding fields-->
+    <record id="view_company_form" model="ir.ui.view">
+        <field name="name">res.company.view.form.inherit.education.core</field>
+        <field name="model">res.company</field>
+        <field name="priority" eval="1"/>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position="after">
+                <page name='education' string="Education">
+                    <group name="container_education">
+                        <group name="registration_info"
+                               string="Registration Info">
+                            <field name="affiliation"/>
+                            <field name="register_num"/>
+                        </group>
+                        <group name="class detail" string="Class details">
+                            <field name="base_class_id"/>
+                            <field name="higher_class_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
