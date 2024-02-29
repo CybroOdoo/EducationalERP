@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--   Action for education exam results  -->
+    <record id="action_education_exam_results_view" model="ir.actions.act_window">
+        <field name="name">Exam Results Student</field>
+        <field name="res_model">education.exam.results</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="domain">[('student_id', '=', active_id)]</field>
+        <field name="context">{'search_default_group_exam_id':1}</field>
+    </record>
+    <!--   Inherited Form view for education student   -->
+    <record id="education_student_view_form" model="ir.ui.view">
+        <field name="name">education.student.view.form.inherit.education.exam</field>
+        <field name="model">education.student</field>
+        <field name="inherit_id" ref="education_core.education_student_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="education_exam.action_education_exam_results_view" type="action"
+                        class="oe_stat_button"
+                        icon="fa-archive" string="Exam Results"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

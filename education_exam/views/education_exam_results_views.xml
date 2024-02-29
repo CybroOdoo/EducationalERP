@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--   Form view for the Education exam results   -->
+    <record id="education_exam_results_view_form" model="ir.ui.view">
+        <field name="name">education.exam.results.view.form</field>
+        <field name="model">education.exam.results</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="student_id" invisible="1"/>
+                            <field name="student_name"/>
+                            <field name="exam_id"/>
+                        </group>
+                        <group>
+                            <field name="class_id"/>
+                            <field name="division_id"/>
+                            <field name="academic_year_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Mark Sheet">
+                            <field name="subject_line_ids">
+                                <tree>
+                                    <field name="subject_id"/>
+                                    <field name="max_mark" sum="Total"/>
+                                    <field name="pass_mark" sum="Total"/>
+                                    <field name="mark_scored" sum="Total"/>
+                                    <field name="pass_or_fail" widget="boolean_toggle" readonly="1"/>
+                                    <field name="result_id" column_invisible="1"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="subject_id"/>
+                                            <field name="max_mark"/>
+                                            <field name="pass_mark"/>
+                                            <field name="mark_scored"/>
+                                            <field name="pass_or_fail" widget="boolean_toggle" readonly="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_mark_scored" sum="Scored Total"/>
+                                <field name="overall_pass" widget="boolean_toggle"/>
+                            </group>
+                            <div class="oe_clear"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--   Tree view for the Education exam results   -->
+    <record id="education_exam_results_view_tree" model="ir.ui.view">
+        <field name="name">education.exam.results.view.tree</field>
+        <field name="model">education.exam.results</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="exam_id" />
+                <field name="student_id" column_invisible="1"/>
+                <field name="student_name"/>
+                <field name="class_id"/>
+                <field name="division_id"/>
+                <field name="academic_year_id" />
+                <field name="total_mark_scored" />
+                <field name="overall_pass" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+    <!--   Search view for the Education exam results   -->
+    <record id="education_exam_results_view_search" model="ir.ui.view">
+        <field name="name">education.exam.results.view.search</field>
+        <field name="model">education.exam.results</field>
+        <field name="arch" type="xml">
+            <search string="Exam Results">
+                <group expand="1" string="Group By">
+                    <filter string="Class" name="group_class_id" context="{'group_by':'class_id'}"/>
+                    <filter string="Division" name="group_division_id" context="{'group_by':'division_id'}"/>
+                    <filter string="Exam" name="group_exam_id" context="{'group_by':'exam_id'}"/>
+                    <filter string="Academic Year" name="group_academic_year"
+                            context="{'group_by':'academic_year_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!--   Action for the Education exam results   -->
+    <record id="action_education_exam_result" model="ir.actions.act_window">
+        <field name="name">Exam Results</field>
+        <field name="res_model">education.exam.results</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="context">{'search_default_group_class_id': 1, 'search_default_group_division_id':1,
+            'search_default_group_exam_id':1}
+        </field>
+    </record>
+    <!--   Tree view for the Subject line   -->
+    <record id="results_subject_line_view_tree" model="ir.ui.view">
+        <field name="name">results.subject.line.view.tree</field>
+        <field name="model">results.subject.line</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="student_id" column_invisible="1"/>
+                <field name="student_name"/>
+                <field name="exam_id"/>
+                <field name="class_id"/>
+                <field name="division_id"/>
+                <field name="subject_id"/>
+                <field name="max_mark"/>
+                <field name="pass_mark"/>
+                <field name="mark_scored"/>
+                <field name="pass_or_fail" widget="boolean_toggle" readonly="1"/>
+                <field name="academic_year_id" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <!--   Search view for the Subject line   -->
+
+    <record id="results_subject_line_view_search" model="ir.ui.view">
+        <field name="name">results.subject.line.view.search</field>
+        <field name="model">results.subject.line</field>
+        <field name="arch" type="xml">
+            <search string="Reports">
+                <group expand="1" string="Group By">
+                    <filter string="Class" name="group_class_id" context="{'group_by':'class_id'}"/>
+                    <filter string="Division" name="group_division_id" context="{'group_by':'division_id'}"/>
+                    <filter string="Exam" name="group_exam_id" context="{'group_by':'exam_id'}"/>
+                    <filter string="Subject" name="group_subject_id" context="{'group_by':'subject_id'}"/>
+                    <filter string="Academic Year" name="group_academic_year"
+                            context="{'group_by':'academic_year_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!--   Action for the Subject line   -->
+
+    <record id="action_results_subject_line" model="ir.actions.act_window">
+        <field name="name">Report</field>
+        <field name="res_model">results.subject.line</field>
+        <field name="view_mode">pivot,tree,form</field>
+        <field name="target">current</field>
+        <field name="context">{'search_default_group_class_id': 1, 'search_default_group_division_id':1,
+            'search_default_group_exam_id':1, 'search_default_group_subject_id':1}
+        </field>
+    </record>
+    <!--   Menu items    -->
+
+    <menuitem id="examination_result_sub_menu" parent="education_exam.examination_main_menu"
+              action="action_education_exam_result" name="Exam Results" sequence="20"/>
+    <menuitem id="examination_result_report_menu" parent="education_exam.examination_reporting_menu"
+              action="action_results_subject_line" name="Exam Results" sequence="22"/>
+</odoo>
