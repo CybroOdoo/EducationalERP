@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Inheriting education student form view for adding attendance smart button-->
+    <record id="education_student_view_form" model="ir.ui.view">
+        <field name="name">
+            education.student.view.form.inherit.education.attendances
+        </field>
+        <field name="model">education.student</field>
+        <field name="inherit_id"
+               ref="education_core.education_student_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="education_attendances.education_attendance_line_student_attendance_action"
+                        type="action" class="oe_stat_button" icon="fa-calendar"
+                        string="Attendance"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
