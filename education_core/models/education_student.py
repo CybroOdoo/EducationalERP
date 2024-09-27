@@ -75,7 +75,7 @@ class EducationStudent(models.Model):
     middle_name = fields.Char(string='Middle Name')
     last_name = fields.Char(string='Last Name')
     application_no = fields.Char(string="Application No")
-    date_of_birth = fields.Date(string="Date of Birth", requird=True)
+    date_of_birth = fields.Date(string="Date of Birth", required=True)
     guardian_name = fields.Many2one('res.partner', string="Guardian",
                                     domain=[('is_parent', '=', True)])
     father_name = fields.Char(string="Father")
