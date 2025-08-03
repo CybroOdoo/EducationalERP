@@ -32,7 +32,7 @@
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.educationalerp.com",
-    'depends': ['stock', 'hr_recruitment', 'education_theme', 'contacts'],
+    'depends': ['stock', 'hr_recruitment', 'contacts'],
     'data': [
         'security/education_security.xml',
         'security/ir.model.access.csv',
