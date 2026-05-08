@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Record to create a tag for Educational Dashboard -->
+    <record id="education_erp_dashboard_action" model="ir.actions.client">
+        <field name="name">Educational Dashboard</field>
+        <field name="tag">erp_dashboard_tag</field>
+        <field name="target">current</field>
+    </record>
+    <!--    Educational Dashboard Menu-->
+    <menuitem id="education_erp_dashboard_menu_root"
+              name="Educational Dashboard"
+              web_icon="education_erp_dashboard,static/description/icon.png"/>
+    <!--    Dashboard Menu-->
+    <menuitem id="erp_dashboard_details_menu" name="Dashboard"
+              action="education_erp_dashboard_action"
+              parent="education_erp_dashboard_menu_root"/>
+</odoo>

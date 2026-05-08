@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Dashboard template -->
+<templates id="Educational_dashboard_template" xml:space="preserve">
+    <t t-name="EducationalDashboard">
+        <div class="oh_dashboards">
+            <div class="row main-section" t-ref="root">
+                <div class="col-md-3 col-sm-3"  t-on-click="onclick_application_list">
+                    <div class="content-card" style="width: 288px;">
+                        <div class="content-card-body">
+                            <div class="stat-widget-one">
+                                <div class="stat-icon">
+                                    <i class="fa fa-wpforms"/>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-head">Applications</div>
+                                    <div class="stat-count">
+                                        <span id="templates">
+                                            <div t-ref="all_applications"
+                                        />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3" t-on-click="onclick_student_list">
+                    <div class="content-card" style="width: 288px;">
+                        <div class="content-card-body">
+                            <div class="stat-widget-one">
+                                <div class="stat-icon">
+                                    <i class="fa fa-user"/>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-head">Students</div>
+                                    <div class="stat-count">
+                                        <span id="templates">
+                                            <div t-ref="all_students"
+                                                 />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tile that shows the number of faculties -->
+                <div class="col-md-3 col-sm-3" t-on-click="onclick_faculty_list">
+                    <div class="content-card" style="width: 288px;">
+                        <div class="content-card-body">
+                            <div class="stat-widget-one">
+                                <div class="stat-icon">
+                                    <i class="fa fa-male"/>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-head">Faculties</div>
+                                    <div class="stat-count">
+                                        <span id="templates">
+                                            <div t-ref="all_faculties"
+                                                 />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    <div class="content-card" id="timetable" style="width: 288px;"
+                         t-on-click="onclick_timetable">
+                        <div class="content-card-body">
+                            <div class="stat-widget-one">
+                                <div class="stat-icon">
+                                    <i class="fa fa-calendar"/>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-head">Time Table</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tile that shows the student promotions -->
+                <div class="col-md-3 col-sm-3">
+                    <div class="content-card" id="promotion" style="width: 288px;"
+                         t-on-click="onclick_promotions">
+                        <div class="content-card-body">
+                            <div class="stat-widget-one">
+                                <div class="stat-icon">
+                                    <i class="fa fa-graduation-cap"/>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-head">Student Promotions</div>
+                                    <div class="stat-count">
+                                        <span id="templates">
+                                            <div id="all_promotions"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tile that shows the number of amenities -->
+               <div class="col-md-3 col-sm-3"  t-on-click="onclick_amenity_list">
+                   <div class="content-card" style="width: 288px;">
+                       <div class="content-card-body">
+                           <div class="stat-widget-one">
+                               <div class="stat-icon">
+                                   <i class="fa fa-list"/>
+                               </div>
+                               <div class="stat-content">
+                                   <div class="stat-head">Amenities</div>
+                                   <div class="stat-count">
+                                       <span id="templates">
+                                       <div t-ref="all_amenities"
+                                           />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+               </div>
+               <!-- Tile that shows the attendance table -->
+               <div class="col-md-3 col-sm-3">
+                   <div class="content-card" id="all_attendance"
+                        t-on-click="onclick_attendance_list"
+                        style="width: 288px;">
+                       <div class="content-card-body">
+                           <div class="stat-widget-one">
+                               <div class="stat-icon">
+                                   <i class="fa fa-check-square-o"/>
+                               </div>
+                               <div class="stat-content">
+                                   <div class="stat-head">Attendance Table</div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-md-3 col-sm-3">
+                   <div class="content-card" id="exams" style="width: 288px;"
+                        t-on-click="onclick_exam_result">
+                       <div class="content-card-body">
+                           <div class="stat-widget-one">
+                               <div class="stat-icon">
+                                   <i class="fa fa-line-chart"/>
+                               </div>
+                               <div class="stat-content">
+                                   <div class="stat-head">Exams</div>
+                                   <div class="stat-count">
+                                    <span id="templates">
+                                        <div t-ref="all_exams"/>
+                                    </span>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <div class="render_graph_div col-sm-12 col-md-2">
+               <!-- Division to show the bar chart for applications -->
+               <div class="chart-container inline">
+                   <h2>Applications</h2>
+                   <hr/>
+                   <div class="graph_canvas">
+                       <canvas t-ref="application_count" width="340px"
+                            height="400px"/>
+                   </div>
+               </div>
+               <!-- Division to show the pie chart for exam results -->
+               <div class="pie-container inline">
+                   <h2>Exam Result</h2>
+                   <hr/>
+                   <!-- Division for chart filter -->
+                   <div class="pie-chart-filter">
+                       <select class="academic_year_filter" t-ref="select_period"
+                            t-on-change="change_select_period"
+                            required="true">
+                    </select>
+                   </div>
+                   <!-- Division to show the chart -->
+                   <div class="pie_canvas">
+                       <canvas t-ref="exam_result" width="100%"/>
+                       <canvas t-ref="academic_exam_result" width="100%"/>
+                   </div>
+               </div>
+               <div class="render_graph_div col-sm-12 col-md-2">
+                   <!-- Division to show the line chart for student strength -->
+                   <div class="student-strength-container inline">
+                       <h2>Student Strength</h2>
+                       <hr/>
+                       <div t-ref="student_strength_canvas">
+                           <canvas t-ref="student_strength" width="340px" height="400px"/>
+                       </div>
+                   </div>
+                   <!-- Division to show the bar chart for rejected and accepted applications -->
+                   <div class="rejected-application-container inline">
+                       <h2>Application Status</h2>
+                       <hr/>
+                       <div class="rejected_canvas">
+                           <canvas t-ref="rejected_accepted_count" width="340px"
+                            height="400px"/>
+                       </div>
+                   </div>
+                   <!-- Division to show the bar chart for average marks -->
+                   <div class="class-average-marks-container inline">
+                       <h2>Average Marks</h2>
+                       <hr/>
+                       <div class="average_mark_canvas">
+                           <canvas t-ref="average_marks" width="340px" height="400px"/>
+                       </div>
+                   </div>
+               </div>
+               <!-- Division to show the doughnut chart for attendance -->
+               <div class="doughnut-container inline">
+                   <h2>Attendance</h2>
+                   <hr/>
+                   <!-- Division for attendance filter -->
+                   <div class="doughnut-chart-filter">
+                       <select class="class_attendance_filter" t-ref="select_class"
+                            t-on-change="change_select_class"
+                            required="true">
+                       </select>
+                   </div>
+                   <!-- Division to show the chart -->
+                   <div class="doughnut_canvas">
+                       <canvas t-ref="total_attendance_today" width="100%"/>
+                       <canvas t-ref="class_attendance_today" width="100%"/>
+                   </div>
+               </div>
+           </div>
+       </div>
+    </t>
+</templates>
