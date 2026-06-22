@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Creating demo data for hostel-->
+        <record id="education_hostel_data" model="education.hostel">
+            <field name="hostel_name">MEN'S HOSTEL</field>
+            <field name="hostel_code">MH</field>
+            <field name="phone">04943015006</field>
+            <field name="mobile">8606827707</field>
+            <field name="hostel_warden_id" ref="education_faculty_data"/>
+            <field name="hostel_floors">1</field>
+            <field name="room_rent">1000</field>
+            <field name="mess_fee">1000</field>
+            <field name="total">2000</field>
+        </record>
+    </data>
+</odoo>

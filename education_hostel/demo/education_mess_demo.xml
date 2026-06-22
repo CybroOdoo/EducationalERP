@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Creating demo data for mess-->
+        <record id="hostel_mess1" model="education.mess">
+            <field name="mess_name">Mess 1</field>
+            <field name="mess_code">HM1</field>
+            <field name="hostel_id" ref="education_hostel_data"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Tree view of the model-->
+    <record id="education_room_view_tree" model="ir.ui.view">
+        <field name="name">education.room.view.list</field>
+        <field name="model">education.room</field>
+        <field name="arch" type="xml">
+            <list string="Room">
+                <field name="room_name"/>
+                <field name="room_code"/>
+                <field name="hostel_id"/>
+                <field name="allocated_number"/>
+                <field name="vacancy"/>
+            </list>
+        </field>
+    </record>
+    <!--Form view of the model-->
+    <record id="education_room_view_form" model="ir.ui.view">
+        <field name="name">education.room.view.form</field>
+        <field name="model">education.room</field>
+        <field name="arch" type="xml">
+            <form string="Room">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                name="action_view_students"
+                                type="object" icon="fa-group">
+                            <field string="Members" name="allocated_number"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group col="4" name="main">
+                        <field name="room_name"/>
+                        <field name="room_code"/>
+                        <field name="hostel_id"/>
+                        <field name="floor" domain="[('hostel_id', '=', hostel_id)]"/>
+                        <field name="responsible_id"/>
+                        <field name="room_capacity"/>
+                        <field name="company_id"
+                               groups="base.group_multi_company"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page
+                                string="Room Amenities">
+                            <field name="amenity_ids">
+                                <list string="Room Amenities" editable="bottom">
+                                    <field name="amenity_id"/>
+                                    <field name="qty"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <!--Action for the model-->
+    <record model="ir.actions.act_window" id="education_room_action">
+        <field name="name">Room</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">education.room</field>
+        <!--            <field name="view_type">form</field>-->
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create Room.
+            </p>
+        </field>
+    </record>
+    <!--    Room menu-->
+    <menuitem id="education_room_menu" parent="education_menu_config"
+              name="Room"
+              action="education_room_action" sequence="2"/>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--        Faculty demo data-->
+        <record id="education_faculty_data" model="education.faculty">
+            <field name="name">Albin</field>
+            <field name="last_name">Joseph</field>
+        </record>
+    </data>
+</odoo>

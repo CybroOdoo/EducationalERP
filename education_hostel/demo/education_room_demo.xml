@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Creating demo data for room-->
+        <record id="education_room_data" model="education.room">
+            <field name="hostel_id" ref="education_hostel.education_hostel_data"/>
+            <field name="room_name">ROOM 1</field>
+            <field name="room_code">ROO1</field>
+            <field name="floor" ref="education_floor_data"/>
+            <field name="room_capacity">2</field>
+        </record>
+    </data>
+</odoo>

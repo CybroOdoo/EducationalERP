@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--        Sequence for model 'education.hostel.member'-->
+    <record id="sequence_edu_member" model="ir.sequence">
+        <field name="name">Member</field>
+        <field name="code">education.hostel.member</field>
+        <field name="prefix">MR/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+      <!--        Sequence for model 'hostel.leave-->
+    <record id="sequence_hostel_leave" model="ir.sequence">
+        <field name="name">Leave</field>
+        <field name="code">hostel.leave</field>
+        <field name="prefix">LR/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>

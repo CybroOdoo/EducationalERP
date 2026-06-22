@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Creating demo data for food item-->
+        <record id="hostel_food_item1" model="food.item">
+            <field name="name">Meals</field>
+        </record>
+        <record id="hostel_food_item2" model="food.item">
+            <field name="name">Chapati</field>
+        </record>
+        <record id="hostel_food_item3" model="food.item">
+            <field name="name">Masala Peanuts</field>
+        </record>
+        <record id="hostel_food_item4" model="food.item">
+            <field name="name">Idli</field>
+        </record>
+    </data>
+</odoo>

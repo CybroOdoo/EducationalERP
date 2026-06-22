@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--main menu-->
+    <menuitem id="education_hostel_menu_root"
+              name="Hostel"
+              web_icon="education_hostel,static/description/icon.png"/>
+    <menuitem id="education_hostel_menu"
+              parent="education_hostel_menu_root" name="Hostel"/>
+    <!--         Hostel configuration menu-->
+    <menuitem id="education_hostel_sub_menu_root"
+              parent="education_hostel_menu" name="Hostel"
+              sequence="2"/>
+    <menuitem id="education_menu_config" parent="education_hostel_menu_root"
+              name="Configuration"
+              sequence="22" groups="education_hostel.group_hostel_management_manager"/>
+    <menuitem id="education_room_amenity_menu_action"
+              parent="education_menu_config" name="Amenities"
+              action="education_core.education_amenities_action" sequence="4"/>
+    <menuitem id="education_hostel_menu_admission"
+              parent="education_hostel_menu" name="Admission"
+              sequence="1"/>
+    <menuitem id="education_mess_menu_root"
+              parent="education_hostel_menu" name="Mess"
+              sequence="10"/>
+    <menuitem id="education_leave_menu" parent="education_hostel_menu"
+              name="Leaves"
+              sequence="5"/>
+</odoo>
