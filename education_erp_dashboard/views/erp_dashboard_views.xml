@@ -6,6 +6,7 @@
         <field name="tag">erp_dashboard_tag</field>
         <field name="target">current</field>
     </record>
+
     <!--    Educational Dashboard Menu-->
     <menuitem id="education_erp_dashboard_menu_root"
               name="Educational Dashboard"

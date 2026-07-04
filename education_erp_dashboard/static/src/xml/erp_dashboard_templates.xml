@@ -4,12 +4,28 @@
     <t t-name="EducationalDashboard">
         <div class="oh_dashboards">
             <div class="row main-section" t-ref="root">
-                <div class="col-md-3 col-sm-3"  t-on-click="onclick_application_list">
-                    <div class="content-card" style="width: 288px;">
-                        <div class="content-card-body">
+                <div class="form-group" style="margin: 15px; margin-left: 40%;">
+                    <label for="report_type_select" style="margin-bottom: 5px;">Select Report Type:</label>
+                    <select id="report_type_select" class="form-control"
+                            t-on-change="onChangeReportType"
+                            style="width: 250px;">
+                        <option value="">-- Choose Report --</option>
+                        <option value="applications">Applications</option>
+                        <option value="students">Students</option>
+                        <option value="faculties">Faculties</option>
+                        <option value="timetable">Time Table</option>
+                        <option value="promotion">Promotion</option>
+                        <option value="amenities">Amenities</option>
+                        <option value="all_attendance">Attendance</option>
+                        <option value="exams">Exams</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-3"  t-on-click="onclick_application_list" >
+                    <div class="content-card" style="width: 288px;" id="Applications">
+                        <div class="content-card-body" >
                             <div class="stat-widget-one">
                                 <div class="stat-icon">
-                                    <i class="fa fa-wpforms"/>
+                                    <i class="fa fa-wpforms" style="margin: 14px;"/>
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-head">Applications</div>
@@ -25,11 +41,11 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3" t-on-click="onclick_student_list">
-                    <div class="content-card" style="width: 288px;">
+                    <div class="content-card" style="width: 288px;" id="students">
                         <div class="content-card-body">
                             <div class="stat-widget-one">
                                 <div class="stat-icon">
-                                    <i class="fa fa-user"/>
+                                    <i class="fa fa-user" style="margin: 14px;"/>
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-head">Students</div>
@@ -46,11 +62,11 @@
                 </div>
                 <!-- Tile that shows the number of faculties -->
                 <div class="col-md-3 col-sm-3" t-on-click="onclick_faculty_list">
-                    <div class="content-card" style="width: 288px;">
+                    <div class="content-card" style="width: 288px;" id="faculties">
                         <div class="content-card-body">
                             <div class="stat-widget-one">
                                 <div class="stat-icon">
-                                    <i class="fa fa-male"/>
+                                    <i class="fa fa-male" style="margin: 14px;"/>
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-head">Faculties</div>
@@ -71,10 +87,15 @@
                         <div class="content-card-body">
                             <div class="stat-widget-one">
                                 <div class="stat-icon">
-                                    <i class="fa fa-calendar"/>
+                                    <i class="fa fa-calendar" style="margin: 14px;"/>
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-head">Time Table</div>
+                                    <div class="stat-count">
+                                        <span id="templates">
+                                            <div id="all_timetable"/>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +108,7 @@
                         <div class="content-card-body">
                             <div class="stat-widget-one">
                                 <div class="stat-icon">
-                                    <i class="fa fa-graduation-cap"/>
+                                    <i class="fa fa-graduation-cap" style="margin: 14px;"/>
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-head">Student Promotions</div>
@@ -103,11 +124,11 @@
                 </div>
                 <!-- Tile that shows the number of amenities -->
                <div class="col-md-3 col-sm-3"  t-on-click="onclick_amenity_list">
-                   <div class="content-card" style="width: 288px;">
+                   <div class="content-card" style="width: 288px;" id="amenities">
                        <div class="content-card-body">
                            <div class="stat-widget-one">
                                <div class="stat-icon">
-                                   <i class="fa fa-list"/>
+                                   <i class="fa fa-list" style="margin: 14px;"/>
                                </div>
                                <div class="stat-content">
                                    <div class="stat-head">Amenities</div>
@@ -130,10 +151,15 @@
                        <div class="content-card-body">
                            <div class="stat-widget-one">
                                <div class="stat-icon">
-                                   <i class="fa fa-check-square-o"/>
+                                   <i class="fa fa-check-square-o" style="margin: 14px;"/>
                                </div>
                                <div class="stat-content">
                                    <div class="stat-head">Attendance Table</div>
+                                   <div class="stat-count">
+                                       <span id="templates">
+                                           <div id="all_attendance_count"/>
+                                       </span>
+                                   </div>
                                </div>
                            </div>
                        </div>
@@ -145,7 +171,7 @@
                        <div class="content-card-body">
                            <div class="stat-widget-one">
                                <div class="stat-icon">
-                                   <i class="fa fa-line-chart"/>
+                                   <i class="fa fa-line-chart" style="margin: 14px;"/>
                                </div>
                                <div class="stat-content">
                                    <div class="stat-head">Exams</div>
@@ -162,7 +188,7 @@
            </div>
            <div class="render_graph_div col-sm-12 col-md-2">
                <!-- Division to show the bar chart for applications -->
-               <div class="chart-container inline">
+               <div class="chart-container inline" id="Applications">
                    <h2>Applications</h2>
                    <hr/>
                    <div class="graph_canvas">
@@ -171,7 +197,7 @@
                    </div>
                </div>
                <!-- Division to show the pie chart for exam results -->
-               <div class="pie-container inline">
+               <div class="pie-container inline" id="exams">
                    <h2>Exam Result</h2>
                    <hr/>
                    <!-- Division for chart filter -->
@@ -189,7 +215,7 @@
                </div>
                <div class="render_graph_div col-sm-12 col-md-2">
                    <!-- Division to show the line chart for student strength -->
-                   <div class="student-strength-container inline">
+                   <div class="student-strength-container inline" id="students">
                        <h2>Student Strength</h2>
                        <hr/>
                        <div class="student_strength_canvas">
@@ -197,7 +223,7 @@
                        </div>
                    </div>
                    <!-- Division to show the bar chart for rejected and accepted applications -->
-                   <div class="rejected-application-container inline">
+                   <div class="rejected-application-container inline" id="Applications">
                        <h2>Application Status</h2>
                        <hr/>
                        <div class="rejected_canvas">
@@ -206,7 +232,7 @@
                        </div>
                    </div>
                    <!-- Division to show the bar chart for average marks -->
-                   <div class="class-average-marks-container inline">
+                   <div class="class-average-marks-container inline" id="exams">
                        <h2>Average Marks</h2>
                        <hr/>
                        <div class="average_mark_canvas">
@@ -215,7 +241,7 @@
                    </div>
                </div>
                <!-- Division to show the doughnut chart for attendance -->
-               <div class="doughnut-container inline">
+               <div class="doughnut-container inline" id="all_attendance">
                    <h2>Attendance</h2>
                    <hr/>
                    <!-- Division for attendance filter -->

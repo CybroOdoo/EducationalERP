@@ -3,8 +3,8 @@
 #
 #    Cybrosys Technologies Pvt. Ltd.
 #
-#    Copyright (C) 2024-TODAY Cybrosys Technologies(<https://www.cybrosys.com>).
-#    Author: Jumana Haseen (odoo@cybrosys.com)
+#    Copyright (C) 2026-TODAY Cybrosys Technologies(<https://www.cybrosys.com>).
+#    Author: Cybrosys Techno Solutions(<https://www.cybrosys.com>)
 #
 #    You can modify it under the terms of the GNU AFFERO
 #    GENERAL PUBLIC LICENSE (AGPL v3), Version 3.
@@ -38,12 +38,18 @@ class ErpDashboard(models.Model):
         faculties = self.env['education.faculty'].search([])
         amenities = self.env['education.amenities'].search([])
         exams = self.env['education.exam'].search([])
+        promotions = self.env['education.student.final.result'].search([])
+        timetable = self.env['education.timetable'].search([])
+        attendance = self.env['education.attendance'].search([])
         return {
             'applications': len(applications),
             'students': len(students),
             'faculties': len(faculties),
             'amenities': len(amenities),
             'exams': len(exams),
+            'promotions': len(promotions),
+            'timetable': len(timetable),
+            'attendance': len(attendance),
         }
 
     @api.model

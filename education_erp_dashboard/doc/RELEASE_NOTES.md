@@ -1,7 +1,8 @@
 ## Module <education_erp_dashboard>
 
-#### 02.08.2024
+#### 04.07.2026
 #### Version 17.0.1.0.0
 #### ADD
 
-- Initial commit for Educational ERP Dashboard
+- Initial release of Educational ERP Dashboard.
+- An integrated view of the education ERP system
