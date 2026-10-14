@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Form View ────────────────────────────────────────────────── -->
+    <record id="education_timetable_view_form" model="ir.ui.view">
+        <field name="name">education.timetable.form</field>
+        <field name="model">education.timetable</field>
+        <field name="arch" type="xml">
+            <form string="Class Timetable">
+                <header>
+                    <button name="action_open_generate_wizard" type="object"
+                            string="Auto-Generate Slots"
+                            class="btn-primary"
+                            icon="fa-magic"
+                            invisible="state != 'draft'"/>
+                    <button name="action_publish" type="object"
+                            string="Publish"
+                            invisible="state != 'draft'"
+                            class="btn-success"
+                            groups="education_core.group_education_admin"/>
+                    <button name="action_reset_draft" type="object"
+                            string="Reset to Draft"
+                            invisible="state != 'published'"
+                            groups="education_core.group_education_admin"/>
+                    <button name="action_print_timetable" type="object"
+                            string="Print Timetable"
+                            class="btn-secondary"
+                            icon="fa-print"
+                            data-hotkey="P"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,published"/>
+                </header>
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group name="main">
+                        <group name="timetable_class_info" string="Academic Target">
+                            <field name="class_id" options="{'no_create': True}"/>
+                            <field name="academic_year_id" options="{'no_create': True}"/>
+                        </group>
+                        <group name="timetable_validity_info" string="Validity Period">
+                            <field name="effective_from"/>
+                            <field name="effective_to"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Timetable Slots" name="slots">
+                            <field name="slot_ids" mode="list" nolabel="1"
+                                   context="{'default_timetable_id': id}">
+                                <list string="Slots" editable="bottom"
+                                      default_order="weekday, period_no">
+                                    <field name="program_id" column_invisible="1"/>
+                                    <field name="weekday"/>
+                                    <field name="period_no"/>
+                                    <field name="start_time" widget="float_time"/>
+                                    <field name="end_time" widget="float_time"/>
+                                    <field name="subject_id" options="{'no_create': True}"/>
+                                    <field name="teacher_id" domain="[('is_faculty', '=', True)]" options="{'no_create': True}"/>
+                                    <field name="classroom_id" optional="show" options="{'no_create': True}"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" nolabel="1" placeholder="Internal notes or instructions..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ────────────────────────────────────────────────── -->
+    <record id="education_timetable_view_list" model="ir.ui.view">
+        <field name="name">education.timetable.list</field>
+        <field name="model">education.timetable</field>
+        <field name="arch" type="xml">
+            <list string="Timetables" default_order="academic_year_id desc, class_id" sample="1">
+                <field name="name" decoration-bf="1"/>
+                <field name="class_id"/>
+                <field name="academic_year_id"/>
+                <field name="effective_from"/>
+                <field name="effective_to"/>
+                <field name="slot_count" string="Slots"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'published'"
+                       decoration-muted="state == 'archived'"
+                       decoration-warning="state == 'draft'"/>
+                <field name="active" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Search View ──────────────────────────────────────────────── -->
+    <record id="education_timetable_view_search" model="ir.ui.view">
+        <field name="name">education.timetable.search</field>
+        <field name="model">education.timetable</field>
+        <field name="arch" type="xml">
+            <search string="Search Timetables">
+                <field name="name"/>
+                <field name="class_id"/>
+                <field name="academic_year_id"/>
+                <separator/>
+                <filter string="Published" name="filter_published" domain="[('state', '=', 'published')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <separator/>
+                <filter string="Current Academic Year" name="filter_current_year" domain="[('academic_year_id.is_current', '=', True)]"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Class" name="group_by_class" context="{'group_by': 'class_id'}"/>
+                    <filter string="Academic Year" name="group_by_year" context="{'group_by': 'academic_year_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Calendar View ────────────────────────────────────────────── -->
+    <record id="education_timetable_view_calendar" model="ir.ui.view">
+        <field name="name">education.timetable.calendar</field>
+        <field name="model">education.timetable</field>
+        <field name="arch" type="xml">
+            <calendar string="Timetable Calendar"
+                      date_start="effective_from"
+                      date_stop="effective_to"
+                      color="class_id"
+                      mode="month"
+                      quick_create="0"
+                      event_open_popup="1">
+                <field name="name"/>
+                <field name="class_id"/>
+                <field name="academic_year_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ── Window Action ────────────────────────────────────────────── -->
+    <record id="education_timetable_action" model="ir.actions.act_window">
+        <field name="name">Timetables</field>
+        <field name="path">timetables</field>
+        <field name="res_model">education.timetable</field>
+        <field name="view_mode">list,calendar,form</field>
+        <field name="search_view_id" ref="education_timetable_view_search"/>
+        <field name="context">{'search_default_filter_current_year': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No timetables created yet
+            </p>
+            <p>
+                Create a timetable for each class and add period slots.
+            </p>
+        </field>
+    </record>
+
+</odoo>

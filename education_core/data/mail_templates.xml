@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--
+        education_core — Email Templates (S2-T08)
+        Admission workflow: Application Received, Approved, Rejected.
+    -->
+
+    <!-- ── Application Received ──────────────────────────────────────────── -->
+    <record id="mail_template_application_received" model="mail.template">
+        <field name="name">Admission: Application Received</field>
+        <field name="model_id" ref="model_education_application"/>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="subject">Application Received — {{ object.admission_no }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: #1F3864; color: #000; padding: 20px 30px;">
+                    <h2 style="margin: 0;">Application Received</h2>
+                </div>
+                <div style="padding: 30px; background: #f9f9f9;">
+                    <p>Dear <strong t-out="object.first_name"/>,</p>
+                    <p>
+                        Thank you for submitting your application to
+                        <strong t-out="object.company_id.name"/>.
+                        We have received your application and it is currently
+                        under review.
+                    </p>
+                    <table style="border-collapse: collapse; width: 100%; margin: 20px 0;">
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee; width: 40%;">
+                                <strong>Application No.</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.admission_no"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Program Applied</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.program_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Academic Year</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.academic_year_id.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        You will be notified via email once a decision has been made.
+                        Please keep your application number for future reference.
+                    </p>
+                    <p>Regards,<br/>
+                        <strong>Admissions Team</strong><br/>
+                        <t t-out="object.company_id.name"/>
+                    </p>
+                </div>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- ── Application Approved ──────────────────────────────────────────── -->
+    <record id="mail_template_application_approved" model="mail.template">
+        <field name="name">Admission: Application Approved</field>
+        <field name="model_id" ref="model_education_application"/>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="subject">Congratulations! Application Approved — {{ object.admission_no }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: #28a745; color: #000; padding: 20px 30px;">
+                    <h2 style="margin: 0;">🎉 Application Approved!</h2>
+                </div>
+                <div style="padding: 30px; background: #f9f9f9;">
+                    <p>Dear <strong t-out="object.first_name"/>,</p>
+                    <p>
+                        We are pleased to inform you that your application has been
+                        <strong style="color: #28a745;">APPROVED</strong>.
+                        Welcome to <strong t-out="object.company_id.name"/>!
+                    </p>
+                    <table style="border-collapse: collapse; width: 100%; margin: 20px 0;">
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee; width: 40%;">
+                                <strong>Application No.</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.admission_no"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Program</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.program_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Enrollment No.</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.enrollment_id.enrollment_no or 'Pending'"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        Your portal login invitation will be sent shortly.
+                        Please check your email and complete the document checklist
+                        before the enrollment deadline.
+                    </p>
+                    <p>Regards,<br/>
+                        <strong>Admissions Team</strong><br/>
+                        <t t-out="object.company_id.name"/>
+                    </p>
+                </div>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- ── Application Rejected ──────────────────────────────────────────── -->
+    <record id="mail_template_application_rejected" model="mail.template">
+        <field name="name">Admission: Application Rejected</field>
+        <field name="model_id" ref="model_education_application"/>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="subject">Application Update — {{ object.admission_no }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: #6c757d; color: #000; padding: 20px 30px;">
+                    <h2 style="margin: 0;">Application Decision</h2>
+                </div>
+                <div style="padding: 30px; background: #f9f9f9;">
+                    <p>Dear <strong t-out="object.first_name"/>,</p>
+                    <p>
+                        Thank you for your interest in
+                        <strong t-out="object.company_id.name"/>.
+                        After careful review, we regret to inform you that your
+                        application (<t t-out="object.admission_no"/>) has not
+                        been approved at this time.
+                    </p>
+                    <div style="background: #fff3cd; border-left: 4px solid #ffc107;
+                                padding: 12px 16px; margin: 16px 0;">
+                        <strong>Reason:</strong>
+                        <p style="margin: 8px 0 0;" t-out="object.rejection_reason"/>
+                    </div>
+                    <p>
+                        You are welcome to re-apply for the next academic year.
+                        Please contact the admissions office if you have any questions.
+                    </p>
+                    <p>Regards,<br/>
+                        <strong>Admissions Team</strong><br/>
+                        <t t-out="object.company_id.name"/>
+                    </p>
+                </div>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- ── Attendance: Absent Notification to Parent ─────────────────── -->
+    <record id="mail_template_attendance_absent" model="mail.template">
+        <field name="name">Attendance: Absence Notification</field>
+        <field name="model_id" ref="model_education_attendance"/>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ object.enrollment_id.guardian_email }}</field>
+        <field name="subject">Absence Notification — {{ object.student_name }} ({{ object.date }})</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: #dc3545; color: #fff; padding: 16px 24px;">
+                    <h3 style="margin: 0;">Absence Alert</h3>
+                </div>
+                <div style="padding: 20px; background: #f9f9f9;">
+                    <p>Dear Parent / Guardian,</p>
+                    <p>
+                        This is to inform you that
+                        <strong t-out="object.student_name"/> was marked
+                        <strong>Absent</strong> on
+                        <strong t-out="object.date"/>.
+                    </p>
+                    <p>Please contact the institution if this is in error.</p>
+                    <p>Regards,<br/><t t-out="object.company_id.name"/></p>
+                </div>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- ── Attendance: Below 75% Warning ────────────────────────────── -->
+    <record id="mail_template_attendance_warning" model="mail.template">
+        <field name="name">Attendance: Below 75% Warning</field>
+        <field name="model_id" ref="model_education_enrollment"/>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ object.guardian_email }}</field>
+        <field name="subject">Attendance Warning — {{ object.student_name }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: #ffc107; color: #333; padding: 16px 24px;">
+                    <h3 style="margin: 0;">⚠️ Attendance Below Required Threshold</h3>
+                </div>
+                <div style="padding: 20px; background: #f9f9f9;">
+                    <p>Dear Parent / Guardian,</p>
+                    <p>
+                        <strong t-out="object.student_name"/>'s attendance has fallen
+                        below the required 75% threshold.
+                        Immediate improvement is necessary to avoid academic penalties.
+                    </p>
+                    <p>Please contact the institution for further information.</p>
+                    <p>Regards,<br/><t t-out="object.company_id.name"/></p>
+                </div>
+            </div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+
+    <!-- ── Leave Request Approved ──────────────────────────────────────── -->
+    <record id="mail_template_leave_request_approved" model="mail.template">
+        <field name="name">Leave Request: Approved</field>
+        <field name="model_id" ref="model_education_leave_request"/>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ (object.enrollment_id.student_email or object.enrollment_id.guardian_email) }}</field>
+        <field name="subject">Leave Request Approved — {{ object.reference }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: #28a745; color: #000; padding: 20px 30px;">
+                    <h2 style="margin: 0;">✓ Leave Request Approved</h2>
+                </div>
+                <div style="padding: 30px; background: #f9f9f9;">
+                    <p>Dear <strong t-out="object.student_name"/>,</p>
+                    <p>
+                        Your leave request has been
+                        <strong style="color: #28a745;">APPROVED</strong>.
+                        The classes scheduled during this period will be marked as excused.
+                    </p>
+                    <table style="border-collapse: collapse; width: 100%; margin: 20px 0;">
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee; width: 40%;">
+                                <strong>Reference No.</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.reference"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Class</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.class_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Leave Type</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="dict(object._fields['leave_type'].selection).get(object.leave_type, object.leave_type)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Duration</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.date_from"/> to <t t-out="object.date_to"/> (<t t-out="object.days_count"/> day(s))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Approved By</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.approved_by_id.name or 'Academic Office'"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Please ensure you coordinate with your subject teachers to cover any coursework missed during this absence.</p>
+                    <p>Regards,<br/>
+                        <strong>Academic Administration</strong><br/>
+                        <t t-out="object.company_id.name"/>
+                    </p>
+                </div>
+            </div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+
+    <!-- ── Leave Request Rejected ──────────────────────────────────────── -->
+    <record id="mail_template_leave_request_rejected" model="mail.template">
+        <field name="name">Leave Request: Rejected</field>
+        <field name="model_id" ref="model_education_leave_request"/>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ (object.enrollment_id.student_email or object.enrollment_id.guardian_email) }}</field>
+        <field name="subject">Leave Request Update — {{ object.reference }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: #6c757d; color: #00; padding: 20px 30px;">
+                    <h2 style="margin: 0;">Leave Request Decision</h2>
+                </div>
+                <div style="padding: 30px; background: #f9f9f9;">
+                    <p>Dear <strong t-out="object.student_name"/>,</p>
+                    <p>
+                        We regret to inform you that your leave request
+                        (<t t-out="object.reference"/>) for the period
+                        <strong t-out="object.date_from"/> to <strong t-out="object.date_to"/>
+                        has not been approved.
+                    </p>
+                    <t t-if="object.rejection_reason">
+                        <div style="background: #fff3cd; border-left: 4px solid #ffc107;
+                                    padding: 12px 16px; margin: 16px 0;">
+                            <strong>Reason for Rejection:</strong>
+                            <p style="margin: 8px 0 0;" t-out="object.rejection_reason"/>
+                        </div>
+                    </t>
+                    <table style="border-collapse: collapse; width: 100%; margin: 20px 0;">
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee; width: 40%;">
+                                <strong>Reference No.</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.reference"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Class</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.class_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; background: #eee;">
+                                <strong>Reviewed By</strong>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <t t-out="object.approved_by_id.name or 'Academic Office'"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        If you believe this decision was made in error or have additional supporting documents to provide, please contact your class teacher or the academic department.
+                    </p>
+                    <p>Regards,<br/>
+                        <strong>Academic Administration</strong><br/>
+                        <t t-out="object.company_id.name"/>
+                    </p>
+                </div>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+ </odoo>

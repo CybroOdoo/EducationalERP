@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="education_core.FacultyDashboard">
+        <div class="o_ed_dashboard o_action" t-ref="root">
+            <div class="o_ed_dashboard_body" t-att-class="bodyClass">
+                <t t-set="d" t-value="state.data"/>
+
+                <!-- ═══ Header + filters ═════════════════════════════ -->
+                <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+                    <div>
+                        <t t-if="d and d.mode === 'faculty'">
+                            <button t-if="d.is_admin" class="btn btn-link p-0 mb-1" t-on-click="backToAll">
+                                <i class="fa fa-arrow-left me-1"/>All faculty
+                            </button>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="o_ed_avatar"><t t-out="initials"/></div>
+                                <div>
+                                    <h2 class="mb-0"><t t-out="fac.profile.name"/></h2>
+                                    <span class="text-muted">
+                                        <t t-out="fac.profile.designation or 'Faculty'"/>
+                                        <t t-if="fac.profile.department"> · <t t-out="fac.profile.department"/></t>
+                                    </span>
+                                    <div t-if="fac.subjects.length" class="mt-1 d-flex flex-wrap gap-1">
+                                        <span t-foreach="fac.subjects" t-as="subj" t-key="subj_index" class="badge text-bg-light border"><t t-out="subj"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <h2 class="mb-0">Faculty Dashboard</h2>
+                            <span class="text-muted">All faculty members — workload and attendance marking</span>
+                        </t>
+                    </div>
+
+                    <div class="o_ed_filters" t-if="d and d.mode !== 'none'">
+                        <select class="form-select" t-on-change="onPeriodChange" title="Period">
+                            <t t-foreach="periods" t-as="p" t-key="p.key">
+                                <option t-att-value="p.key" t-att-selected="p.key === state.period"><t t-out="p.label"/></option>
+                            </t>
+                        </select>
+                        <t t-if="state.period === 'custom'">
+                            <input type="date" class="form-control" t-att-value="state.date_from" t-on-change="(ev) => this.onDateChange('date_from', ev)"/>
+                            <input type="date" class="form-control" t-att-value="state.date_to" t-on-change="(ev) => this.onDateChange('date_to', ev)"/>
+                        </t>
+                        <select t-if="d.mode === 'admin'" class="form-select" t-on-change="(ev) => this.onFilterChange('department_id', ev)" title="Department">
+                            <option value="">All Departments</option>
+                            <t t-foreach="d.department_options" t-as="dep" t-key="dep.id">
+                                <option t-att-value="dep.id" t-att-selected="sameId(dep.id, state.department_id)"><t t-out="dep.name"/></option>
+                            </t>
+                        </select>
+                        <select class="form-select" t-on-change="(ev) => this.onFilterChange('class_id', ev)" title="Class">
+                            <option value=""><t t-out="d.mode === 'admin' ? 'All Classes' : 'All My Classes'"/></option>
+                            <t t-foreach="d.class_options" t-as="c" t-key="c.id">
+                                <option t-att-value="c.id" t-att-selected="sameId(c.id, state.class_id)"><t t-out="c.name"/></option>
+                            </t>
+                        </select>
+                        <button t-if="hasActiveFilters" class="btn btn-link text-nowrap" t-on-click="resetFilters">
+                            <i class="fa fa-times me-1"/>Reset
+                        </button>
+                        <button class="btn btn-light border" t-on-click="() => this.load()" title="Refresh">
+                            <i class="fa fa-refresh" t-att-class="{'fa-spin': state.loading}"/>
+                        </button>
+                    </div>
+                </div>
+
+                <div t-if="state.loading and !d" class="text-center text-muted py-5">
+                    <i class="fa fa-circle-o-notch fa-spin fa-2x"/>
+                </div>
+
+                <!-- ═══ No faculty profile ═══════════════════════════ -->
+                <div t-if="d and d.mode === 'none'" class="o_ed_panel text-center text-muted py-5">
+                    <i class="fa fa-user-circle-o fa-3x mb-3"/>
+                    <h5>No faculty profile is linked to your user</h5>
+                    <p class="mb-0">Ask an administrator to link your user to a faculty employee record.</p>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════
+                     ADMIN VIEW
+                     ═══════════════════════════════════════════════════ -->
+                <t t-if="d and d.mode === 'admin'">
+                    <t t-set="k" t-value="admin.kpis"/>
+                    <t t-set="ex" t-value="admin.exams"/>
+
+                    <div class="o_ed_attention mb-3">
+                        <t t-if="adminAttention.length">
+                            <span class="fw-semibold me-1"><i class="fa fa-bell-o me-1"/>Needs attention</span>
+                            <t t-foreach="adminAttention" t-as="item" t-key="item_index">
+                                <button type="button" t-attf-class="btn btn-sm o_ed_chip o_ed_chip_#{item.tone}" t-on-click="item.click">
+                                    <i t-attf-class="fa #{item.icon} me-1"/><t t-out="item.text"/>
+                                </button>
+                            </t>
+                        </t>
+                        <span t-else="" class="text-success fw-semibold">
+                            <i class="fa fa-check-circle me-1"/>Everything is on track — nothing needs attention.
+                        </span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-id-badge'" tone="'primary'" value="k.faculty" label="'Faculty members'" onClick="() => this.onFacultyList()"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-users'" tone="'success'" value="k.students" label="'Students taught'" onClick="() => this.onAdminStudents()"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-calendar-check-o'" tone="rateTone(k.attendance_rate)" value="k.attendance_rate + '%'" label="'Attendance rate'"
+                                     sub="periodLabel" onClick="() => this.onAdminAttendance()"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-exclamation-circle'" tone="k.pending_classes ? 'danger' : 'success'" value="k.pending_classes"
+                                     label="'Classes without attendance today'" onClick="() => this.openClasses('Classes without attendance today', admin.marking.pending_ids)"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-user-times'" tone="k.no_class_teacher ? 'warning' : 'success'" value="k.no_class_teacher"
+                                     label="'Classes without class teacher'" onClick="() => this.openClasses('Classes without class teacher', admin.no_teacher_ids)"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-th-list'" tone="'info'" value="k.weekly_periods" label="'Weekly periods scheduled'" onClick="() => this.onAdminPeriods()"/>
+                        </div>
+                        <t t-if="ex.enabled">
+                            <div class="col-6 col-xl-3">
+                                <KpiCard icon="'fa-pencil'" tone="'primary'" value="k.upcoming_exams" label="'Upcoming exams'"
+                                         onClick="() => this.openExams('Upcoming Exams', ['scheduled', 'ongoing'], admin.scope_class_ids)"/>
+                            </div>
+                            <div class="col-6 col-xl-3">
+                                <KpiCard icon="'fa-pencil-square-o'" tone="k.under_valuation ? 'warning' : 'success'" value="k.under_valuation" label="'Exams under valuation'"
+                                         sub="ex.pending_reeval + ' re-evaluation request(s) pending'" onClick="() => this.openExams('Exams Under Valuation', ['valuation'], admin.scope_class_ids)"/>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-lg-4">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">Attendance marking today</h5>
+                                <DonutChart segments="markingSegments" centerValue="admin.marking.done + '/' + (admin.marking.done + admin.marking.pending)"
+                                            centerLabel="'classes marked'" legendTitle="'Classes with a period today'"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">Weekly teaching load <small class="text-muted fw-normal">· periods</small></h5>
+                                <BarList rows="loadRows" tone="'primary'"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">Exams waiting for valuation</h5>
+                                <t t-if="ex.enabled">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <tbody>
+                                                <t t-foreach="ex.valuation_list" t-as="e" t-key="e.id">
+                                                    <tr class="o_ed_clickable" t-on-click="() => this.openRecord('education.exam', e.id)">
+                                                        <td><strong><t t-out="e.name"/></strong><div class="small text-muted"><t t-out="e.classes"/></div></td>
+                                                        <td class="text-end small text-muted"><t t-out="e.date"/></td>
+                                                    </tr>
+                                                </t>
+                                                <tr t-if="!ex.valuation_list.length"><td class="text-center text-muted py-4">Nothing waiting for valuation 🎉</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                                <div t-else="" class="text-muted small">Exam app is not installed.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="o_ed_panel">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+                            <h5 class="o_ed_title mb-0">Faculty <small class="text-muted fw-normal">· click a row to open that faculty's dashboard</small></h5>
+                            <input type="search" class="form-control o_ed_search" placeholder="Search faculty…" t-model="state.search"/>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Faculty</th>
+                                        <th>Department</th>
+                                        <th class="text-end">Classes</th>
+                                        <th class="text-end">Students</th>
+                                        <th class="text-end">Subjects</th>
+                                        <th class="text-end">Periods / week</th>
+                                        <th class="text-end">Today</th>
+                                        <th style="min-width: 150px">Attendance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="filteredFaculties" t-as="r" t-key="r.id">
+                                        <tr class="o_ed_clickable" t-att-class="{'o_ed_row_selected': state.selectedId === r.id}" t-on-click="() => this.openFaculty(r.id)">
+                                            <td>
+                                                <strong><t t-out="r.name"/></strong>
+                                                <i t-if="state.selectedId === r.id" class="fa fa-circle-o-notch fa-spin ms-2 text-primary"/>
+                                                <div class="small text-muted"><t t-out="r.designation"/></div>
+                                            </td>
+                                            <td><t t-out="r.department or '—'"/></td>
+                                            <td class="text-end"><t t-out="r.classes"/></td>
+                                            <td class="text-end"><t t-out="r.students"/></td>
+                                            <td class="text-end"><t t-out="r.subjects"/></td>
+                                            <td class="text-end"><t t-out="r.weekly_periods"/></td>
+                                            <td class="text-end">
+                                                <t t-out="r.today_periods"/>
+                                                <span t-if="r.today_pending" class="badge text-bg-danger ms-1" title="Classes without attendance today"><t t-out="r.today_pending"/> pending</span>
+                                            </td>
+                                            <td>
+                                                <div t-if="r.attendance_rate !== null" class="d-flex align-items-center gap-2">
+                                                    <div class="progress flex-grow-1" style="height: 8px">
+                                                        <div t-attf-class="progress-bar bg-#{rateTone(r.attendance_rate)}" t-attf-style="width: #{r.attendance_rate}%"/>
+                                                    </div>
+                                                    <strong><t t-out="r.attendance_rate"/>%</strong>
+                                                </div>
+                                                <span t-else="" class="text-muted small">No records</span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr t-if="!filteredFaculties.length"><td colspan="8" class="text-center text-muted py-4">No faculty members match the selected filters.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- ═══════════════════════════════════════════════════
+                     FACULTY VIEW
+                     ═══════════════════════════════════════════════════ -->
+                <t t-if="d and d.mode === 'faculty'">
+                    <t t-set="k" t-value="fac.kpis"/>
+                    <t t-set="ex" t-value="fac.exams"/>
+
+                    <div class="o_ed_attention mb-3">
+                        <t t-if="facultyAttention.length">
+                            <span class="fw-semibold me-1"><i class="fa fa-bell-o me-1"/>Needs attention</span>
+                            <t t-foreach="facultyAttention" t-as="item" t-key="item_index">
+                                <button type="button" t-attf-class="btn btn-sm o_ed_chip o_ed_chip_#{item.tone}" t-on-click="item.click">
+                                    <i t-attf-class="fa #{item.icon} me-1"/><t t-out="item.text"/>
+                                </button>
+                            </t>
+                        </t>
+                        <span t-else="" class="text-success fw-semibold">
+                            <i class="fa fa-check-circle me-1"/>You're all caught up — nothing needs attention.
+                        </span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-th-large'" tone="'primary'" value="k.classes" label="'My classes'" onClick="() => this.openClasses('My Classes', fac.class_ids)"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-users'" tone="'success'" value="k.students" label="'My students'" onClick="() => this.onMyStudents()"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-clock-o'" tone="'info'" value="k.today_periods" label="'Periods today'" sub="fac.work_hours_today" onClick="() => this.onTodayPeriods()"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-exclamation-circle'" tone="k.pending_attendance ? 'danger' : 'success'" value="k.pending_attendance"
+                                     label="'Attendance pending today'" onClick="() => this.openClasses('Attendance pending today', fac.pending_class_ids)"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-calendar-check-o'" tone="rateTone(k.attendance_rate)" value="k.attendance_rate + '%'" label="'Attendance rate'"
+                                     sub="periodLabel" onClick="() => this.onMyAttendance()"/>
+                        </div>
+                        <div class="col-6 col-xl-3">
+                            <KpiCard icon="'fa-user-times'" tone="k.low_attendance ? 'warning' : 'success'" value="k.low_attendance" label="'Students below 75% attendance'"
+                                     onClick="() => this.onLowAttendance()"/>
+                        </div>
+                        <t t-if="ex.enabled">
+                            <div class="col-6 col-xl-3">
+                                <KpiCard icon="'fa-pencil'" tone="'primary'" value="k.upcoming_exams" label="'Upcoming exams'"
+                                         onClick="() => this.openExams('Upcoming Exams', ['scheduled', 'ongoing'], fac.class_ids)"/>
+                            </div>
+                            <div class="col-6 col-xl-3">
+                                <KpiCard icon="'fa-pencil-square-o'" tone="k.under_valuation ? 'warning' : 'success'" value="k.under_valuation" label="'Exams to value'"
+                                         sub="ex.pending_reeval + ' re-evaluation request(s)'" onClick="() => this.openExams('Exams Under Valuation', ['valuation'], fac.class_ids)"/>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-lg-7">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">Today's schedule</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead><tr><th>Period</th><th>Time</th><th>Subject</th><th>Class</th><th>Room</th><th>Attendance</th></tr></thead>
+                                        <tbody>
+                                            <t t-foreach="fac.today_schedule" t-as="slot" t-key="slot.id">
+                                                <tr class="o_ed_clickable" t-att-class="{'o_ed_row_now': slotStatus(slot) === 'now', 'o_ed_row_done': slotStatus(slot) === 'done'}"
+                                                    t-on-click="() => this.openClassAttendance(slot.class_id)">
+                                                    <td><strong>P<t t-out="slot.period"/></strong>
+                                                        <span t-if="slotStatus(slot) === 'now'" class="badge text-bg-success ms-1">Now</span></td>
+                                                    <td class="text-nowrap"><t t-out="slot.start_label"/> – <t t-out="slot.end_label"/></td>
+                                                    <td><t t-out="slot.subject"/></td>
+                                                    <td><t t-out="slot.class_name"/></td>
+                                                    <td><t t-out="slot.room or '—'"/></td>
+                                                    <td><span t-attf-class="badge text-bg-#{classStatusTone(slot.attendance)}"><t t-out="classStatusLabel(slot.attendance)"/></span></td>
+                                                </tr>
+                                            </t>
+                                            <tr t-if="!fac.today_schedule.length"><td colspan="6" class="text-center text-muted py-4">No periods scheduled for today.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-5">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">My week <small class="text-muted fw-normal">· periods per day</small></h5>
+                                <TrendBars rows="weekRows" tone="'primary'"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-lg-5">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">Attendance <small class="text-muted fw-normal">· <t t-out="periodLabel"/></small></h5>
+                                <DonutChart segments="attendanceSegments" centerValue="k.attendance_rate + '%'" centerLabel="'present'" legendTitle="'Click to open records'"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-7">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">Daily attendance <small class="text-muted fw-normal">· % present</small></h5>
+                                <TrendBars rows="trendRows" max="100" unit="'%'" tone="'info'"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-xl-7">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">My classes</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead><tr><th>Class</th><th class="text-end">Students</th><th>Today</th><th style="min-width: 150px">Attendance</th></tr></thead>
+                                        <tbody>
+                                            <t t-foreach="fac.classes" t-as="c" t-key="c.id">
+                                                <tr class="o_ed_clickable" t-on-click="() => this.openClassRoster(c.id)">
+                                                    <td><strong><t t-out="c.name"/></strong>
+                                                        <span t-if="c.is_class_teacher" class="badge text-bg-primary ms-1">Class teacher</span></td>
+                                                    <td class="text-end"><t t-out="c.students"/></td>
+                                                    <td><span t-attf-class="badge text-bg-#{classStatusTone(c.today)}"><t t-out="classStatusLabel(c.today)"/></span></td>
+                                                    <td>
+                                                        <div t-if="c.rate !== null" class="d-flex align-items-center gap-2">
+                                                            <div class="progress flex-grow-1" style="height: 8px">
+                                                                <div t-attf-class="progress-bar bg-#{rateTone(c.rate)}" t-attf-style="width: #{c.rate}%"/>
+                                                            </div>
+                                                            <strong><t t-out="c.rate"/>%</strong>
+                                                        </div>
+                                                        <span t-else="" class="text-muted small">No records</span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <tr t-if="!fac.classes.length"><td colspan="4" class="text-center text-muted py-4">No classes assigned.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-5">
+                            <div class="o_ed_panel h-100">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="o_ed_title">Students needing attention <small class="text-muted fw-normal">· below 75%</small></h5>
+                                    <a t-if="fac.low_student_ids.length" href="#" class="small" t-on-click.prevent="() => this.onLowAttendance()">View all</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead><tr><th>Student</th><th class="text-end">Absent</th><th class="text-end">Attendance</th></tr></thead>
+                                        <tbody>
+                                            <t t-foreach="fac.low_students" t-as="s" t-key="s.id">
+                                                <tr class="o_ed_clickable" t-on-click="() => this.openRecord('education.enrollment', s.id)">
+                                                    <td><t t-out="s.student"/><div class="small text-muted"><t t-out="s.class"/></div></td>
+                                                    <td class="text-end"><t t-out="s.absent"/> / <t t-out="s.total"/></td>
+                                                    <td class="text-end"><strong t-attf-class="text-#{rateTone(s.rate)}"><t t-out="s.rate"/>%</strong></td>
+                                                </tr>
+                                            </t>
+                                            <tr t-if="!fac.low_students.length"><td colspan="3" class="text-center text-muted py-4">No student is below the attendance threshold 🎉</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3" t-if="ex.enabled">
+                        <div class="col-12 col-xl-7">
+                            <div class="o_ed_panel h-100">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="o_ed_title">Upcoming exams</h5>
+                                    <a href="#" class="small" t-on-click.prevent="() => this.openExams('Upcoming Exams', ['scheduled', 'ongoing'], fac.class_ids)">View all</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead><tr><th>Exam</th><th>Subject</th><th>Class</th><th>Date</th><th>Room</th></tr></thead>
+                                        <tbody>
+                                            <t t-foreach="ex.upcoming_list" t-as="e" t-key="e_index">
+                                                <tr class="o_ed_clickable" t-on-click="() => this.openRecord('education.exam', e.id)">
+                                                    <td><strong><t t-out="e.name"/></strong></td>
+                                                    <td><t t-out="e.subject"/></td>
+                                                    <td><t t-out="e.classes"/></td>
+                                                    <td class="text-nowrap"><t t-out="e.date"/> <span class="text-muted"><t t-out="e.time"/></span></td>
+                                                    <td><t t-out="e.room or '—'"/></td>
+                                                </tr>
+                                            </t>
+                                            <tr t-if="!ex.upcoming_list.length"><td colspan="5" class="text-center text-muted py-4">No upcoming exams for your classes.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-5">
+                            <div class="o_ed_panel h-100">
+                                <h5 class="o_ed_title">Waiting for valuation</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <tbody>
+                                            <t t-foreach="ex.valuation_list" t-as="e" t-key="e.id">
+                                                <tr class="o_ed_clickable" t-on-click="() => this.openRecord('education.exam', e.id)">
+                                                    <td><strong><t t-out="e.name"/></strong><div class="small text-muted"><t t-out="e.classes"/></div></td>
+                                                    <td class="text-end small text-muted"><t t-out="e.date"/></td>
+                                                </tr>
+                                            </t>
+                                            <tr t-if="!ex.valuation_list.length"><td class="text-center text-muted py-4">Nothing waiting for valuation 🎉</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

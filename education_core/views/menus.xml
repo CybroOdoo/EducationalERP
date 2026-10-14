@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Education ERP — Root Application Menu
+        All sub-menus for every module hang off this root.
+    -->
+    <menuitem
+            id="menu_education_root"
+            name="Education Management"
+            sequence="1"
+            groups="education_core.group_education_admin,education_core.group_education_admission_officer,education_core.group_education_teacher,education_core.group_education_accountant,education_core.group_education_hostel_warden"/>
+    <menuitem
+            id="menu_education_student"
+            name="Enrollments"
+            sequence="2"
+            web_icon="education_core,static/description/enrollments.png"
+            groups="education_core.group_education_admin,education_core.group_education_admission_officer,education_core.group_education_teacher,education_core.group_education_accountant,education_core.group_education_hostel_warden"/>
+
+
+    <!-- ── Configuration Submenu (root-level) ─────────────────────────── -->
+    <menuitem
+            id="menu_education_config"
+            name="Configuration"
+            parent="menu_education_root"
+            sequence="100"
+            groups="education_core.group_education_admin"/>
+
+    <!-- ── Institution Profile ──────────────────────────────────────── -->
+    <menuitem
+            id="menu_res_company"
+            name="Institution Profile"
+            parent="menu_education_config"
+            action="res_company_action"
+            sequence="10"
+            groups="education_core.group_education_admin"/>
+
+
+    <menuitem
+            id="menu_education_academics"
+            name="Academics"
+            parent="education_core.menu_education_config"
+            sequence="20"
+            groups="education_core.group_education_admin"/>
+    <!-- Academic Years -->
+    <menuitem
+            id="menu_academic_year"
+            name="Academic Years"
+            parent="menu_education_academics"
+            action="education_academic_year_action"
+            sequence="10"
+            groups="education_core.group_education_admin"/>
+
+    <!-- Departments -->
+    <menuitem
+            id="menu_education_department"
+            name="Departments"
+            parent="menu_education_academics"
+            action="education_department_action"
+            sequence="20"
+            groups="education_core.group_education_admin"/>
+
+    <!-- Programs -->
+    <menuitem
+            id="menu_education_program"
+            name="Programs"
+            parent="menu_education_academics"
+            action="education_program_action"
+            sequence="30"
+            groups="education_core.group_education_admin"/>
+
+    <!-- Classes -->
+    <menuitem
+            id="menu_education_class"
+            name="Classes / Sections"
+            parent="menu_education_academics"
+            action="education_class_action"
+            sequence="40"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+    <!-- ── Admissions submenu (Sprint 2) ─────────────────────────────── -->
+    <menuitem
+            id="menu_education_admissions"
+            name="Admissions"
+            parent="education_core.menu_education_student"
+            sequence="20"
+            groups="education_core.group_education_admin,education_core.group_education_admission_officer"/>
+
+    <!-- Synchronized action reference for Applications under Admissions -->
+    <menuitem
+            id="menu_education_application"
+            name="Applications"
+            parent="menu_education_admissions"
+            action="education_application_action"
+            sequence="10"
+            groups="education_core.group_education_admin,education_core.group_education_admission_officer"/>
+
+    <menuitem
+            id="menu_education_enrollment"
+            name="Enrollments"
+            parent="menu_education_admissions"
+            action="education_enrollment_action"
+            sequence="20"
+            groups="education_core.group_education_admin,education_core.group_education_admission_officer"/>
+
+    <!-- ── Attendance submenu (Sprint 3) ────────────────────────────── -->
+    <menuitem
+            id="menu_education_attendance_root"
+            name="Attendance"
+            parent="education_core.menu_education_student"
+            sequence="30"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+    <menuitem
+            id="menu_education_attendance"
+            name="Daily Attendance"
+            parent="menu_education_attendance_root"
+            action="education_class_action_2_education_attendance"
+            sequence="10"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+    <menuitem
+            id="menu_education_leave"
+            name="Leave Requests"
+            parent="menu_education_attendance_root"
+            action="education_leave_request_action"
+            sequence="20"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+
+    <menuitem
+            id="menu_education_timetable"
+            name="Timetables"
+            parent="menu_education_academics"
+            action="education_timetable_action"
+            sequence="50"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+    <!-- Weekly Schedule — slot kanban grid by weekday (S3-T10) -->
+    <menuitem
+            id="menu_education_timetable_slot"
+            name="Weekly Schedule"
+            parent="menu_education_academics"
+            action="education_timetable_slot_action"
+            sequence="55"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+    <!-- Subjects (linked to Programs) -->
+    <menuitem
+            id="menu_education_subject"
+            name="Subjects"
+            parent="menu_education_academics"
+            action="education_subject_action"
+            sequence="35"
+            groups="education_core.group_education_admin"/>
+
+    <!-- Classrooms / Exam Halls (S4-T12) -->
+    <menuitem
+            id="menu_edu_classroom"
+            name="Classrooms &amp; Halls"
+            parent="menu_education_academics"
+            action="education_classroom_action"
+            sequence="60"
+            groups="education_core.group_education_admin"/>
+
+    <!-- ── Faculty submenu ──────────────────────────────────────────── -->
+    <!--    <menuitem-->
+    <!--        id="menu_education_faculty_root"-->
+    <!--        name="Faculty"-->
+    <!--        parent="education_core.menu_education_root"-->
+    <!--        sequence="15"-->
+    <!--        groups="education_core.group_education_admin,education_core.group_education_teacher"/>-->
+
+    <menuitem
+            id="menu_hr_faculty"
+            name="Faculty"
+            parent="education_core.menu_education_root"
+            action="hr_employee_action_faculty"
+            sequence="10"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+
+    <!--    <menuitem-->
+    <!--        id="menu_academic_year_config"-->
+    <!--        name="Academic Years"-->
+    <!--        parent="menu_education_core_config"-->
+    <!--        action="education_academic_year_action"-->
+    <!--        sequence="10"-->
+    <!--        groups="education_core.group_education_admin"/>-->
+
+    <!--    <menuitem-->
+    <!--        id="menu_department_config"-->
+    <!--        name="Departments"-->
+    <!--        parent="menu_education_core_config"-->
+    <!--        action="education_department_action"-->
+    <!--        sequence="20"-->
+    <!--        groups="education_core.group_education_admin"/>-->
+
+    <!--    <menuitem-->
+    <!--        id="menu_program_config"-->
+    <!--        name="Programs"-->
+    <!--        parent="menu_education_core_config"-->
+    <!--        action="education_program_action"-->
+    <!--        sequence="30"-->
+    <!--        groups="education_core.group_education_admin"/>-->
+
+    <menuitem
+            id="menu_document_type_config"
+            name="Document Types"
+            parent="menu_education_academics"
+            action="education_document_type_action"
+            sequence="40"
+            groups="education_core.group_education_admin"/>
+
+
+    <!-- ── Reporting (under the Enrollments / students main menu) ───────── -->
+    <menuitem
+            id="menu_education_student_reporting"
+            name="Reporting"
+            parent="education_core.menu_education_student"
+            sequence="90"
+            groups="education_core.group_education_admin,education_core.group_education_teacher,education_core.group_education_admission_officer"/>
+
+    <!-- Moved here from the Attendance menu -->
+    <menuitem
+            id="menu_attendance_summary"
+            name="Attendance Summary Report"
+            parent="menu_education_student_reporting"
+            action="education_attendance_summary_action"
+            sequence="10"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+    <menuitem
+            id="menu_attendance_analysis"
+            name="Attendance Analysis"
+            parent="menu_education_student_reporting"
+            action="education_attendance_report_action"
+            sequence="20"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+
+    <!-- Client Action menus will be inherited on feature enabled(purchased) -->
+    <!-- Client Action Definition -->
+    <record id="action_restricted_menu_popup_client" model="ir.actions.client">
+        <field name="name">Restricted Access</field>
+        <field name="path">subscribe</field>
+        <field name="tag">action_restricted_menu_popup</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- menu dashboard -->
+
+    <!-- Feature placeholders ("contact the developers" popup).
+         Same idea as the Discipline menu above: when the module is
+         installed it redefines the placeholder by its xml id (hides it),
+         and its own menus appear as an app / main menu. -->
+
+    <menuitem
+            id="menu_education_discipline_root"
+            name="Discipline"
+            action="action_restricted_menu_popup_client"
+            parent="education_core.menu_education_root"
+            sequence="55"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+
+    <!-- Examinations -->
+    <menuitem
+            id="menu_education_exam_placeholder"
+            name="Examinations"
+            action="action_restricted_menu_popup_client"
+            parent="education_core.menu_education_root"
+            sequence="60"
+            groups="education_core.group_education_admin,education_core.group_education_admission_officer,education_core.group_education_teacher,education_core.group_education_accountant,education_core.group_education_hostel_warden"/>
+
+    <!-- Finance Management -->
+    <menuitem
+            id="menu_education_finance_placeholder"
+            name="Finance Management"
+            action="action_restricted_menu_popup_client"
+            parent="education_core.menu_education_root"
+            sequence="65"
+            groups="education_core.group_education_admin,account.group_account_user"/>
+
+    <!-- Hostel -->
+    <menuitem
+            id="menu_education_hostel_placeholder"
+            name="Hostel"
+            action="action_restricted_menu_popup_client"
+            parent="education_core.menu_education_root"
+            sequence="70"
+            groups="education_core.group_education_admin,education_core.group_education_accountant,education_core.group_education_hostel_warden"/>
+
+    <!-- Scholarships -->
+    <menuitem
+            id="menu_education_scholarship_placeholder"
+            name="Scholarships"
+            action="action_restricted_menu_popup_client"
+            parent="education_core.menu_education_root"
+            sequence="75"
+            groups="education_core.group_education_admin,education_core.group_education_teacher"/>
+
+    <!-- Transport -->
+    <menuitem
+            id="menu_education_transport_placeholder"
+            name="Transport"
+            action="action_restricted_menu_popup_client"
+            parent="education_core.menu_education_root"
+            sequence="80"
+            groups="education_core.group_education_admin"/>
+
+    <!-- Documents (lives in the Enrollments main menu) -->
+    <menuitem
+            id="menu_education_documents_placeholder"
+            name="Documents"
+            action="action_restricted_menu_popup_client"
+            parent="education_core.menu_education_student"
+            sequence="40"
+            groups="education_core.group_education_admin,education_core.group_education_admission_officer"/>
+
+    <!-- Dashboards Root Menu -->
+    <menuitem
+            id="education_dashboard_menu_root"
+            name="Dashboards"
+            parent="education_core.menu_education_root"
+            sequence="1"
+            action=""
+            groups="education_core.group_education_admin,education_core.group_education_teacher"
+    />
+
+    <menuitem
+            id="education_dashboard_menu_admin"
+            name="Admin Dashboard"
+            parent="education_dashboard_menu_root"
+            action="education_dashboard_action_admin"
+            sequence="10"
+            groups="education_core.group_education_admin"
+    />
+
+    <menuitem
+            id="education_dashboard_menu_faculty"
+            name="Faculty Dashboard"
+            parent="education_dashboard_menu_root"
+            action="education_dashboard_action_faculty"
+            sequence="20"
+            groups="education_core.group_education_teacher,education_core.group_education_admin"
+    />
+    <!-- Reporting Root Menu -->
+    <menuitem
+        id="menu_education_analytics_root"
+        name="Reporting"
+        parent="education_core.menu_education_root"
+        sequence="95"
+        groups="education_core.group_education_admin,account.group_account_user"
+    />
+
+    <!-- education.analytics.enrollment.summary Menu -->
+    <menuitem
+        id="education_analytics_enrollment_summary_menu"
+        name="Enrollment Summary"
+        parent="menu_education_analytics_root"
+        action="education_analytics_enrollment_summary_action"
+        sequence="10"
+    />
+
+    <!-- education.analytics.attendance.rate Menu -->
+    <menuitem
+        id="education_analytics_attendance_rate_menu"
+        name="Attendance Rate"
+        parent="menu_education_analytics_root"
+        action="education_analytics_attendance_rate_action"
+        sequence="30"
+    />
+
+    <!-- Accountant Dashboard Menu -->
+    <menuitem
+        id="education_analytics_accountant_dashboard_menu"
+        name="Accountant Dashboard"
+        parent="menu_education_analytics_root"
+        action="education_analytics_accountant_dashboard_action"
+        sequence="60"
+        groups="account.group_account_user"
+    />
+
+</odoo>

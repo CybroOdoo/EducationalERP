@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Form View ────────────────────────────────────────────────── -->
+    <record id="education_document_type_view_form" model="ir.ui.view">
+        <field name="name">education.document.type.form</field>
+        <field name="model">education.document.type</field>
+        <field name="arch" type="xml">
+            <form string="Document Type">
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Birth Certificate"/>
+                        </h1>
+                        <h2>
+                            <field name="code" placeholder="e.g. BIRTH_CERT" class="text-muted"/>
+                        </h2>
+                    </div>
+
+                    <group name="main">
+                        <group name="configuration" string="Rules &amp; Ordering">
+                            <field name="is_mandatory" widget="boolean_toggle"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="instructions_group" string="Applicant Instructions">
+                            <field name="description" nolabel="1"
+                                   placeholder="Instructions shown to the applicant (e.g. Must be attested, PDF format, max 5MB)..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ────────────────────────────────────────────────── -->
+    <record id="education_document_type_view_list" model="ir.ui.view">
+        <field name="name">education.document.type.list</field>
+        <field name="model">education.document.type</field>
+        <field name="arch" type="xml">
+            <list string="Document Types" editable="bottom" default_order="sequence, name" sample="1">
+                <field name="sequence" widget="handle"/>
+                <field name="code" decoration-bf="1"/>
+                <field name="name"/>
+                <field name="is_mandatory" widget="boolean_toggle"/>
+                <field name="active" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Search View ──────────────────────────────────────────────── -->
+    <record id="education_document_type_view_search" model="ir.ui.view">
+        <field name="name">education.document.type.search</field>
+        <field name="model">education.document.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Document Types">
+                <field name="name" string="Document Type"
+                       filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="code"/>
+                <separator/>
+                <filter string="Mandatory" name="filter_mandatory" domain="[('is_mandatory', '=', True)]"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window Action ────────────────────────────────────────────── -->
+    <record id="education_document_type_action" model="ir.actions.act_window">
+        <field name="name">Document Types</field>
+        <field name="path">document_types</field>
+        <field name="res_model">education.document.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="education_document_type_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define document types required during admission
+            </p>
+            <p>
+                Examples: Birth Certificate, Mark Sheet, Transfer Certificate.
+                Mark as mandatory to enforce upload before approval.
+            </p>
+        </field>
+    </record>
+
+</odoo>

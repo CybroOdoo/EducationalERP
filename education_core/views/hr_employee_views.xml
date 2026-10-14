@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- ── Faculty Kanban View ────────────────────────────────────────── -->
+    <record id="hr_employee_view_kanban_faculty" model="ir.ui.view">
+        <field name="name">hr.employee.view.kanban.faculty</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <kanban class="o_hr_employee_kanban" sample="1" duplicate="false">
+                <field name="show_hr_icon_display"/>
+                <field name="image_128"/>
+                <field name="image_1024"/>
+                <field name="avatar_128"/>
+                <field name="faculty_id"/>
+                <field name="designation"/>
+                <field name="edu_department_id"/>
+                <field name="specialization"/>
+                <field name="highest_qualification"/>
+                <field name="edu_employment_type"/>
+                <field name="work_email"/>
+                <field name="work_phone"/>
+                <field name="weekly_periods"/>
+                <field name="is_overloaded"/>
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <aside class="o_kanban_aside_full">
+                            <t t-if="record.image_1024 and record.image_1024.raw_value">
+                                <field name="image_1024" widget="background_image"
+                                       options="{'zoom': true, 'zoom_delay': 1000, 'preview_image':'image_128'}"
+                                       class="d-block position-relative"/>
+                            </t>
+                            <t t-elif="record.image_128 and record.image_128.raw_value">
+                                <field name="avatar_128" widget="background_image"
+                                       options="{'zoom': true, 'zoom_delay': 1000}"
+                                       class="d-block position-relative"/>
+                            </t>
+                            <div t-else="" class="d-flex align-items-center justify-content-center bg-100 bg-gradient">
+                                <svg class="w-75 h-75 opacity-50" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <g fill="currentColor">
+                                        <path d="M 10 11 C 4.08 11 2 14 2 16 L 2 19 L 18 19 L 18 16 C 18 14 15.92 11 10 11 Z"/>
+                                        <circle cx="10" cy="5.5" r="4.5"/>
+                                    </g>
+                                </svg>
+                            </div>
+                        </aside>
+                        <main class="ms-2">
+                            <div>
+                                <div t-if="record.show_hr_icon_display and record.show_hr_icon_display.raw_value" class="float-end">
+                                    <field name="hr_icon_display" widget="hr_presence_status"/>
+                                </div>
+                                <field class="fw-bold fs-5" name="name" placeholder="Faculty Member's Name"/>
+                                <div t-if="record.faculty_id and record.faculty_id.raw_value" class="text-muted small">
+                                    <span class="badge bg-light text-dark border">
+                                        <field name="faculty_id"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div t-if="record.designation and record.designation.raw_value" class="text-truncate">
+                                <i class="fa fa-fw me-2 fa-id-badge text-primary" title="Designation"/>
+                                <field name="designation"/>
+                            </div>
+                            <div t-if="record.edu_department_id and record.edu_department_id.raw_value" class="text-truncate">
+                                <i class="fa fa-fw me-2 fa-university text-primary" title="Department"/>
+                                <field name="edu_department_id"/>
+                            </div>
+                            <div t-if="record.specialization and record.specialization.raw_value" class="text-truncate">
+                                <i class="fa fa-fw me-2 fa-book text-primary" title="Specialization"/>
+                                <field name="specialization"/>
+                            </div>
+                            <div t-if="record.highest_qualification and record.highest_qualification.raw_value" class="text-truncate">
+                                <i class="fa fa-fw me-2 fa-graduation-cap text-primary" title="Highest Qualification"/>
+                                <field name="highest_qualification"/>
+                            </div>
+                            <div t-if="record.edu_employment_type and record.edu_employment_type.raw_value" class="text-truncate">
+                                <i class="fa fa-fw me-2 fa-briefcase text-primary" title="Employment Type"/>
+                                <field name="edu_employment_type"/>
+                            </div>
+                            <div t-if="record.work_email and record.work_email.raw_value" class="text-truncate">
+                                <i class="fa fa-fw me-2 fa-envelope text-primary" title="Email"/>
+                                <field name="work_email"/>
+                            </div>
+                            <div t-if="record.work_phone and record.work_phone.raw_value">
+                                <i class="fa fa-fw me-2 fa-phone text-primary" title="Phone"/>
+                                <field name="work_phone"/>
+                            </div>
+                            <div t-if="record.is_overloaded and record.is_overloaded.raw_value" class="text-danger small mt-1">
+                                <i class="fa fa-fw me-2 fa-exclamation-triangle" title="Workload Overloaded"/>
+                                <span>Overloaded (<field name="weekly_periods"/> periods)</span>
+                            </div>
+                            <footer class="py-0">
+                                <div class="d-flex ms-auto">
+                                    <field name="user_id" widget="many2one_avatar_user" readonly="1" class="mb-1 ms-2"/>
+                                    <field name="activity_ids" widget="kanban_activity" class="m-1 ms-2"/>
+                                </div>
+                            </footer>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ── Faculty List View ──────────────────────────────────────────── -->
+    <record id="hr_employee_view_list_faculty" model="ir.ui.view">
+        <field name="name">hr.employee.view.list.faculty</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list string="Faculty Members" sample="1" duplicate="false">
+                <field name="avatar_128" widget="image" options="{'size': [24, 24], 'img_class': 'rounded-3'}" width="30" nolabel="1"/>
+                <field name="faculty_id" readonly="1"/>
+                <field name="name" readonly="1"/>
+                <field name="edu_department_id" optional="show"/>
+                <field name="designation" optional="show"/>
+                <field name="highest_qualification" optional="hide"/>
+                <field name="edu_employment_type" optional="show"/>
+                <field name="specialization" optional="hide"/>
+                <field name="work_email" optional="show"/>
+                <field name="work_phone" class="o_force_ltr" optional="show"/>
+                <field name="weekly_periods" optional="hide"/>
+                <field name="date_joined" optional="hide"/>
+                <field name="blood_group" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Faculty Form View (Inherits hr.view_employee_form) ────────── -->
+    <record id="hr_employee_view_form_inherit_faculty" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.faculty</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="attributes">
+                <attribute name="groups">!education_core.group_education_teacher</attribute>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="attributes">
+                <attribute name="groups">!education_core.group_education_teacher</attribute>
+            </xpath>
+            <xpath expr="//header" position="attributes">
+                <attribute name="groups">!education_core.group_education_teacher</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_create_user']" position="after">
+                <field name="is_faculty" invisible="1"/>
+                <button name="action_set_password" type="object" invisible="not is_faculty" string="Set Password"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_timetable_slots"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-calendar"
+                        invisible="not is_faculty">
+                    <div class="o_stat_info">
+                        <field name="weekly_periods" widget="statinfo"
+                               string="Weekly Periods"/>
+                    </div>
+                </button>
+                <button name="action_view_timetable_slots"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-exclamation-triangle"
+                        invisible="not is_overloaded or not is_faculty">
+                    <div class="o_stat_info o_field_widget">
+                        <span class="o_stat_text text-danger">Overloaded</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='work_information']" position="after">
+                <page name="education_information" string="Education" invisible=" not is_faculty">
+                    <group>
+                        <div class="o_row">
+                            <field name="faculty_id" readonly="1"/>
+                            <span class="mx-1">·</span>
+                            <field name="designation" placeholder="Designation"/>
+                        </div>
+                    </group>
+                    <group>
+                        <group string="Academic Details">
+                            <field name="edu_department_id" required="is_faculty"/>
+                            <field name="specialization"/>
+                            <field name="edu_employment_type"/>
+                            <field name="date_joined"/>
+                            <field name="highest_qualification" readonly="1"/>
+                        </group>
+                        <group string="Address">
+                            <label for="private_street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="private_street" placeholder="Street..." class="o_address_street"/>
+                                <field name="private_street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="private_city" placeholder="City" class="o_address_city"/>
+                                <field name="private_state_id" class="o_address_state" placeholder="State"
+                                       options='{"no_open": True, "no_create": True}'
+                                       context="{'default_country_id': private_country_id}"
+                                       domain="[('id', 'in', allowed_country_state_ids)]"/>
+                                <field name="private_zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="private_country_id" placeholder="Country" class="o_address_country"
+                                       options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Identity">
+                            <field name="sex"/>
+                            <field name="birthday"/>
+                            <field name="blood_group"/>
+                        </group>
+                        <group string="Contact">
+                            <field name="work_email"/>
+                            <field name="work_phone"/>
+                            <field name="mobile_phone"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Qualifications" name="qualifications" invisible="not is_faculty">
+                    <field name="qualification_ids">
+                        <list editable="bottom">
+                            <field name="degree"/>
+                            <field name="field_of_study"/>
+                            <field name="institution"/>
+                            <field name="year_obtained"/>
+                            <field name="grade"/>
+                            <field name="certificate_file" widget="binary"
+                                   filename="certificate_file_name"/>
+                            <field name="certificate_file_name" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="is_faculty"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_properties']" position="after">
+                <notebook groups="education_core.group_education_teacher">
+                    <page name="education_information" string="Education" invisible=" not is_faculty">
+                        <group>
+                            <div class="o_row">
+                                <field name="faculty_id" readonly="1"/>
+                                <span class="mx-1">·</span>
+                                <field name="designation" placeholder="Designation"/>
+                            </div>
+                        </group>
+                        <group>
+                            <group string="Academic Details">
+                                <field name="edu_department_id" required="is_faculty"/>
+                                <field name="specialization"/>
+                                <field name="edu_employment_type"/>
+                                <field name="date_joined"/>
+                                <field name="highest_qualification" readonly="1"/>
+                            </group>
+                            <group string="Address">
+                                <label for="private_street" string="Address"/>
+                                <div class="o_address_format">
+                                    <field name="private_street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="private_street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="private_city" placeholder="City" class="o_address_city"/>
+                                    <field name="private_state_id" class="o_address_state" placeholder="State"
+                                           options='{"no_open": True, "no_create": True}'
+                                           context="{'default_country_id': private_country_id}"
+                                           domain="[('id', 'in', allowed_country_state_ids)]"/>
+                                    <field name="private_zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="private_country_id" placeholder="Country" class="o_address_country"
+                                           options='{"no_open": True, "no_create": True}'/>
+                                </div>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Identity">
+                                <field name="sex"/>
+                                <field name="birthday"/>
+                                <field name="blood_group"/>
+                            </group>
+                            <group string="Contact">
+                                <field name="work_email"/>
+                                <field name="work_phone"/>
+                                <field name="mobile_phone"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Qualifications" name="qualifications" invisible="not is_faculty">
+                        <field name="qualification_ids">
+                            <list editable="bottom">
+                                <field name="degree"/>
+                                <field name="field_of_study"/>
+                                <field name="institution"/>
+                                <field name="year_obtained"/>
+                                <field name="grade"/>
+                                <field name="certificate_file" widget="binary"
+                                       filename="certificate_file_name"/>
+                                <field name="certificate_file_name" column_invisible="1"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//form/header" position="after">
+                <header groups="education_core.group_education_teacher">
+                    <field name="is_faculty" invisible="1"/>
+                    <button name="action_set_password" type="object" invisible="not is_faculty or user_id != uid" string="Set Password"/>
+                </header>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="after">
+                <div class="oe_button_box" name="button_box" groups="education_core.group_education_teacher">
+                     <button name="action_view_timetable_slots"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-calendar"
+                        invisible="not is_faculty">
+                    <div class="o_stat_info">
+                        <field name="weekly_periods" widget="statinfo"
+                               string="Weekly Periods"/>
+                    </div>
+                </button>
+                <button name="action_view_timetable_slots"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-exclamation-triangle"
+                        invisible="not is_overloaded or not is_faculty">
+                    <div class="o_stat_info o_field_widget">
+                        <span class="o_stat_text text-danger">Overloaded</span>
+                    </div>
+                </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ── Faculty Action Window ──────────────────────────────────────── -->
+    <record id="hr_employee_action_faculty" model="ir.actions.act_window">
+        <field name="name">Faculty Members</field>
+        <field name="path">faculties</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr_employee_view_kanban_faculty')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('hr_employee_view_list_faculty')}),
+        ]"/>
+        <field name="context">{'default_is_faculty': True}</field>
+        <field name="domain">[("is_faculty","=",True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add your first faculty member
+            </p>
+            <p>
+                Create faculty profiles, assign academic departments, and track qualifications and teaching workloads.
+            </p>
+        </field>
+    </record>
+ </odoo>

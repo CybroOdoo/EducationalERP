@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Custom Paperformat for Admission Application ── -->
+    <record id="paperformat_education_application" model="report.paperformat">
+        <field name="name">Application Form (A4)</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">28</field>       <!-- Body starts at 28mm instead of 52mm -->
+        <field name="header_spacing">22</field>   <!-- Header content allocated up to 22mm -->
+        <field name="margin_bottom">16</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- =================================================================
+         Application Form PDF Report — ir.actions.report
+         Binds to education.application model in cogmenu (Print menu)
+         ================================================================= -->
+    <record id="action_report_education_application" model="ir.actions.report">
+        <field name="name">Print Application</field>
+        <field name="model">education.application</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_core.report_education_application_template</field>
+        <field name="report_file">education_core.report_education_application_template</field>
+        <field name="print_report_name">'Application - %s' % (object.admission_no or object.name)</field>
+        <field name="binding_model_id" ref="model_education_application"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="education_core.paperformat_education_application"/>
+    </record>
+
+    <!-- =================================================================
+         QWeb Template: Student Admission Application
+         ================================================================= -->
+    <template id="report_education_application_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="company" t-value="doc.company_id or res_company or env.company"/>
+                <t t-set="primary_color" t-value="('primary_color' in company._fields and company.primary_color) or ('branding_color' in company._fields and company.branding_color) or '#1F3864'"/>
+                <t t-set="secondary_color" t-value="('secondary_color' in company._fields and company.secondary_color) or ('branding_color_secondary' in company._fields and company.branding_color_secondary) or '#2E75B6'"/>
+
+                <!-- ── Header: Institution Logo, Name & Address ── -->
+                <div class="header"
+                     t-attf-style="border-bottom: 2px solid #{secondary_color}; padding-bottom: 10px; margin-bottom: 15px;">
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            <t t-if="company.logo">
+                                <img t-att-src="image_data_uri(company.logo)"
+                                     style="max-height: 75px; max-width: 160px; object-fit: contain;"/>
+                            </t>
+                        </div>
+                        <div class="col-9 text-end">
+                            <h2 t-attf-style="color: #{primary_color}; font-weight: 700; margin: 0 0 3px 0; text-transform: uppercase; font-size: 20px;">
+                                <t t-out="company.name"/>
+                            </h2>
+                            <t t-if="company.street or company.street2 or company.city or company.state_id or company.zip or company.country_id or ('company_registry' in company._fields and company.company_registry)">
+                                <div style="font-size: 11.5px; color: #4b5563; line-height: 1.35;">
+                                    <t t-if="company.street"><t t-out="company.street"/>, </t>
+                                    <t t-if="company.street2"><t t-out="company.street2"/>, </t>
+                                    <t t-if="company.city"><t t-out="company.city"/>, </t>
+                                    <t t-if="company.state_id"><t t-out="company.state_id.name"/>, </t>
+                                    <t t-if="company.zip"><t t-out="company.zip"/>, </t>
+                                    <t t-if="company.country_id"><t t-out="company.country_id.name"/></t>
+                                    <t t-if="'company_registry' in company._fields and company.company_registry">
+                                        <br/>
+                                        <span>Reg. / Accr. No: <t t-out="company.company_registry"/></span>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Article Body ── -->
+                <div class="article" t-att-data-oe-model="doc._name" t-att-data-oe-id="doc.id">
+                    <div class="page"
+                         style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #1f2937; line-height: 1.45;">
+                        <!-- Document Title & Application Info Banner -->
+                        <div class="row align-items-center mb-3 pb-2"
+                             t-attf-style="border-bottom: 2px solid #{secondary_color};">
+                            <div class="col-8">
+                                <h3 t-attf-style="color: #{primary_color}; font-size: 17px; font-weight: 700; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    Admission Application Form
+                                </h3>
+                                <div class="text-muted mt-1" style="font-size: 11.5px;">
+                                    Application Date:
+                                    <strong>
+                                        <t t-out="doc.date_application"/>
+                                    </strong>
+                                    &amp;bull; Academic Year:
+                                    <strong>
+                                        <t t-out="doc.academic_year_id.name"/>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="p-1 px-2 d-inline-block rounded text-center"
+                                     t-attf-style="border: 1.5px solid #{secondary_color};">
+                                    <small class="text-muted d-block"
+                                           style="font-size: 10px; text-transform: uppercase;">Application No.
+                                    </small>
+                                    <strong t-attf-style="color: #{primary_color}; font-size: 14px;">
+                                        <t t-out="doc.admission_no"/>
+                                    </strong>
+                                </div>
+                                <div class="mt-1">
+                                    <span class="badge"
+                                          t-attf-style="font-size: 10px; text-transform: uppercase; background-color: #{'#198754' if doc.state == 'approved' else '#dc3545' if doc.state == 'rejected' else '#0d6efd' if doc.state == 'submitted' else '#6c757d'}; color: #fff; padding: 3px 8px; border-radius: 4px;">
+                                        <t t-out="dict(doc._fields['state'].selection).get(doc.state, doc.state)"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Applicant Header: Photo & Core Enrollment Target -->
+                        <div class="row mb-3 p-2 rounded"
+                             t-attf-style="border: 1px solid #{secondary_color}; background-color: #f8fafc;">
+                            <div class="col-9">
+                                <table class="table table-sm table-borderless mb-0">
+                                    <tr>
+                                        <td class="fw-bold" style="width: 140px; color: #374151;">Applicant Name:</td>
+                                        <td style="font-size: 14px; font-weight: 600;"
+                                            t-attf-style="color: #{primary_color};">
+                                            <t t-out="doc.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold" style="color: #374151;">Applied Program:</td>
+                                        <td>
+                                            <strong>
+                                                <t t-out="doc.program_id.name"/>
+                                            </strong>
+                                            (<t t-out="doc.program_id.code"/>)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold" style="color: #374151;">Department:</td>
+                                        <td>
+                                            <t t-out="doc.department_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <t t-if="doc.enrollment_id">
+                                        <tr>
+                                            <td class="fw-bold" style="color: #374151;">Enrollment No.:</td>
+                                            <td>
+                                                <strong>
+                                                    <t t-out="doc.enrollment_id.enrollment_no"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </div>
+                            <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                                <t t-if="doc.photo">
+                                    <img t-att-src="image_data_uri(doc.photo)"
+                                         t-attf-style="width: 85px; height: 105px; object-fit: cover; border: 1.5px solid #{secondary_color}; border-radius: 4px;"/>
+                                </t>
+                                <t t-else="">
+                                    <div t-attf-style="width: 85px; height: 105px; border: 1px dashed #{secondary_color}; border-radius: 4px; display: flex; align-items: center; justify-content: center; background-color: #fff; margin: auto;">
+                                        <small class="text-muted">Affix Photo</small>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- 1. Personal & Contact Information -->
+                        <h5 class="pb-1 mb-2 mt-3"
+                            t-attf-style="color: #{primary_color}; font-size: 13px; font-weight: 700; text-transform: uppercase; border-bottom: 1.5px solid #{secondary_color};">
+                            1. Personal &amp; Contact Details
+                        </h5>
+                        <table class="table table-sm table-bordered mb-3"
+                               t-attf-style="border-color: #{secondary_color};">
+                            <tbody>
+                                <tr>
+                                    <td class="bg-light fw-bold" style="width: 25%;">Date of Birth</td>
+                                    <td style="width: 25%;">
+                                        <t t-out="doc.date_of_birth"/>
+                                        (Age: <t t-out="doc.age"/>)
+                                    </td>
+                                    <td class="bg-light fw-bold" style="width: 25%;">Gender</td>
+                                    <td style="width: 25%;">
+                                        <t t-out="dict(doc._fields['gender'].selection).get(doc.gender, doc.gender)"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Blood Group</td>
+                                    <td>
+                                        <t t-out="dict(doc._fields['blood_group'].selection).get(doc.blood_group, '—') if doc.blood_group else '—'"/>
+                                    </td>
+                                    <td class="bg-light fw-bold">Nationality</td>
+                                    <td>
+                                        <t t-out="doc.nationality_id.name or '—'"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Email Address</td>
+                                    <td>
+                                        <t t-out="doc.email"/>
+                                    </td>
+                                    <td class="bg-light fw-bold">Primary Phone</td>
+                                    <td>
+                                        <t t-out="doc.phone"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Mobile Phone</td>
+                                    <td>
+                                        <t t-out="doc.mobile or '—'"/>
+                                    </td>
+                                    <td class="bg-light fw-bold">City / ZIP</td>
+                                    <td>
+                                        <t t-out="doc.city or '—'"/>
+                                        <t t-if="doc.zip_code">(<t t-out="doc.zip_code"/>)</t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Address</td>
+                                    <td colspan="3">
+                                        <t t-out="doc.address or '—'"/>
+                                        <t t-if="doc.state_id">,
+                                            <t t-out="doc.state_id.name"/>
+                                        </t>
+                                        <t t-if="doc.country_id">,
+                                            <t t-out="doc.country_id.name"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 2. Academic Background -->
+                        <h5 class="pb-1 mb-2 mt-3"
+                            t-attf-style="color: #{primary_color}; font-size: 13px; font-weight: 700; text-transform: uppercase; border-bottom: 1.5px solid #{secondary_color};">
+                            2. Prior Academic Qualification
+                        </h5>
+                        <table class="table table-sm table-bordered mb-3"
+                               t-attf-style="border-color: #{secondary_color};">
+                            <tbody>
+                                <tr>
+                                    <td class="bg-light fw-bold" style="width: 25%;">Last School / College</td>
+                                    <td style="width: 75%;" colspan="3">
+                                        <t t-out="doc.last_school or '—'"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold" style="width: 25%;">Qualification Obtained</td>
+                                    <td style="width: 35%;">
+                                        <t t-out="doc.last_qualification or '—'"/>
+                                    </td>
+                                    <td class="bg-light fw-bold" style="width: 20%;">Score / Percentage</td>
+                                    <td style="width: 20%;">
+                                        <t t-if="doc.last_percentage">
+                                            <strong>
+                                                <t t-out="'%.2f' % doc.last_percentage"/> %
+                                            </strong>
+                                        </t>
+                                        <t t-else="">—</t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 3. Parent / Guardian Details -->
+                        <h5 class="pb-1 mb-2 mt-3"
+                            t-attf-style="color: #{primary_color}; font-size: 13px; font-weight: 700; text-transform: uppercase; border-bottom: 1.5px solid #{secondary_color};">
+                            3. Parent / Guardian Information
+                        </h5>
+                        <table class="table table-sm table-bordered mb-3"
+                               t-attf-style="border-color: #{secondary_color};">
+                            <tbody>
+                                <tr>
+                                    <td class="bg-light fw-bold" style="width: 25%;">Guardian Name</td>
+                                    <td style="width: 35%;">
+                                        <t t-out="doc.guardian_name or '—'"/>
+                                    </td>
+                                    <td class="bg-light fw-bold" style="width: 20%;">Relationship</td>
+                                    <td style="width: 20%;">
+                                        <t t-out="dict(doc._fields['guardian_relation'].selection).get(doc.guardian_relation, '—') if doc.guardian_relation else '—'"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Guardian Phone</td>
+                                    <td>
+                                        <t t-out="doc.guardian_phone or '—'"/>
+                                    </td>
+                                    <td class="bg-light fw-bold">Guardian Occupation</td>
+                                    <td>
+                                        <t t-out="doc.guardian_occupation or '—'"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Guardian Email</td>
+                                    <td colspan="3">
+                                        <t t-out="doc.guardian_email or '—'"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 4. Attached Documents Checklist -->
+                        <h5 class="pb-1 mb-2 mt-3"
+                            t-attf-style="color: #{primary_color}; font-size: 13px; font-weight: 700; text-transform: uppercase; border-bottom: 1.5px solid #{secondary_color};">
+                            4. Enclosed Documents
+                        </h5>
+                        <table class="table table-sm table-bordered mb-3"
+                               t-attf-style="border-color: #{secondary_color};">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 5%;">#</th>
+                                    <th style="width: 45%;">Document Type</th>
+                                    <th style="width: 30%;">File Name</th>
+                                    <th style="width: 20%;" class="text-center">Verification Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="doc.document_ids">
+                                    <t t-foreach="doc.document_ids" t-as="d">
+                                        <tr>
+                                            <td>
+                                                <t t-out="d_index + 1"/>
+                                            </td>
+                                            <td>
+                                                <t t-out="d.document_type_id.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-out="d.file_name or 'Attached'"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-attf-class="badge #{'bg-success' if d.state == 'verified' else 'bg-warning text-dark' if d.state == 'uploaded' else 'bg-danger' if d.state == 'rejected' else 'bg-secondary'}">
+                                                    <t t-out="dict(d._fields['state'].selection).get(d.state, d.state)"/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="4" class="text-muted text-center fst-italic py-2">
+                                            No documents recorded for this application.
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- 5. Declaration & Signatures -->
+                        <div class="mt-4 p-2 rounded"
+                             t-attf-style="border: 1px solid #{secondary_color}; background-color: #fcfcfd;">
+                            <h6 class="fw-bold mb-1"
+                                t-attf-style="color: #{primary_color}; font-size: 12px; text-transform: uppercase;">
+                                Declaration
+                            </h6>
+                            <p class="mb-0" style="font-size: 10.5px; color: #4b5563; line-height: 1.4;">
+                                I hereby declare that all the statements and particulars furnished by me in this
+                                application are true, complete, and correct to the best of my knowledge and belief. I
+                                understand that any false statement or omission of information will disqualify my
+                                application and result in immediate termination of admission.
+                            </p>
+                        </div>
+
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 55px; page-break-inside: avoid; break-inside: avoid;">
+                            <tr>
+                                <td class="text-center" style="width: 33.33%;">
+                                    <div t-attf-style="border-top: 1.5px solid #{secondary_color}; padding-top: 5px; margin: 0 10px;">
+                                        <strong style="font-size: 11px;">Applicant Signature</strong>
+                                    </div>
+                                </td>
+                                <td class="text-center" style="width: 33.33%;">
+                                    <div t-attf-style="border-top: 1.5px solid #{secondary_color}; padding-top: 5px; margin: 0 10px;">
+                                        <strong style="font-size: 11px;">Parent / Guardian Signature</strong>
+                                    </div>
+                                </td>
+                                <td class="text-center" style="width: 33.33%;">
+                                    <div t-attf-style="border-top: 1.5px solid #{secondary_color}; padding-top: 5px; margin: 0 10px;">
+                                        <strong style="font-size: 11px;">Admission Authority</strong>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+                <!-- ── Footer: Contact Details & Page Numbers ── -->
+                <div class="footer"
+                     t-attf-style="border-top: 2px solid #{secondary_color}; padding-top: 6px; font-size: 10.5px; color: #4b5563;">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <t t-if="company.phone">
+                                <span>Tel: <t t-out="company.phone"/></span>
+                            </t>
+                            <t t-if="'mobile' in company._fields and company.mobile">
+                                <span class="ms-2">&amp;bull; Mob: <t t-out="company.mobile"/></span>
+                            </t>
+                            <t t-if="company.email">
+                                <span class="ms-2">&amp;bull; Email: <t t-out="company.email"/></span>
+                            </t>
+                            <t t-if="company.website">
+                                <span class="ms-2">&amp;bull; Web: <t t-out="company.website"/></span>
+                            </t>
+                        </div>
+                        <div class="col-3 text-end">
+                            <span>Page <span class="page"/> of <span class="topage"/></span>
+                        </div>
+                    </div>
+                </div>
+
+            </t>
+        </t>
+    </template>
+</odoo>

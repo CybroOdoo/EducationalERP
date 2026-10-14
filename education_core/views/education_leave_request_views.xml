@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+     <!-- ── Form View ────────────────────────────────────────────────── -->
+    <record id="education_leave_request_view_form" model="ir.ui.view">
+        <field name="name">education.leave.request.form</field>
+        <field name="model">education.leave.request</field>
+        <field name="arch" type="xml">
+            <form string="Leave Request">
+                <header>
+                    <button name="action_submit" type="object"
+                            string="Submit" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" type="object"
+                            string="Approve" class="btn-success"
+                            invisible="state != 'submitted'"
+                            groups="education_core.group_education_teacher,education_core.group_education_admin"/>
+                    <button name="action_reject" type="object"
+                            string="Reject" class="btn-danger"
+                            invisible="state != 'submitted'"
+                            groups="education_core.group_education_teacher,education_core.group_education_admin"/>
+                    <button name="action_reset_draft" type="object"
+                            string="Reset to Draft" invisible="state != 'rejected'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,approved"/>
+                </header>
+                <sheet>
+                    <field name="supporting_document_name" invisible="1"/>
+                    <div class="oe_title">
+                        <label for="reference"/>
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="main">
+                        <group name="student_info" string="Student">
+                            <field name="enrollment_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="student_name"/>
+                            <field name="class_id"/>
+                        </group>
+                        <group name="leave_period" string="Period &amp; Type">
+                            <field name="leave_type" readonly="state != 'draft'"/>
+                            <field name="date_from" readonly="state != 'draft'"/>
+                            <field name="date_to" readonly="state != 'draft'"/>
+                            <field name="days_count"/>
+                        </group>
+                    </group>
+                    <group name="leave_details" string="Details">
+                        <group name="leave_reason">
+                            <field name="reason" placeholder="Reason for leave..." readonly="state != 'draft'"/>
+                        </group>
+                        <group name="leave_attachment">
+                            <field name="supporting_document" filename="supporting_document_name" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <group name="approval_info" string="Decision &amp; Approval" invisible="state == 'draft'">
+                        <group name="approver_data">
+                            <field name="approved_by_id" readonly="1"/>
+                            <field name="approval_date" readonly="1"/>
+                        </group>
+                        <group name="rejection_data" invisible="state != 'rejected'">
+                            <field name="rejection_reason" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ────────────────────────────────────────────────── -->
+    <record id="education_leave_request_view_list" model="ir.ui.view">
+        <field name="name">education.leave.request.list</field>
+        <field name="model">education.leave.request</field>
+        <field name="arch" type="xml">
+            <list string="Leave Requests" default_order="date_from desc" sample="1">
+                <field name="reference" decoration-bf="1"/>
+                <field name="student_name"/>
+                <field name="class_id"/>
+                <field name="leave_type"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="days_count"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-warning="state == 'submitted'"
+                       decoration-danger="state == 'rejected'"
+                       decoration-muted="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Calendar View ────────────────────────────────────────────── -->
+    <record id="education_leave_request_view_calendar" model="ir.ui.view">
+        <field name="name">education.leave.request.calendar</field>
+        <field name="model">education.leave.request</field>
+        <field name="arch" type="xml">
+            <calendar string="Leave Calendar"
+                      date_start="date_from"
+                      date_stop="date_to"
+                      color="state"
+                      mode="month"
+                      quick_create="false"
+                      event_open_popup="true">
+                <field name="student_name"/>
+                <field name="leave_type"/>
+                <field name="days_count"/>
+                <field name="state" filters="1"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ── Search View ──────────────────────────────────────────────── -->
+    <record id="education_leave_request_view_search" model="ir.ui.view">
+        <field name="name">education.leave.request.search</field>
+        <field name="model">education.leave.request</field>
+        <field name="arch" type="xml">
+            <search string="Search Leave Requests">
+                <field name="reference"/>
+                <field name="student_name"/>
+                <field name="class_id"/>
+                <separator/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Pending Approval" name="filter_submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Approved" name="filter_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Rejected" name="filter_rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="Medical" name="filter_medical" domain="[('leave_type', '=', 'medical')]"/>
+                <filter string="From Date" name="filter_date_from" date="date_from"/>
+                <group>
+                    <filter string="Student" name="group_by_student" context="{'group_by': 'enrollment_id'}"/>
+                    <filter string="Class" name="group_by_class" context="{'group_by': 'class_id'}"/>
+                    <filter string="Leave Type" name="group_by_type" context="{'group_by': 'leave_type'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window Action ────────────────────────────────────────────── -->
+    <record id="education_leave_request_action" model="ir.actions.act_window">
+        <field name="name">Leave Requests</field>
+        <field name="path">leave_requests</field>
+        <field name="res_model">education.leave.request</field>
+        <field name="view_mode">list,calendar,form</field>
+        <field name="search_view_id" ref="education_leave_request_view_search"/>
+        <field name="context">{'search_default_filter_submitted': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No leave requests yet</p>
+            <p>Students submit leave applications for approval.</p>
+        </field>
+    </record>
+
+</odoo>

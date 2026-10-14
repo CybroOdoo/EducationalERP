@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--
+        education_core — Default Document Types
+        Standard documents required during admission.
+        noupdate="1" so institutions can customize without losing changes.
+    -->
+
+    <record id="product_fee_admission" model="product.product">
+        <field name="name">Admission Fee</field>
+        <field name="type">service</field>
+        <field name="list_price">1</field>
+        <field name="taxes_id" eval="[(5, 0, 0)]"/>
+    </record>
+
+    <record id="doc_type_birth_cert" model="education.document.type">
+        <field name="name">Birth Certificate</field>
+        <field name="code">BIRTH_CERT</field>
+        <field name="sequence">10</field>
+        <field name="is_mandatory" eval="True"/>
+        <field name="description">Official birth certificate issued by government authority.</field>
+    </record>
+
+    <record id="doc_type_marksheet" model="education.document.type">
+        <field name="name">Previous Mark Sheet / Transcript</field>
+        <field name="code">MARK_SHEET</field>
+        <field name="sequence">20</field>
+        <field name="is_mandatory" eval="True"/>
+        <field name="description">Latest academic mark sheet / official transcript.</field>
+    </record>
+
+    <record id="doc_type_transfer_cert" model="education.document.type">
+        <field name="name">Transfer Certificate</field>
+        <field name="code">TRANSFER_CERT</field>
+        <field name="sequence">30</field>
+        <field name="is_mandatory" eval="True"/>
+        <field name="description">Transfer / Migration certificate from last institution.</field>
+    </record>
+
+    <record id="doc_type_id_proof" model="education.document.type">
+        <field name="name">Government ID Proof</field>
+        <field name="code">ID_PROOF</field>
+        <field name="sequence">40</field>
+        <field name="is_mandatory" eval="True"/>
+        <field name="description">National ID / Passport / Aadhaar or equivalent.</field>
+    </record>
+
+    <record id="doc_type_photo" model="education.document.type">
+        <field name="name">Passport-size Photograph</field>
+        <field name="code">PHOTO</field>
+        <field name="sequence">50</field>
+        <field name="is_mandatory" eval="True"/>
+        <field name="description">Recent colour photograph (passport size).</field>
+    </record>
+
+    <record id="doc_type_address_proof" model="education.document.type">
+        <field name="name">Address Proof</field>
+        <field name="code">ADDRESS_PROOF</field>
+        <field name="sequence">60</field>
+        <field name="is_mandatory" eval="False"/>
+        <field name="description">Utility bill / rental agreement / bank statement.</field>
+    </record>
+
+    <record id="doc_type_caste_cert" model="education.document.type">
+        <field name="name">Caste / Community Certificate</field>
+        <field name="code">CASTE_CERT</field>
+        <field name="sequence">70</field>
+        <field name="is_mandatory" eval="False"/>
+        <field name="description">Required for reserved category applicants (where applicable).</field>
+    </record>
+
+    <record id="doc_type_migration" model="education.document.type">
+        <field name="name">Migration Certificate</field>
+        <field name="code">MIGRATION_CERT</field>
+        <field name="sequence">80</field>
+        <field name="is_mandatory" eval="False"/>
+        <field name="description">Required for students migrating from other universities.</field>
+    </record>
+
+    <record id="type_classroom" model="education.classroom.type">
+        <field name="name">Classroom</field>
+    </record>
+    <record id="type_office" model="education.classroom.type">
+        <field name="name">Office Room</field>
+    </record>
+    <record id="type_server" model="education.classroom.type">
+        <field name="name">Server Room</field>
+    </record>
+    <record id="type_electricity" model="education.classroom.type">
+        <field name="name">Electricity Control Room</field>
+    </record>
+    <record id="type_exam_hall" model="education.classroom.type">
+        <field name="name">Exam Hall</field>
+    </record>
+    <record id="type_lab" model="education.classroom.type">
+        <field name="name">Laboratory</field>
+    </record>
+    <record id="type_auditorium" model="education.classroom.type">
+        <field name="name">Auditorium</field>
+    </record>
+    <record id="type_seminar" model="education.classroom.type">
+        <field name="name">Seminar Room</field>
+    </record>
+ </odoo>

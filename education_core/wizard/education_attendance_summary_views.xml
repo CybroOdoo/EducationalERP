@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Attendance Summary Wizard View (Modal without <sheet>) ────────── -->
+    <record id="education_attendance_summary_view_form" model="ir.ui.view">
+        <field name="name">education.attendance.summary.form</field>
+        <field name="model">education.attendance.summary</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Summary">
+                <group string="Filter Parameters">
+                    <field name="class_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+                <footer>
+                    <button name="action_print_report" type="object"
+                            string="Print PDF Report" class="btn-primary"/>
+                    <button name="action_view_attendance" type="object"
+                            string="View Records" class="btn-secondary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Window Action ──────────────────────────────────────────────────── -->
+    <record id="education_attendance_summary_action" model="ir.actions.act_window">
+        <field name="name">Attendance Summary</field>
+        <field name="res_model">education.attendance.summary</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

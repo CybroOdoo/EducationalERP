@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Fee Invoices List View ───────────────────────────────────────── -->
+    <record id="education_fee_invoice_status" model="ir.ui.view">
+        <field name="name">account.move.view.list.edu.fee</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <list string="Student Invoices" create="0">
+                <!-- Hidden fields required for client dynamic domains & decorations -->
+                <field name="state" column_invisible="True"/>
+                <field name="payment_state" column_invisible="True"/>
+                <field name="move_type" column_invisible="True"/>
+
+                <!-- Visible Columns -->
+                <field name="name"
+                       string="Number"
+                       decoration-bf="1"/>
+                <field name="invoice_partner_display_name"
+                       string="Student"
+                       groups="base.group_user"/>
+                <field name="invoice_date"
+                       string="Invoice Date"
+                       optional="show"/>
+                <field name="invoice_date_due"
+                       string="Due Date"
+                       widget="remaining_days"
+                       optional="show"
+                       invisible="payment_state in ('paid', 'in_payment', 'reversed') or state == 'cancel'"/>
+                <field name="amount_untaxed_in_currency_signed"
+                       string="Tax Excluded"
+                       sum="Total"
+                       optional="hide"/>
+                <field name="amount_total_in_currency_signed"
+                       string="Total"
+                       sum="Total"
+                       decoration-bf="1"
+                       optional="show"/>
+                <field name="currency_id"
+                       optional="hide"
+                       readonly="state in ('cancel', 'posted')"/>
+                <field name="status_in_payment"
+                       string="Status"
+                       widget="badge"
+                       decoration-info="status_in_payment == 'draft'"
+                       decoration-danger="status_in_payment in ('blocked', 'cancel')"
+                       decoration-muted="status_in_payment in ('posted', 'sent', 'partial')"
+                       decoration-success="status_in_payment in ('in_payment', 'paid', 'reversed')"
+                       invisible="payment_state == 'invoicing_legacy' or move_type == 'entry'"
+                       optional="show"/>
+            </list>
+        </field>
+    </record>
+</odoo>

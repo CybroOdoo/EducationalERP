@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="education_core.RestrictedMenuDialog">
+        <Dialog title="props.title">
+            <div class="p-3">
+                <p class="mb-0" style="font-size: 15px; color: #374151; line-height: 1.5;">
+                    Access to this menu is restricted. If you need access, please contact your administrator at
+                    <a t-att-href="mailToUrl" style="color: #71639e; font-weight: 600; text-decoration: underline;">
+                        <t t-out="adminEmail"/>
+                    </a>
+                    .
+                </p>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="props.close">
+                    Close
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

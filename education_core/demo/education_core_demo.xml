@@ -1,0 +1,2259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ================================================================= -->
+    <!-- 0. Institutions / Companies (res.company)                         -->
+    <!-- 3 distinct institutions with different institution_type           -->
+    <!-- ================================================================= -->
+
+    <!-- Institution 1: College / Institute -->
+    <record id="base.main_company" model="res.company">
+        <field name="name">Apex Institute of Technology &amp; Science</field>
+        <field name="short_name">AITS</field>
+        <field name="institution_type">college</field>
+        <field name="timezone">UTC</field>
+        <field name="branding_color">#1F3864</field>
+        <field name="branding_color_secondary">#2E75B6</field>
+        <field name="academic_year_start_month">7</field>
+        <field name="working_days">5</field>
+        <field name="max_periods_per_day">8</field>
+        <field name="currency_id" ref="base.USD"/>
+        <field name="registration_number">AICTE-ENGG-2015-884</field>
+        <field name="established_date" eval="(datetime.now() - relativedelta(years=12)).strftime('%Y-07-15')"/>
+        <field name="accreditation_body">NAAC A+ / NBA</field>
+    </record>
+
+    <!-- Institution 2: School (K-12) -->
+    <record id="company_school" model="res.company">
+        <field name="name">Greenwood International School</field>
+        <field name="short_name">GIS</field>
+        <field name="institution_type">school</field>
+        <field name="timezone">UTC</field>
+        <field name="branding_color">#1B5E20</field>
+        <field name="branding_color_secondary">#4CAF50</field>
+        <field name="academic_year_start_month">6</field>
+        <field name="working_days">5</field>
+        <field name="max_periods_per_day">7</field>
+        <field name="currency_id" ref="base.USD"/>
+        <field name="registration_number">CBSE-SCH-2018-4421</field>
+        <field name="established_date" eval="(datetime.now() - relativedelta(years=8)).strftime('%Y-04-10')"/>
+        <field name="accreditation_body">CBSE / Cognia International</field>
+    </record>
+
+    <!-- Institution 3: Corporate Training Centre -->
+    <record id="company_corporate" model="res.company">
+        <field name="name">NexGen Corporate Learning Academy</field>
+        <field name="short_name">NCLA</field>
+        <field name="institution_type">corporate</field>
+        <field name="timezone">UTC</field>
+        <field name="branding_color">#4A148C</field>
+        <field name="branding_color_secondary">#AB47BC</field>
+        <field name="academic_year_start_month">1</field>
+        <field name="working_days">5</field>
+        <field name="max_periods_per_day">6</field>
+        <field name="currency_id" ref="base.USD"/>
+        <field name="registration_number">CORP-TRN-2020-9182</field>
+        <field name="established_date" eval="(datetime.now() - relativedelta(years=6)).strftime('%Y-02-20')"/>
+        <field name="accreditation_body">ISO 29993:2017 / PMI REP</field>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 1. Academic Years (education.academic.year)                       -->
+    <!-- All dates dynamic; gap between start and end date >= 10 months   -->
+    <!-- ================================================================= -->
+
+    <!-- College Academic Years (Retaining XMLIDs for external module references) -->
+    <record id="academic_year_2024_2025" model="education.academic.year">
+        <field name="name" eval="f'{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 24, day=1)).year}-{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 12, day=1) - timedelta(days=1)).year}'"/>
+        <field name="code" eval="f'AY{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 24, day=1)).year)[-2:]}{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 12, day=1) - timedelta(days=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 24, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 12, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">10</field>
+        <field name="is_current" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="notes">Previous Academic Year (College).</field>
+    </record>
+
+    <record id="academic_year_2025_2026" model="education.academic.year">
+        <field name="name" eval="f'{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 12, day=1)).year}-{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 0, day=1) - timedelta(days=1)).year}'"/>
+        <field name="code" eval="f'AY{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 12, day=1)).year)[-2:]}{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 0, day=1) - timedelta(days=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 12, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 0, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">20</field>
+        <field name="is_current" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="notes">Previous Academic Year (College).</field>
+    </record>
+
+    <record id="academic_year_2026_2027" model="education.academic.year">
+        <field name="name" eval="f'{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 0, day=1)).year}-{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -12, day=1) - timedelta(days=1)).year}'"/>
+        <field name="code" eval="f'AY{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 0, day=1)).year)[-2:]}{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -12, day=1) - timedelta(days=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 0, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -12, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">30</field>
+        <field name="is_current" eval="True"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="notes">Current Active Academic Year (College) - 12 month duration.</field>
+    </record>
+
+    <record id="academic_year_2027_2028" model="education.academic.year">
+        <field name="name" eval="f'{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -12, day=1)).year}-{(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -24, day=1) - timedelta(days=1)).year}'"/>
+        <field name="code" eval="f'AY{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -12, day=1)).year)[-2:]}{str((datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -24, day=1) - timedelta(days=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -12, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -24, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">40</field>
+        <field name="is_current" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="notes">Upcoming Academic Year / Future Admissions (College).</field>
+    </record>
+
+    <!-- School Academic Years -->
+    <record id="academic_year_school_prev" model="education.academic.year">
+        <field name="name" eval="f'{(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 12, day=1)).year}-{(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 0, day=1) - timedelta(days=1)).year}'"/>
+        <field name="code" eval="f'SCH{str((datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 12, day=1)).year)[-2:]}{str((datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 0, day=1) - timedelta(days=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 12, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 0, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">10</field>
+        <field name="is_current" eval="False"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="notes">Previous Academic Year (School).</field>
+    </record>
+
+    <record id="academic_year_school_current" model="education.academic.year">
+        <field name="name" eval="f'{(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 0, day=1)).year}-{(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + -12, day=1) - timedelta(days=1)).year}'"/>
+        <field name="code" eval="f'SCH{str((datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 0, day=1)).year)[-2:]}{str((datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + -12, day=1) - timedelta(days=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 0, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + -12, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">20</field>
+        <field name="is_current" eval="True"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="notes">Current Active Academic Year (School) - 12 month duration.</field>
+    </record>
+
+    <!-- Corporate Training Center Academic Cycles -->
+    <record id="academic_year_corp_prev" model="education.academic.year">
+        <field name="name" eval="f'FY {(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 12, day=1)).year}'"/>
+        <field name="code" eval="f'TRN{str((datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 12, day=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 12, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 0, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">10</field>
+        <field name="is_current" eval="False"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="notes">Previous Annual Training Cycle (Corporate).</field>
+    </record>
+
+    <record id="academic_year_corp_current" model="education.academic.year">
+        <field name="name" eval="f'FY {(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 0, day=1)).year}'"/>
+        <field name="code" eval="f'TRN{str((datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 0, day=1)).year)[-2:]}'"/>
+        <field name="date_start" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 0, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + -12, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="sequence">20</field>
+        <field name="is_current" eval="True"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="notes">Current Active Training Cycle (Corporate) - 12 month duration.</field>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 2. Physical Facilities / Classrooms & Labs (education.classroom)   -->
+    <!-- ================================================================= -->
+
+    <!-- College Classrooms -->
+    <record id="classroom_101" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">101</field>
+        <field name="block">Block A</field>
+        <field name="floor">1st Floor</field>
+        <field name="capacity">60</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <record id="classroom_102" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">102</field>
+        <field name="block">Block A</field>
+        <field name="floor">1st Floor</field>
+        <field name="capacity">60</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <record id="classroom_103" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">103</field>
+        <field name="block">Block A</field>
+        <field name="floor">1st Floor</field>
+        <field name="capacity">60</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <record id="classroom_201" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">201</field>
+        <field name="block">Block B</field>
+        <field name="floor">2nd Floor</field>
+        <field name="capacity">50</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <record id="classroom_202" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">202</field>
+        <field name="block">Block B</field>
+        <field name="floor">2nd Floor</field>
+        <field name="capacity">50</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <record id="classroom_lab_cs1" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">CS-LAB-1</field>
+        <field name="block">Block B</field>
+        <field name="floor">Ground Floor</field>
+        <field name="capacity">40</field>
+        <field name="room_type" ref="type_lab"/>
+    </record>
+
+    <record id="classroom_lab_cs2" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">CS-LAB-2</field>
+        <field name="block">Block B</field>
+        <field name="floor">Ground Floor</field>
+        <field name="capacity">40</field>
+        <field name="room_type" ref="type_lab"/>
+    </record>
+
+    <record id="classroom_seminar_1" model="education.classroom">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="room_no">SEM-HALL-1</field>
+        <field name="block">Block C</field>
+        <field name="floor">2nd Floor</field>
+        <field name="capacity">120</field>
+        <field name="room_type" ref="type_seminar"/>
+    </record>
+
+    <!-- School Classrooms -->
+    <record id="classroom_sch_101" model="education.classroom">
+        <field name="company_id" ref="company_school"/>
+        <field name="room_no">Room 101</field>
+        <field name="block">Primary Wing</field>
+        <field name="floor">Ground Floor</field>
+        <field name="capacity">35</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <record id="classroom_sch_201" model="education.classroom">
+        <field name="company_id" ref="company_school"/>
+        <field name="room_no">Room 201</field>
+        <field name="block">Secondary Wing</field>
+        <field name="floor">1st Floor</field>
+        <field name="capacity">35</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <record id="classroom_sch_sci_lab" model="education.classroom">
+        <field name="company_id" ref="company_school"/>
+        <field name="room_no">Science-Lab</field>
+        <field name="block">STEM Wing</field>
+        <field name="floor">1st Floor</field>
+        <field name="capacity">30</field>
+        <field name="room_type" ref="type_lab"/>
+    </record>
+
+    <record id="classroom_sch_auditorium" model="education.classroom">
+        <field name="company_id" ref="company_school"/>
+        <field name="room_no">Main Auditorium</field>
+        <field name="block">Activity Block</field>
+        <field name="floor">Ground Floor</field>
+        <field name="capacity">200</field>
+        <field name="room_type" ref="type_seminar"/>
+    </record>
+
+    <!-- Corporate Training Classrooms -->
+    <record id="classroom_corp_exec" model="education.classroom">
+        <field name="company_id" ref="company_corporate"/>
+        <field name="room_no">Exec Suite</field>
+        <field name="block">Executive Tower</field>
+        <field name="floor">5th Floor</field>
+        <field name="capacity">25</field>
+        <field name="room_type" ref="type_seminar"/>
+    </record>
+
+    <record id="classroom_corp_lab1" model="education.classroom">
+        <field name="company_id" ref="company_corporate"/>
+        <field name="room_no">Cloud-Sandbox-1</field>
+        <field name="block">Tech Center</field>
+        <field name="floor">3rd Floor</field>
+        <field name="capacity">24</field>
+        <field name="room_type" ref="type_lab"/>
+    </record>
+
+    <record id="classroom_corp_hall_a" model="education.classroom">
+        <field name="company_id" ref="company_corporate"/>
+        <field name="room_no">Workshop Hall A</field>
+        <field name="block">Learning Hub</field>
+        <field name="floor">2nd Floor</field>
+        <field name="capacity">45</field>
+        <field name="room_type" ref="type_classroom"/>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 3. Academic Departments (education.department)                    -->
+    <!-- ================================================================= -->
+
+    <!-- College Departments -->
+    <record id="dept_cse" model="education.department">
+        <field name="name">Computer Science &amp; Engineering</field>
+        <field name="code">CSE</field>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="description">Department of Computer Science and Engineering offering undergraduate and postgraduate programs.</field>
+    </record>
+
+    <record id="dept_mbs" model="education.department">
+        <field name="name">Management &amp; Business Studies</field>
+        <field name="code">MBS</field>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="description">Department of Management Studies offering MBA and business analytics programs.</field>
+    </record>
+
+    <!-- School Departments -->
+    <record id="dept_sch_science" model="education.department">
+        <field name="name">Natural Sciences &amp; Mathematics</field>
+        <field name="code">SCI-MATH</field>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="company_school"/>
+        <field name="description">Department overseeing STEM curricula, laboratory experiments, and mathematics olympiads.</field>
+    </record>
+
+    <record id="dept_sch_humanities" model="education.department">
+        <field name="name">Languages &amp; Social Studies</field>
+        <field name="code">LANG-SOC</field>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="company_school"/>
+        <field name="description">Department covering English literature, humanities, geography, and civic education.</field>
+    </record>
+
+    <!-- Corporate Departments -->
+    <record id="dept_corp_cloud" model="education.department">
+        <field name="name">Cloud Engineering &amp; Architecture</field>
+        <field name="code">CLOUD-ENG</field>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="description">Enterprise cloud transformation, Kubernetes administration, and DevOps pipelines training.</field>
+    </record>
+
+    <record id="dept_corp_agile" model="education.department">
+        <field name="name">Enterprise Leadership &amp; Agile Transformation</field>
+        <field name="code">AGILE-LDR</field>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="description">Leadership coaching, Agile/Scrum certifications, and executive organizational change.</field>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 4. Faculty Members (hr.employee) & Qualifications                 -->
+    <!-- ================================================================= -->
+
+    <!-- College Faculty -->
+    <record id="faculty_alan_turing" model="hr.employee">
+        <field name="name">Prof. Alan Turing</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Professor &amp; Head of Department</field>
+        <field name="edu_department_id" ref="dept_cse"/>
+        <field name="specialization">Theoretical Computer Science &amp; Cryptography</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=8)).strftime('%Y-07-01')"/>
+        <field name="blood_group">o+</field>
+        <field name="work_email">alan.turing@apex-institute.edu</field>
+        <field name="work_phone">+1 555-0101</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="qual_alan_phd" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_alan_turing"/>
+        <field name="degree">phd</field>
+        <field name="field_of_study">Mathematical Logic &amp; Computing</field>
+        <field name="institution">Princeton University</field>
+        <field name="year_obtained" eval="datetime.now().year - 15"/>
+        <field name="grade">Summa Cum Laude</field>
+    </record>
+
+    <record id="qual_alan_msc" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_alan_turing"/>
+        <field name="degree">master</field>
+        <field name="field_of_study">Mathematics</field>
+        <field name="institution">University of Cambridge</field>
+        <field name="year_obtained" eval="datetime.now().year - 19"/>
+        <field name="grade">First Class Honours</field>
+    </record>
+
+    <record id="faculty_ada_lovelace" model="hr.employee">
+        <field name="name">Dr. Ada Lovelace</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Associate Professor</field>
+        <field name="edu_department_id" ref="dept_cse"/>
+        <field name="specialization">Algorithms &amp; Computational Systems</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=6)).strftime('%Y-08-15')"/>
+        <field name="blood_group">a+</field>
+        <field name="work_email">ada.lovelace@apex-institute.edu</field>
+        <field name="work_phone">+1 555-0102</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="qual_ada_phd" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_ada_lovelace"/>
+        <field name="degree">phd</field>
+        <field name="field_of_study">Computer Science &amp; Numerical Analysis</field>
+        <field name="institution">University of London</field>
+        <field name="year_obtained" eval="datetime.now().year - 11"/>
+        <field name="grade">Distinction</field>
+    </record>
+
+    <record id="faculty_peter_drucker" model="hr.employee">
+        <field name="name">Prof. Peter Drucker</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Professor &amp; Head of Management</field>
+        <field name="edu_department_id" ref="dept_mbs"/>
+        <field name="specialization">Strategic Management &amp; Organizational Behaviour</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=7)).strftime('%Y-06-01')"/>
+        <field name="blood_group">b+</field>
+        <field name="work_email">peter.drucker@apex-institute.edu</field>
+        <field name="work_phone">+1 555-0103</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="qual_peter_phd" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_peter_drucker"/>
+        <field name="degree">phd</field>
+        <field name="field_of_study">Business Administration &amp; Public Law</field>
+        <field name="institution">Frankfurt University</field>
+        <field name="year_obtained" eval="datetime.now().year - 18"/>
+        <field name="grade">Magna Cum Laude</field>
+    </record>
+
+    <record id="faculty_mary_keller" model="hr.employee">
+        <field name="name">Dr. Mary Keller</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Assistant Professor</field>
+        <field name="edu_department_id" ref="dept_cse"/>
+        <field name="specialization">Database Systems &amp; Programming Languages</field>
+        <field name="edu_employment_type">contract</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=3)).strftime('%Y-09-01')"/>
+        <field name="blood_group">ab+</field>
+        <field name="work_email">mary.keller@apex-institute.edu</field>
+        <field name="work_phone">+1 555-0104</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="qual_mary_phd" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_mary_keller"/>
+        <field name="degree">phd</field>
+        <field name="field_of_study">Computer Applications &amp; Logic</field>
+        <field name="institution">University of Wisconsin</field>
+        <field name="year_obtained" eval="datetime.now().year - 7"/>
+        <field name="grade">Distinction</field>
+    </record>
+
+    <!-- School Faculty -->
+    <record id="faculty_sch_sarah_jenkins" model="hr.employee">
+        <field name="name">Mrs. Sarah Jenkins</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Senior Science Faculty &amp; Dept Head</field>
+        <field name="edu_department_id" ref="dept_sch_science"/>
+        <field name="specialization">General Science &amp; Biology</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=5)).strftime('%Y-06-15')"/>
+        <field name="blood_group">o+</field>
+        <field name="work_email">s.jenkins@greenwood.k12.edu</field>
+        <field name="work_phone">+1 555-0201</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="qual_sarah_bed" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_sch_sarah_jenkins"/>
+        <field name="degree">master</field>
+        <field name="field_of_study">Secondary Science Education (M.Ed)</field>
+        <field name="institution">Columbia University Teachers College</field>
+        <field name="year_obtained" eval="datetime.now().year - 9"/>
+        <field name="grade">GPA 3.9/4.0</field>
+    </record>
+
+    <record id="faculty_sch_robert_taylor" model="hr.employee">
+        <field name="name">Mr. Robert Taylor</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Senior Mathematics Teacher</field>
+        <field name="edu_department_id" ref="dept_sch_science"/>
+        <field name="specialization">Secondary Mathematics &amp; Calculus</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=4)).strftime('%Y-07-01')"/>
+        <field name="blood_group">a+</field>
+        <field name="work_email">r.taylor@greenwood.k12.edu</field>
+        <field name="work_phone">+1 555-0202</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="qual_robert_msc" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_sch_robert_taylor"/>
+        <field name="degree">master</field>
+        <field name="field_of_study">Applied Mathematics</field>
+        <field name="institution">University of Michigan</field>
+        <field name="year_obtained" eval="datetime.now().year - 8"/>
+        <field name="grade">Honours</field>
+    </record>
+
+    <record id="faculty_sch_emily_watson" model="hr.employee">
+        <field name="name">Ms. Emily Watson</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Head of Languages &amp; Literature</field>
+        <field name="edu_department_id" ref="dept_sch_humanities"/>
+        <field name="specialization">English Literature &amp; Creative Writing</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=6)).strftime('%Y-05-10')"/>
+        <field name="blood_group">b-</field>
+        <field name="work_email">e.watson@greenwood.k12.edu</field>
+        <field name="work_phone">+1 555-0203</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="qual_emily_ma" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_sch_emily_watson"/>
+        <field name="degree">master</field>
+        <field name="field_of_study">English Literature</field>
+        <field name="institution">University of Oxford</field>
+        <field name="year_obtained" eval="datetime.now().year - 10"/>
+        <field name="grade">First Class</field>
+    </record>
+
+    <record id="faculty_sch_daniel_kim" model="hr.employee">
+        <field name="name">Mr. Daniel Kim</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Physics Teacher &amp; STEM Coordinator</field>
+        <field name="edu_department_id" ref="dept_sch_science"/>
+        <field name="specialization">Experimental Physics &amp; Robotics</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=3)).strftime('%Y-08-01')"/>
+        <field name="blood_group">o-</field>
+        <field name="work_email">d.kim@greenwood.k12.edu</field>
+        <field name="work_phone">+1 555-0204</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="qual_daniel_msc" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_sch_daniel_kim"/>
+        <field name="degree">master</field>
+        <field name="field_of_study">Physics &amp; Science Pedagogy</field>
+        <field name="institution">Seoul National University</field>
+        <field name="year_obtained" eval="datetime.now().year - 6"/>
+        <field name="grade">High Distinction</field>
+    </record>
+
+    <!-- Corporate Training Faculty -->
+    <record id="faculty_corp_marcus_reed" model="hr.employee">
+        <field name="name">Marcus Reed</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Principal Cloud Architect &amp; Lead Trainer</field>
+        <field name="edu_department_id" ref="dept_corp_cloud"/>
+        <field name="specialization">AWS/GCP Cloud Architecture &amp; Kubernetes</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=4)).strftime('%Y-01-15')"/>
+        <field name="blood_group">a+</field>
+        <field name="work_email">marcus.reed@nexgen-academy.corp</field>
+        <field name="work_phone">+1 555-0301</field>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="qual_marcus_cert" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_corp_marcus_reed"/>
+        <field name="degree">master</field>
+        <field name="field_of_study">Distributed Cloud Systems</field>
+        <field name="institution">Georgia Institute of Technology</field>
+        <field name="year_obtained" eval="datetime.now().year - 8"/>
+        <field name="grade">GPA 4.0</field>
+    </record>
+
+    <record id="faculty_corp_elena_rostova" model="hr.employee">
+        <field name="name">Dr. Elena Rostova</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Director of Executive Leadership Coaching</field>
+        <field name="edu_department_id" ref="dept_corp_agile"/>
+        <field name="specialization">Enterprise Agile Leadership &amp; Strategic Change</field>
+        <field name="edu_employment_type">permanent</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=5)).strftime('%Y-03-01')"/>
+        <field name="blood_group">o+</field>
+        <field name="work_email">elena.rostova@nexgen-academy.corp</field>
+        <field name="work_phone">+1 555-0302</field>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="qual_elena_phd" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_corp_elena_rostova"/>
+        <field name="degree">phd</field>
+        <field name="field_of_study">Organizational Psychology &amp; Executive Leadership</field>
+        <field name="institution">INSEAD</field>
+        <field name="year_obtained" eval="datetime.now().year - 12"/>
+        <field name="grade">Executive Honours</field>
+    </record>
+
+    <record id="faculty_corp_alex_morgan" model="hr.employee">
+        <field name="name">Alex Morgan</field>
+        <field name="is_faculty" eval="True"/>
+        <field name="designation">Senior DevOps &amp; Agile Coach</field>
+        <field name="edu_department_id" ref="dept_corp_cloud"/>
+        <field name="specialization">CI/CD Automation, GitOps &amp; Scrum at Scale</field>
+        <field name="edu_employment_type">contract</field>
+        <field name="date_joined" eval="(datetime.now() - relativedelta(years=2)).strftime('%Y-05-15')"/>
+        <field name="blood_group">ab-</field>
+        <field name="work_email">alex.morgan@nexgen-academy.corp</field>
+        <field name="work_phone">+1 555-0303</field>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="qual_alex_msc" model="education.faculty.qualification">
+        <field name="faculty_id" ref="faculty_corp_alex_morgan"/>
+        <field name="degree">master</field>
+        <field name="field_of_study">Software Engineering &amp; Systems Architecture</field>
+        <field name="institution">University of Washington</field>
+        <field name="year_obtained" eval="datetime.now().year - 6"/>
+        <field name="grade">Distinction</field>
+    </record>
+
+    <!-- Set Department Heads (Resolved after employee records exist) -->
+    <record id="dept_cse" model="education.department">
+        <field name="head_id" ref="faculty_alan_turing"/>
+    </record>
+
+    <record id="dept_mbs" model="education.department">
+        <field name="head_id" ref="faculty_peter_drucker"/>
+    </record>
+
+    <record id="dept_sch_science" model="education.department">
+        <field name="head_id" ref="faculty_sch_sarah_jenkins"/>
+    </record>
+
+    <record id="dept_sch_humanities" model="education.department">
+        <field name="head_id" ref="faculty_sch_emily_watson"/>
+    </record>
+
+    <record id="dept_corp_cloud" model="education.department">
+        <field name="head_id" ref="faculty_corp_marcus_reed"/>
+    </record>
+
+    <record id="dept_corp_agile" model="education.department">
+        <field name="head_id" ref="faculty_corp_elena_rostova"/>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 5. Academic Programs (education.program)                          -->
+    <!-- ================================================================= -->
+
+    <!-- College Programs -->
+    <record id="prog_btech_cs" model="education.program">
+        <field name="name">Bachelor of Technology — Computer Science &amp; Engineering</field>
+        <field name="code">BTECH-CSE</field>
+        <field name="degree_type">bachelor</field>
+        <field name="duration_years">4</field>
+        <field name="semesters_per_year">2</field>
+        <field name="sequence">10</field>
+        <field name="department_id" ref="dept_cse"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="eligibility">10+2 with Physics, Mathematics and Chemistry / CS with minimum 60% aggregate marks.</field>
+        <field name="description">&lt;p&gt;Comprehensive undergraduate program covering software engineering, algorithms, AI, cloud computing, and cybersecurity.&lt;/p&gt;</field>
+    </record>
+
+    <record id="prog_mtech_ai" model="education.program">
+        <field name="name">Master of Technology — Artificial Intelligence</field>
+        <field name="code">MTECH-AI</field>
+        <field name="degree_type">master</field>
+        <field name="duration_years">2</field>
+        <field name="semesters_per_year">2</field>
+        <field name="sequence">20</field>
+        <field name="department_id" ref="dept_cse"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="eligibility">B.Tech / B.E. in CS/IT/ECE with minimum 65% aggregate marks and valid GATE / entrance score.</field>
+        <field name="description">&lt;p&gt;Advanced postgraduate program specializing in deep learning, natural language processing, computer vision, and robotics.&lt;/p&gt;</field>
+    </record>
+
+    <record id="prog_mba" model="education.program">
+        <field name="name">Master of Business Administration</field>
+        <field name="code">MBA</field>
+        <field name="degree_type">master</field>
+        <field name="duration_years">2</field>
+        <field name="semesters_per_year">2</field>
+        <field name="sequence">30</field>
+        <field name="department_id" ref="dept_mbs"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="eligibility">Bachelor degree in any discipline with minimum 55% marks and recognized management entrance score.</field>
+        <field name="description">&lt;p&gt;Premier executive and regular management program focusing on strategic leadership, finance, technology management, and analytics.&lt;/p&gt;</field>
+    </record>
+
+    <!-- School Programs -->
+    <record id="prog_sch_high" model="education.program">
+        <field name="name">High School Secondary Curriculum (Grade 9-10)</field>
+        <field name="code">SCH-G10</field>
+        <field name="degree_type">other</field>
+        <field name="duration_years">2</field>
+        <field name="semesters_per_year">2</field>
+        <field name="sequence">10</field>
+        <field name="department_id" ref="dept_sch_science"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="eligibility">Successful completion of Grade 8 Middle School examination or equivalent transfer certificate.</field>
+        <field name="description">&lt;p&gt;Comprehensive secondary schooling covering core sciences, mathematics, languages, and social development.&lt;/p&gt;</field>
+    </record>
+
+    <record id="prog_sch_senior_sci" model="education.program">
+        <field name="name">Senior Secondary Science Stream (Grade 11-12)</field>
+        <field name="code">SCH-G11-SCI</field>
+        <field name="degree_type">other</field>
+        <field name="duration_years">2</field>
+        <field name="semesters_per_year">2</field>
+        <field name="sequence">20</field>
+        <field name="department_id" ref="dept_sch_science"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="eligibility">Grade 10 Board Certification with minimum 70% in Science and Mathematics.</field>
+        <field name="description">&lt;p&gt;Rigorous senior secondary program preparing students for university entrance in engineering, medicine, and research.&lt;/p&gt;</field>
+    </record>
+
+    <!-- Corporate Training Programs -->
+    <record id="prog_corp_cloud" model="education.program">
+        <field name="name">Cloud Solutions Architect Professional</field>
+        <field name="code">CORP-CSA</field>
+        <field name="degree_type">corporate</field>
+        <field name="duration_years">1</field>
+        <field name="semesters_per_year">2</field>
+        <field name="sequence">10</field>
+        <field name="department_id" ref="dept_corp_cloud"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="eligibility">Minimum 2 years software engineering or sysadmin experience; familiarity with Linux and networking fundamentals.</field>
+        <field name="description">&lt;p&gt;Intensive corporate program delivering hands-on proficiency in multicloud architecture, Kubernetes microservices, and automated CI/CD.&lt;/p&gt;</field>
+    </record>
+
+    <record id="prog_corp_agile" model="education.program">
+        <field name="name">Enterprise Agile Leadership &amp; Transformation</field>
+        <field name="code">CORP-EAL</field>
+        <field name="degree_type">corporate</field>
+        <field name="duration_years">1</field>
+        <field name="semesters_per_year">2</field>
+        <field name="sequence">20</field>
+        <field name="department_id" ref="dept_corp_agile"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="eligibility">Project managers, team leads, or executives involved in digital business agility transformations.</field>
+        <field name="description">&lt;p&gt;Executive coaching track on enterprise agility frameworks, value stream management, and high-performance engineering culture.&lt;/p&gt;</field>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 6. Subjects (education.subject)                                   -->
+    <!-- ================================================================= -->
+
+    <!-- College Subjects -->
+    <record id="subj_cs101_prog" model="education.subject">
+        <field name="name">Introduction to Programming &amp; Problem Solving</field>
+        <field name="code">CS101</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_cs102_ds" model="education.subject">
+        <field name="name">Data Structures &amp; Algorithm Design</field>
+        <field name="code">CS102</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_cs103_dbms" model="education.subject">
+        <field name="name">Database Management Systems</field>
+        <field name="code">CS103</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="sequence">30</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_cs104_os" model="education.subject">
+        <field name="name">Operating Systems &amp; Concurrency</field>
+        <field name="code">CS104</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="sequence">40</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_cs105_web" model="education.subject">
+        <field name="name">Web Technologies &amp; Cloud Infrastructure</field>
+        <field name="code">CS105</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="sequence">50</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_ai201_ml" model="education.subject">
+        <field name="name">Machine Learning Foundations &amp; Statistical Modeling</field>
+        <field name="code">AI201</field>
+        <field name="program_id" ref="prog_mtech_ai"/>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_ai202_dl" model="education.subject">
+        <field name="name">Deep Learning &amp; Neural Architectures</field>
+        <field name="code">AI202</field>
+        <field name="program_id" ref="prog_mtech_ai"/>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_mba101_ob" model="education.subject">
+        <field name="name">Organizational Behavior &amp; Strategic Leadership</field>
+        <field name="code">MBA101</field>
+        <field name="program_id" ref="prog_mba"/>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="subj_mba102_fm" model="education.subject">
+        <field name="name">Corporate Finance &amp; Investment Analysis</field>
+        <field name="code">MBA102</field>
+        <field name="program_id" ref="prog_mba"/>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- School Subjects -->
+    <record id="subj_sch_math10" model="education.subject">
+        <field name="name">Grade 10 Mathematics</field>
+        <field name="code">SCH-MATH10</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="subj_sch_sci10" model="education.subject">
+        <field name="name">Grade 10 Integrated Science</field>
+        <field name="code">SCH-SCI10</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="subj_sch_eng10" model="education.subject">
+        <field name="name">Grade 10 English Literature &amp; Composition</field>
+        <field name="code">SCH-ENG10</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="sequence">30</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="subj_sch_soc10" model="education.subject">
+        <field name="name">Grade 10 Social Studies &amp; Global Civics</field>
+        <field name="code">SCH-SOC10</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="sequence">40</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="subj_sch_phy11" model="education.subject">
+        <field name="name">Grade 11 Theoretical &amp; Applied Physics</field>
+        <field name="code">SCH-PHY11</field>
+        <field name="program_id" ref="prog_sch_senior_sci"/>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <!-- Corporate Subjects -->
+    <record id="subj_corp_cloud_arch" model="education.subject">
+        <field name="name">Advanced Cloud Infrastructure &amp; Kubernetes Orchestration</field>
+        <field name="code">CORP-K8S</field>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="subj_corp_devops_ci" model="education.subject">
+        <field name="name">Enterprise CI/CD Pipelines &amp; GitOps</field>
+        <field name="code">CORP-GITOPS</field>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="subj_corp_agile_mgmt" model="education.subject">
+        <field name="name">Agile Portfolio Management &amp; Scrum at Scale</field>
+        <field name="code">CORP-SAFE</field>
+        <field name="program_id" ref="prog_corp_agile"/>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="subj_corp_exec_comm" model="education.subject">
+        <field name="name">Executive Communication &amp; Organizational Alignment</field>
+        <field name="code">CORP-ALIGN</field>
+        <field name="program_id" ref="prog_corp_agile"/>
+        <field name="sequence">20</field>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 7. Classes / Batches (education.class)                             -->
+    <!-- ================================================================= -->
+
+    <!-- College Classes -->
+    <record id="class_btech_cs101_a" model="education.class">
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="section">A</field>
+        <field name="capacity">60</field>
+        <field name="class_teacher_id" ref="faculty_alan_turing"/>
+        <field name="notes">B.Tech CS 1st Year - Section A.</field>
+    </record>
+
+    <record id="class_btech_cs101_b" model="education.class">
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="section">B</field>
+        <field name="capacity">60</field>
+        <field name="class_teacher_id" ref="faculty_ada_lovelace"/>
+        <field name="notes">B.Tech CS 1st Year - Section B.</field>
+    </record>
+
+    <record id="class_mtech_ai201" model="education.class">
+        <field name="program_id" ref="prog_mtech_ai"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="section">A</field>
+        <field name="capacity">30</field>
+        <field name="class_teacher_id" ref="faculty_ada_lovelace"/>
+        <field name="notes">M.Tech AI 1st Year Batch.</field>
+    </record>
+
+    <record id="class_mba101" model="education.class">
+        <field name="program_id" ref="prog_mba"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="section">A</field>
+        <field name="capacity">45</field>
+        <field name="class_teacher_id" ref="faculty_peter_drucker"/>
+        <field name="notes">MBA 1st Year Executive Cohort.</field>
+    </record>
+
+    <!-- School Classes -->
+    <record id="class_sch_10a" model="education.class">
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="section">A</field>
+        <field name="capacity">35</field>
+        <field name="class_teacher_id" ref="faculty_sch_sarah_jenkins"/>
+        <field name="notes">Grade 10 - Section A (Homeroom 101).</field>
+    </record>
+
+    <record id="class_sch_10b" model="education.class">
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="section">B</field>
+        <field name="capacity">35</field>
+        <field name="class_teacher_id" ref="faculty_sch_robert_taylor"/>
+        <field name="notes">Grade 10 - Section B (Homeroom 201).</field>
+    </record>
+
+    <record id="class_sch_11sci" model="education.class">
+        <field name="program_id" ref="prog_sch_senior_sci"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="section">A</field>
+        <field name="capacity">30</field>
+        <field name="class_teacher_id" ref="faculty_sch_daniel_kim"/>
+        <field name="notes">Grade 11 - Science Specialization.</field>
+    </record>
+
+    <!-- Corporate Classes / Cohorts -->
+    <record id="class_corp_cloud_c1" model="education.class">
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="section">Q1</field>
+        <field name="capacity">25</field>
+        <field name="class_teacher_id" ref="faculty_corp_marcus_reed"/>
+        <field name="notes">Cloud Architecture Enterprise Cohort 1.</field>
+    </record>
+
+    <record id="class_corp_agile_c1" model="education.class">
+        <field name="program_id" ref="prog_corp_agile"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="section">Q1</field>
+        <field name="capacity">20</field>
+        <field name="class_teacher_id" ref="faculty_corp_elena_rostova"/>
+        <field name="notes">Executive Agile Leadership Cohort 1.</field>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 8. Timetables & Slots (education.timetable & slot)                -->
+    <!-- All timetable effective dates dynamically generated               -->
+    <!-- ================================================================= -->
+
+    <!-- College Timetable: class_btech_cs101_a -->
+    <record id="timetable_cs101_ay2627" model="education.timetable">
+        <field name="class_id" ref="class_btech_cs101_a"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="state">published</field>
+        <field name="effective_from" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + 0, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="effective_to" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 7) % 12 + -12, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="notes">Primary semester schedule for B.Tech CS 1st Year (Section A).</field>
+    </record>
+
+    <record id="slot_mon_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_cs101_ay2627"/>
+        <field name="weekday">0</field>
+        <field name="period_no">1</field>
+        <field name="start_time">9.0</field>
+        <field name="end_time">10.0</field>
+        <field name="subject_id" ref="subj_cs101_prog"/>
+        <field name="teacher_id" ref="faculty_alan_turing"/>
+        <field name="classroom_id" ref="classroom_101"/>
+    </record>
+
+    <record id="slot_mon_p2" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_cs101_ay2627"/>
+        <field name="weekday">0</field>
+        <field name="period_no">2</field>
+        <field name="start_time">10.0</field>
+        <field name="end_time">11.0</field>
+        <field name="subject_id" ref="subj_cs102_ds"/>
+        <field name="teacher_id" ref="faculty_ada_lovelace"/>
+        <field name="classroom_id" ref="classroom_101"/>
+    </record>
+
+    <record id="slot_tue_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_cs101_ay2627"/>
+        <field name="weekday">1</field>
+        <field name="period_no">1</field>
+        <field name="start_time">9.0</field>
+        <field name="end_time">10.0</field>
+        <field name="subject_id" ref="subj_cs103_dbms"/>
+        <field name="teacher_id" ref="faculty_mary_keller"/>
+        <field name="classroom_id" ref="classroom_101"/>
+    </record>
+
+    <record id="slot_wed_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_cs101_ay2627"/>
+        <field name="weekday">2</field>
+        <field name="period_no">1</field>
+        <field name="start_time">9.0</field>
+        <field name="end_time">10.0</field>
+        <field name="subject_id" ref="subj_cs101_prog"/>
+        <field name="teacher_id" ref="faculty_alan_turing"/>
+        <field name="classroom_id" ref="classroom_lab_cs1"/>
+    </record>
+
+    <record id="slot_thu_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_cs101_ay2627"/>
+        <field name="weekday">3</field>
+        <field name="period_no">1</field>
+        <field name="start_time">9.0</field>
+        <field name="end_time">10.0</field>
+        <field name="subject_id" ref="subj_cs104_os"/>
+        <field name="teacher_id" ref="faculty_alan_turing"/>
+        <field name="classroom_id" ref="classroom_101"/>
+    </record>
+
+    <record id="slot_fri_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_cs101_ay2627"/>
+        <field name="weekday">4</field>
+        <field name="period_no">1</field>
+        <field name="start_time">9.0</field>
+        <field name="end_time">10.0</field>
+        <field name="subject_id" ref="subj_cs105_web"/>
+        <field name="teacher_id" ref="faculty_ada_lovelace"/>
+        <field name="classroom_id" ref="classroom_lab_cs2"/>
+    </record>
+
+    <!-- School Timetable: class_sch_10a -->
+    <record id="timetable_sch_10a" model="education.timetable">
+        <field name="class_id" ref="class_sch_10a"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="state">published</field>
+        <field name="effective_from" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + 0, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="effective_to" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 6) % 12 + -12, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="notes">Weekly schedule for Grade 10 Section A.</field>
+    </record>
+
+    <record id="slot_sch_mon_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_sch_10a"/>
+        <field name="weekday">0</field>
+        <field name="period_no">1</field>
+        <field name="start_time">8.5</field>
+        <field name="end_time">9.5</field>
+        <field name="subject_id" ref="subj_sch_math10"/>
+        <field name="teacher_id" ref="faculty_sch_robert_taylor"/>
+        <field name="classroom_id" ref="classroom_sch_101"/>
+    </record>
+
+    <record id="slot_sch_mon_p2" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_sch_10a"/>
+        <field name="weekday">0</field>
+        <field name="period_no">2</field>
+        <field name="start_time">9.5</field>
+        <field name="end_time">10.5</field>
+        <field name="subject_id" ref="subj_sch_sci10"/>
+        <field name="teacher_id" ref="faculty_sch_sarah_jenkins"/>
+        <field name="classroom_id" ref="classroom_sch_sci_lab"/>
+    </record>
+
+    <record id="slot_sch_tue_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_sch_10a"/>
+        <field name="weekday">1</field>
+        <field name="period_no">1</field>
+        <field name="start_time">8.5</field>
+        <field name="end_time">9.5</field>
+        <field name="subject_id" ref="subj_sch_eng10"/>
+        <field name="teacher_id" ref="faculty_sch_emily_watson"/>
+        <field name="classroom_id" ref="classroom_sch_101"/>
+    </record>
+
+    <record id="slot_sch_wed_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_sch_10a"/>
+        <field name="weekday">2</field>
+        <field name="period_no">1</field>
+        <field name="start_time">8.5</field>
+        <field name="end_time">9.5</field>
+        <field name="subject_id" ref="subj_sch_soc10"/>
+        <field name="teacher_id" ref="faculty_sch_emily_watson"/>
+        <field name="classroom_id" ref="classroom_sch_101"/>
+    </record>
+
+    <record id="slot_sch_thu_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_sch_10a"/>
+        <field name="weekday">3</field>
+        <field name="period_no">1</field>
+        <field name="start_time">8.5</field>
+        <field name="end_time">9.5</field>
+        <field name="subject_id" ref="subj_sch_math10"/>
+        <field name="teacher_id" ref="faculty_sch_robert_taylor"/>
+        <field name="classroom_id" ref="classroom_sch_101"/>
+    </record>
+
+    <record id="slot_sch_fri_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_sch_10a"/>
+        <field name="weekday">4</field>
+        <field name="period_no">1</field>
+        <field name="start_time">8.5</field>
+        <field name="end_time">9.5</field>
+        <field name="subject_id" ref="subj_sch_sci10"/>
+        <field name="teacher_id" ref="faculty_sch_sarah_jenkins"/>
+        <field name="classroom_id" ref="classroom_sch_sci_lab"/>
+    </record>
+
+    <!-- Corporate Timetable: class_corp_cloud_c1 -->
+    <record id="timetable_corp_cloud_c1" model="education.timetable">
+        <field name="class_id" ref="class_corp_cloud_c1"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="state">published</field>
+        <field name="effective_from" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + 0, day=1)).strftime('%Y-%m-%d')"/>
+        <field name="effective_to" eval="(datetime.now() - relativedelta(months=(datetime.now().month - 1) % 12 + -12, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="notes">Enterprise Cloud Architecture Bootcamp Schedule.</field>
+    </record>
+
+    <record id="slot_corp_mon_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_corp_cloud_c1"/>
+        <field name="weekday">0</field>
+        <field name="period_no">1</field>
+        <field name="start_time">10.0</field>
+        <field name="end_time">12.0</field>
+        <field name="subject_id" ref="subj_corp_cloud_arch"/>
+        <field name="teacher_id" ref="faculty_corp_marcus_reed"/>
+        <field name="classroom_id" ref="classroom_corp_lab1"/>
+    </record>
+
+    <record id="slot_corp_wed_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_corp_cloud_c1"/>
+        <field name="weekday">2</field>
+        <field name="period_no">1</field>
+        <field name="start_time">10.0</field>
+        <field name="end_time">12.0</field>
+        <field name="subject_id" ref="subj_corp_devops_ci"/>
+        <field name="teacher_id" ref="faculty_corp_alex_morgan"/>
+        <field name="classroom_id" ref="classroom_corp_lab1"/>
+    </record>
+
+    <record id="slot_corp_fri_p1" model="education.timetable.slot">
+        <field name="timetable_id" ref="timetable_corp_cloud_c1"/>
+        <field name="weekday">4</field>
+        <field name="period_no">1</field>
+        <field name="start_time">14.0</field>
+        <field name="end_time">16.0</field>
+        <field name="subject_id" ref="subj_corp_cloud_arch"/>
+        <field name="teacher_id" ref="faculty_corp_marcus_reed"/>
+        <field name="classroom_id" ref="classroom_corp_exec"/>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 9. Student Applications (education.application)                   -->
+    <!-- Dynamic DOB, Application dates, and diverse admission states      -->
+    <!-- ================================================================= -->
+
+    <!-- College Applications (Retaining XMLIDs) -->
+    <record id="app_approved_john_doe" model="education.application">
+        <field name="first_name">John</field>
+        <field name="last_name">Doe</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=20, months=4)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">o+</field>
+        <field name="email">john.doe@example.com</field>
+        <field name="phone">+1 555-1001</field>
+        <field name="address">124 Maple Street</field>
+        <field name="city">Boston</field>
+        <field name="zip_code">02108</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">approved</field>
+        <field name="last_school">Boston Central High School</field>
+        <field name="last_qualification">High School Diploma (12th)</field>
+        <field name="last_percentage">88.50</field>
+        <field name="guardian_name">Robert Doe</field>
+        <field name="guardian_relation">father</field>
+        <field name="guardian_phone">+1 555-1002</field>
+        <field name="guardian_email">robert.doe@example.com</field>
+        <field name="guardian_occupation">Senior Software Engineer</field>
+    </record>
+
+    <record id="app_approved_sophia_chen" model="education.application">
+        <field name="first_name">Sophia</field>
+        <field name="last_name">Chen</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=19, months=8)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">a+</field>
+        <field name="email">sophia.chen@example.com</field>
+        <field name="phone">+1 555-1003</field>
+        <field name="address">45 University Avenue, Apt 3B</field>
+        <field name="city">Cambridge</field>
+        <field name="zip_code">02138</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">approved</field>
+        <field name="last_school">Cambridge International Academy</field>
+        <field name="last_qualification">International Baccalaureate (IB)</field>
+        <field name="last_percentage">94.00</field>
+        <field name="guardian_name">Wei Chen</field>
+        <field name="guardian_relation">father</field>
+        <field name="guardian_phone">+1 555-1004</field>
+        <field name="guardian_email">wei.chen@example.com</field>
+        <field name="guardian_occupation">Physician / Cardiologist</field>
+    </record>
+
+    <record id="app_approved_jane_smith" model="education.application">
+        <field name="first_name">Jane</field>
+        <field name="last_name">Smith</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=20, months=1)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">b+</field>
+        <field name="email">jane.smith@example.com</field>
+        <field name="phone">+1 555-1005</field>
+        <field name="address">78 Ocean Drive</field>
+        <field name="city">Newport</field>
+        <field name="zip_code">02840</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">approved</field>
+        <field name="last_school">St. Andrew Preparatory School</field>
+        <field name="last_qualification">High School Diploma</field>
+        <field name="last_percentage">82.00</field>
+        <field name="guardian_name">Margaret Smith</field>
+        <field name="guardian_relation">mother</field>
+        <field name="guardian_phone">+1 555-1006</field>
+        <field name="guardian_email">margaret.smith@example.com</field>
+        <field name="guardian_occupation">Attorney at Law</field>
+    </record>
+
+    <record id="app_approved_david_miller" model="education.application">
+        <field name="first_name">David</field>
+        <field name="last_name">Miller</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=20, months=9)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">ab+</field>
+        <field name="email">david.miller@example.com</field>
+        <field name="phone">+1 555-1007</field>
+        <field name="address">210 Beacon Hill Terrace</field>
+        <field name="city">Boston</field>
+        <field name="zip_code">02114</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">approved</field>
+        <field name="last_school">Lincoln-Sudbury Regional High School</field>
+        <field name="last_qualification">High School (Science Stream)</field>
+        <field name="last_percentage">79.50</field>
+        <field name="guardian_name">Thomas Miller</field>
+        <field name="guardian_relation">father</field>
+        <field name="guardian_phone">+1 555-1008</field>
+        <field name="guardian_email">thomas.miller@example.com</field>
+        <field name="guardian_occupation">Civil Engineer</field>
+    </record>
+
+    <record id="app_approved_carlos_santana" model="education.application">
+        <field name="first_name">Carlos</field>
+        <field name="last_name">Santana</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=21, months=2)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">o-</field>
+        <field name="email">carlos.santana@example.com</field>
+        <field name="phone">+1 555-1009</field>
+        <field name="address">33 Mission Boulevard</field>
+        <field name="city">Somerville</field>
+        <field name="zip_code">02143</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">approved</field>
+        <field name="last_school">Newton North High School</field>
+        <field name="last_qualification">High School Diploma</field>
+        <field name="last_percentage">76.00</field>
+        <field name="guardian_name">Maria Santana</field>
+        <field name="guardian_relation">mother</field>
+        <field name="guardian_phone">+1 555-1010</field>
+        <field name="guardian_email">maria.santana@example.com</field>
+        <field name="guardian_occupation">Architect</field>
+    </record>
+
+    <!-- College Application States: Submitted, Draft, Rejected -->
+    <record id="app_sub_priya_sharma" model="education.application">
+        <field name="first_name">Priya</field>
+        <field name="last_name">Sharma</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=19, months=11)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">b+</field>
+        <field name="email">priya.sharma@example.com</field>
+        <field name="phone">+1 555-1011</field>
+        <field name="address">512 Harvard Street</field>
+        <field name="city">Brookline</field>
+        <field name="zip_code">02446</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">submitted</field>
+        <field name="last_school">Delhi Public School R.K. Puram</field>
+        <field name="last_qualification">CBSE All-India Senior School Certificate (12th)</field>
+        <field name="last_percentage">92.40</field>
+        <field name="guardian_name">Rajesh Sharma</field>
+        <field name="guardian_relation">father</field>
+        <field name="guardian_phone">+1 555-1012</field>
+        <field name="guardian_email">rajesh.sharma@example.com</field>
+        <field name="guardian_occupation">Finance Director</field>
+    </record>
+
+    <record id="app_draft_elena_rostova" model="education.application">
+        <field name="first_name">Elena</field>
+        <field name="last_name">Rostova</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=20, months=3)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">a-</field>
+        <field name="email">elena.rostova.student@example.com</field>
+        <field name="phone">+1 555-1015</field>
+        <field name="address">19 Kendall Square</field>
+        <field name="city">Cambridge</field>
+        <field name="zip_code">02139</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">draft</field>
+        <field name="last_school">Moscow Lyceum 1580</field>
+        <field name="last_qualification">Attestat o Srednem Obshchem Obrazovanii</field>
+        <field name="last_percentage">85.00</field>
+        <field name="guardian_name">Dmitri Rostov</field>
+        <field name="guardian_relation">father</field>
+        <field name="guardian_phone">+1 555-1016</field>
+        <field name="guardian_email">dmitri.rostov@example.com</field>
+        <field name="guardian_occupation">Aerospace Engineer</field>
+    </record>
+
+    <record id="app_rej_kevin_bacon" model="education.application">
+        <field name="first_name">Kevin</field>
+        <field name="last_name">Bacon</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=22, months=5)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">o+</field>
+        <field name="email">kevin.bacon@example.com</field>
+        <field name="phone">+1 555-1017</field>
+        <field name="address">77 Franklin Street</field>
+        <field name="city">Quincy</field>
+        <field name="zip_code">02169</field>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="state">rejected</field>
+        <field name="last_school">South Shore Vocational Technical High School</field>
+        <field name="last_qualification">High School Diploma</field>
+        <field name="last_percentage">48.20</field>
+        <field name="guardian_name">Linda Bacon</field>
+        <field name="guardian_relation">mother</field>
+        <field name="guardian_phone">+1 555-1018</field>
+        <field name="guardian_email">linda.bacon@example.com</field>
+        <field name="guardian_occupation">Retail Manager</field>
+        <field name="rejection_reason">Academic prerequisites not fulfilled: Minimum aggregate percentage for B.Tech CS is 60.00%.</field>
+        <field name="rejection_date" eval="(datetime.now() - relativedelta(days=10)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- School Applications -->
+    <record id="app_sch_leo_morris" model="education.application">
+        <field name="first_name">Leo</field>
+        <field name="last_name">Morris</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=15, months=3)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">a+</field>
+        <field name="email">leo.morris@student.greenwood.k12.edu</field>
+        <field name="phone">+1 555-2001</field>
+        <field name="address">12 Oak Tree Lane</field>
+        <field name="city">Greenwood</field>
+        <field name="zip_code">02445</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="state">approved</field>
+        <field name="last_school">Greenwood Middle School</field>
+        <field name="last_qualification">Grade 8 Certificate</field>
+        <field name="last_percentage">91.00</field>
+        <field name="guardian_name">Arthur Morris</field>
+        <field name="guardian_relation">father</field>
+        <field name="guardian_phone">+1 555-2002</field>
+        <field name="guardian_email">arthur.morris@example.com</field>
+        <field name="guardian_occupation">Accountant</field>
+    </record>
+
+    <record id="app_sch_mia_thompson" model="education.application">
+        <field name="first_name">Mia</field>
+        <field name="last_name">Thompson</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=15, months=7)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">o+</field>
+        <field name="email">mia.thompson@student.greenwood.k12.edu</field>
+        <field name="phone">+1 555-2003</field>
+        <field name="address">88 Willow Park Way</field>
+        <field name="city">Greenwood</field>
+        <field name="zip_code">02445</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="state">approved</field>
+        <field name="last_school">St. Jude Middle School</field>
+        <field name="last_qualification">Grade 8 Certificate</field>
+        <field name="last_percentage">89.50</field>
+        <field name="guardian_name">Clara Thompson</field>
+        <field name="guardian_relation">mother</field>
+        <field name="guardian_phone">+1 555-2004</field>
+        <field name="guardian_email">clara.thompson@example.com</field>
+        <field name="guardian_occupation">Biomedical Researcher</field>
+    </record>
+
+    <record id="app_sch_noah_williams" model="education.application">
+        <field name="first_name">Noah</field>
+        <field name="last_name">Williams</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=15, months=1)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">b-</field>
+        <field name="email">noah.williams@student.greenwood.k12.edu</field>
+        <field name="phone">+1 555-2005</field>
+        <field name="address">34 Pine Crest Drive</field>
+        <field name="city">Greenwood</field>
+        <field name="zip_code">02445</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="state">approved</field>
+        <field name="last_school">Greenwood Middle School</field>
+        <field name="last_qualification">Grade 8 Certificate</field>
+        <field name="last_percentage">84.00</field>
+        <field name="guardian_name">Gregory Williams</field>
+        <field name="guardian_relation">father</field>
+        <field name="guardian_phone">+1 555-2006</field>
+        <field name="guardian_email">gregory.williams@example.com</field>
+        <field name="guardian_occupation">Architect</field>
+    </record>
+
+    <record id="app_sch_olivia_brown" model="education.application">
+        <field name="first_name">Olivia</field>
+        <field name="last_name">Brown</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=14, months=11)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">ab+</field>
+        <field name="email">olivia.brown@student.greenwood.k12.edu</field>
+        <field name="phone">+1 555-2007</field>
+        <field name="address">75 Birch Wood Lane</field>
+        <field name="city">Greenwood</field>
+        <field name="zip_code">02445</field>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="company_id" ref="company_school"/>
+        <field name="state">submitted</field>
+        <field name="last_school">Brookline Preparatory Academy</field>
+        <field name="last_qualification">Grade 8 Certificate</field>
+        <field name="last_percentage">93.20</field>
+        <field name="guardian_name">Karen Brown</field>
+        <field name="guardian_relation">mother</field>
+        <field name="guardian_phone">+1 555-2008</field>
+        <field name="guardian_email">karen.brown@example.com</field>
+        <field name="guardian_occupation">Journalist</field>
+    </record>
+
+    <!-- Corporate Applications / Nominations -->
+    <record id="app_corp_vikram_singh" model="education.application">
+        <field name="first_name">Vikram</field>
+        <field name="last_name">Singh</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=29, months=5)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">o+</field>
+        <field name="email">vikram.singh@enterprise-client.com</field>
+        <field name="phone">+1 555-3001</field>
+        <field name="address">400 Silicon Avenue</field>
+        <field name="city">San Jose</field>
+        <field name="zip_code">95110</field>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="state">approved</field>
+        <field name="last_school">National Institute of Technology</field>
+        <field name="last_qualification">B.Tech in Information Technology</field>
+        <field name="last_percentage">81.00</field>
+        <field name="guardian_name">Anita Singh</field>
+        <field name="guardian_relation">spouse</field>
+        <field name="guardian_phone">+1 555-3002</field>
+        <field name="guardian_email">anita.singh@example.com</field>
+        <field name="guardian_occupation">Product Designer</field>
+    </record>
+
+    <record id="app_corp_laura_martinez" model="education.application">
+        <field name="first_name">Laura</field>
+        <field name="last_name">Martinez</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=28, months=2)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">a+</field>
+        <field name="email">laura.martinez@enterprise-client.com</field>
+        <field name="phone">+1 555-3003</field>
+        <field name="address">210 Innovation Way</field>
+        <field name="city">San Jose</field>
+        <field name="zip_code">95112</field>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="state">approved</field>
+        <field name="last_school">Santa Clara University</field>
+        <field name="last_qualification">B.S. in Computer Science</field>
+        <field name="last_percentage">87.50</field>
+        <field name="guardian_name">Carlos Martinez</field>
+        <field name="guardian_relation">spouse</field>
+        <field name="guardian_phone">+1 555-3004</field>
+        <field name="guardian_email">carlos.martinez@example.com</field>
+        <field name="guardian_occupation">Network Administrator</field>
+    </record>
+
+    <record id="app_corp_james_wilson" model="education.application">
+        <field name="first_name">James</field>
+        <field name="last_name">Wilson</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=31, months=9)).strftime('%Y-%m-%d')"/>
+        <field name="gender">male</field>
+        <field name="blood_group">b+</field>
+        <field name="email">james.wilson@enterprise-client.com</field>
+        <field name="phone">+1 555-3005</field>
+        <field name="address">55 Technology Park</field>
+        <field name="city">Sunnyvale</field>
+        <field name="zip_code">94085</field>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="state">approved</field>
+        <field name="last_school">University of California, Davis</field>
+        <field name="last_qualification">B.S. in Electrical Engineering</field>
+        <field name="last_percentage">78.00</field>
+        <field name="guardian_name">Patricia Wilson</field>
+        <field name="guardian_relation">spouse</field>
+        <field name="guardian_phone">+1 555-3006</field>
+        <field name="guardian_email">patricia.wilson@example.com</field>
+        <field name="guardian_occupation">Operations Analyst</field>
+    </record>
+
+    <record id="app_corp_aisha_patel" model="education.application">
+        <field name="first_name">Aisha</field>
+        <field name="last_name">Patel</field>
+        <field name="date_of_birth" eval="(datetime.now() - relativedelta(years=27, months=8)).strftime('%Y-%m-%d')"/>
+        <field name="gender">female</field>
+        <field name="blood_group">ab+</field>
+        <field name="email">aisha.patel@enterprise-client.com</field>
+        <field name="phone">+1 555-3007</field>
+        <field name="address">120 Market Street</field>
+        <field name="city">San Francisco</field>
+        <field name="zip_code">94105</field>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="company_id" ref="company_corporate"/>
+        <field name="state">submitted</field>
+        <field name="last_school">San Jose State University</field>
+        <field name="last_qualification">B.S. in Software Engineering</field>
+        <field name="last_percentage">85.20</field>
+        <field name="guardian_name">Farhan Patel</field>
+        <field name="guardian_relation">spouse</field>
+        <field name="guardian_phone">+1 555-3008</field>
+        <field name="guardian_email">farhan.patel@example.com</field>
+        <field name="guardian_occupation">Data Scientist</field>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 10. Student Partners & Enrollments (res.partner & enrollment)      -->
+    <!-- Dynamic enrollment dates                                          -->
+    <!-- ================================================================= -->
+
+    <!-- College Student Partners (Retaining XMLIDs) -->
+    <record id="partner_student_john_doe" model="res.partner">
+        <field name="name">John Doe</field>
+        <field name="email">john.doe@example.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="partner_student_sophia_chen" model="res.partner">
+        <field name="name">Sophia Chen</field>
+        <field name="email">sophia.chen@example.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="partner_student_jane_smith" model="res.partner">
+        <field name="name">Jane Smith</field>
+        <field name="email">jane.smith@example.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="partner_student_david_miller" model="res.partner">
+        <field name="name">David Miller</field>
+        <field name="email">david.miller@example.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="partner_student_carlos_santana" model="res.partner">
+        <field name="name">Carlos Santana</field>
+        <field name="email">carlos.santana@example.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- College Student Enrollments (Retaining XMLIDs) -->
+    <record id="enrollment_john_doe" model="education.enrollment">
+        <field name="application_id" ref="app_approved_john_doe"/>
+        <field name="student_partner_id" ref="partner_student_john_doe"/>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="class_id" ref="class_btech_cs101_a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=20)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="enrollment_sophia_chen" model="education.enrollment">
+        <field name="application_id" ref="app_approved_sophia_chen"/>
+        <field name="student_partner_id" ref="partner_student_sophia_chen"/>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="class_id" ref="class_btech_cs101_a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=19)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="enrollment_jane_smith" model="education.enrollment">
+        <field name="application_id" ref="app_approved_jane_smith"/>
+        <field name="student_partner_id" ref="partner_student_jane_smith"/>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="class_id" ref="class_btech_cs101_a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=18)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="enrollment_david_miller" model="education.enrollment">
+        <field name="application_id" ref="app_approved_david_miller"/>
+        <field name="student_partner_id" ref="partner_student_david_miller"/>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="class_id" ref="class_btech_cs101_a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=17)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="enrollment_carlos_santana" model="education.enrollment">
+        <field name="application_id" ref="app_approved_carlos_santana"/>
+        <field name="student_partner_id" ref="partner_student_carlos_santana"/>
+        <field name="program_id" ref="prog_btech_cs"/>
+        <field name="academic_year_id" ref="academic_year_2026_2027"/>
+        <field name="class_id" ref="class_btech_cs101_a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=16)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- School Student Partners -->
+    <record id="partner_student_leo_morris" model="res.partner">
+        <field name="name">Leo Morris</field>
+        <field name="email">leo.morris@student.greenwood.k12.edu</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="partner_student_mia_thompson" model="res.partner">
+        <field name="name">Mia Thompson</field>
+        <field name="email">mia.thompson@student.greenwood.k12.edu</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="partner_student_noah_williams" model="res.partner">
+        <field name="name">Noah Williams</field>
+        <field name="email">noah.williams@student.greenwood.k12.edu</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <!-- School Student Enrollments -->
+    <record id="enrollment_sch_leo_morris" model="education.enrollment">
+        <field name="application_id" ref="app_sch_leo_morris"/>
+        <field name="student_partner_id" ref="partner_student_leo_morris"/>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="class_id" ref="class_sch_10a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=22)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="enrollment_sch_mia_thompson" model="education.enrollment">
+        <field name="application_id" ref="app_sch_mia_thompson"/>
+        <field name="student_partner_id" ref="partner_student_mia_thompson"/>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="class_id" ref="class_sch_10a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=21)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <record id="enrollment_sch_noah_williams" model="education.enrollment">
+        <field name="application_id" ref="app_sch_noah_williams"/>
+        <field name="student_partner_id" ref="partner_student_noah_williams"/>
+        <field name="program_id" ref="prog_sch_high"/>
+        <field name="academic_year_id" ref="academic_year_school_current"/>
+        <field name="class_id" ref="class_sch_10a"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=20)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="company_school"/>
+    </record>
+
+    <!-- Corporate Trainee Partners -->
+    <record id="partner_student_vikram_singh" model="res.partner">
+        <field name="name">Vikram Singh</field>
+        <field name="email">vikram.singh@enterprise-client.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="partner_student_laura_martinez" model="res.partner">
+        <field name="name">Laura Martinez</field>
+        <field name="email">laura.martinez@enterprise-client.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="partner_student_james_wilson" model="res.partner">
+        <field name="name">James Wilson</field>
+        <field name="email">james.wilson@enterprise-client.com</field>
+        <field name="is_company" eval="False"/>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <!-- Corporate Trainee Enrollments -->
+    <record id="enrollment_corp_vikram_singh" model="education.enrollment">
+        <field name="application_id" ref="app_corp_vikram_singh"/>
+        <field name="student_partner_id" ref="partner_student_vikram_singh"/>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="class_id" ref="class_corp_cloud_c1"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=15)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="enrollment_corp_laura_martinez" model="education.enrollment">
+        <field name="application_id" ref="app_corp_laura_martinez"/>
+        <field name="student_partner_id" ref="partner_student_laura_martinez"/>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="class_id" ref="class_corp_cloud_c1"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=14)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <record id="enrollment_corp_james_wilson" model="education.enrollment">
+        <field name="application_id" ref="app_corp_james_wilson"/>
+        <field name="student_partner_id" ref="partner_student_james_wilson"/>
+        <field name="program_id" ref="prog_corp_cloud"/>
+        <field name="academic_year_id" ref="academic_year_corp_current"/>
+        <field name="class_id" ref="class_corp_cloud_c1"/>
+        <field name="state">active</field>
+        <field name="enrollment_date" eval="(datetime.now() - relativedelta(months=1, days=13)).strftime('%Y-%m-%d')"/>
+        <field name="company_id" ref="company_corporate"/>
+    </record>
+
+    <!-- Link Applications to Enrollments (Resolved in second pass) -->
+    <record id="app_approved_john_doe" model="education.application">
+        <field name="enrollment_id" ref="enrollment_john_doe"/>
+    </record>
+
+    <record id="app_approved_sophia_chen" model="education.application">
+        <field name="enrollment_id" ref="enrollment_sophia_chen"/>
+    </record>
+
+    <record id="app_approved_jane_smith" model="education.application">
+        <field name="enrollment_id" ref="enrollment_jane_smith"/>
+    </record>
+
+    <record id="app_approved_david_miller" model="education.application">
+        <field name="enrollment_id" ref="enrollment_david_miller"/>
+    </record>
+
+    <record id="app_approved_carlos_santana" model="education.application">
+        <field name="enrollment_id" ref="enrollment_carlos_santana"/>
+    </record>
+
+    <record id="app_sch_leo_morris" model="education.application">
+        <field name="enrollment_id" ref="enrollment_sch_leo_morris"/>
+    </record>
+
+    <record id="app_sch_mia_thompson" model="education.application">
+        <field name="enrollment_id" ref="enrollment_sch_mia_thompson"/>
+    </record>
+
+    <record id="app_sch_noah_williams" model="education.application">
+        <field name="enrollment_id" ref="enrollment_sch_noah_williams"/>
+    </record>
+
+    <record id="app_corp_vikram_singh" model="education.application">
+        <field name="enrollment_id" ref="enrollment_corp_vikram_singh"/>
+    </record>
+
+    <record id="app_corp_laura_martinez" model="education.application">
+        <field name="enrollment_id" ref="enrollment_corp_laura_martinez"/>
+    </record>
+
+    <record id="app_corp_james_wilson" model="education.application">
+        <field name="enrollment_id" ref="enrollment_corp_james_wilson"/>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 11. Student Leave Requests (education.leave.request)              -->
+    <!-- Dynamic leave dates near current date                             -->
+    <!-- ================================================================= -->
+
+    <!-- College Leave Requests -->
+    <record id="leave_john_doe_medical" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_john_doe"/>
+        <field name="leave_type">medical</field>
+        <field name="date_from" eval="(datetime.now() - timedelta(days=6)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Acute viral bronchitis and fever; medical certificate submitted.</field>
+        <field name="state">approved</field>
+        <field name="approval_date" eval="(datetime.now() - timedelta(days=6)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="leave_sophia_chen_event" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_sophia_chen"/>
+        <field name="leave_type">event</field>
+        <field name="date_from" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Representing institution at National Collegiate Hackathon 2026.</field>
+        <field name="state">approved</field>
+        <field name="approval_date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="leave_jane_smith_personal" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_jane_smith"/>
+        <field name="leave_type">personal</field>
+        <field name="date_from" eval="(datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Attending family function out of state.</field>
+        <field name="state">submitted</field>
+    </record>
+
+    <record id="leave_david_miller_family" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_david_miller"/>
+        <field name="leave_type">family</field>
+        <field name="date_from" eval="(datetime.now() + timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() + timedelta(days=5)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Urgent family matter requiring travel.</field>
+        <field name="state">draft</field>
+    </record>
+
+    <!-- School Leave Requests -->
+    <record id="leave_sch_leo_medical" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_sch_leo_morris"/>
+        <field name="leave_type">medical</field>
+        <field name="date_from" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="reason">High fever and doctor advice for bed rest.</field>
+        <field name="state">approved</field>
+        <field name="approval_date" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="leave_sch_mia_event" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_sch_mia_thompson"/>
+        <field name="leave_type">event</field>
+        <field name="date_from" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Inter-school science debate championship.</field>
+        <field name="state">approved</field>
+        <field name="approval_date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="leave_sch_noah_family" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_sch_noah_williams"/>
+        <field name="leave_type">family</field>
+        <field name="date_from" eval="(datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Family travel for sibling convocation ceremony.</field>
+        <field name="state">submitted</field>
+    </record>
+
+    <!-- Corporate Leave Requests -->
+    <record id="leave_corp_vikram_work" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_corp_vikram_singh"/>
+        <field name="leave_type">event</field>
+        <field name="date_from" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Critical production deployment on enterprise client project.</field>
+        <field name="state">approved</field>
+        <field name="approval_date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="leave_corp_laura_medical" model="education.leave.request">
+        <field name="enrollment_id" ref="enrollment_corp_laura_martinez"/>
+        <field name="leave_type">medical</field>
+        <field name="date_from" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="reason">Medical appointment and recovery.</field>
+        <field name="state">approved</field>
+        <field name="approval_date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- ================================================================= -->
+    <!-- 12. Student Attendance Records (education.attendance)              -->
+    <!-- Daily attendance per student (unique per enrollment and date)      -->
+    <!-- All dates dynamically set relative to current date                 -->
+    <!-- ================================================================= -->
+
+    <!-- College Attendances: John Doe -->
+    <record id="att_john_doe_d5" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_john_doe"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Excused on approved medical leave.</field>
+    </record>
+
+    <record id="att_john_doe_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_john_doe"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_john_doe_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_john_doe"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_john_doe_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_john_doe"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_john_doe_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_john_doe"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- College Attendances: Sophia Chen -->
+    <record id="att_sophia_chen_d5" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sophia_chen"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_sophia_chen_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sophia_chen"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Excused for Hackathon competition.</field>
+    </record>
+
+    <record id="att_sophia_chen_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sophia_chen"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Excused for Hackathon competition.</field>
+    </record>
+
+    <record id="att_sophia_chen_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sophia_chen"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">late</field>
+        <field name="notes">Transit delay arriving from hackathon venue.</field>
+    </record>
+
+    <record id="att_sophia_chen_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sophia_chen"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- College Attendances: Jane Smith -->
+    <record id="att_jane_smith_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_jane_smith"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_jane_smith_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_jane_smith"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_jane_smith_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_jane_smith"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_jane_smith_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_jane_smith"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- College Attendances: David Miller -->
+    <record id="att_david_miller_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_david_miller"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_david_miller_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_david_miller"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">late</field>
+        <field name="notes">Traffic congestion on morning commute.</field>
+    </record>
+
+    <record id="att_david_miller_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_david_miller"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">absent</field>
+        <field name="notes">Unexcused absence.</field>
+    </record>
+
+    <record id="att_david_miller_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_david_miller"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- College Attendances: Carlos Santana -->
+    <record id="att_carlos_santana_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_carlos_santana"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_carlos_santana_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_carlos_santana"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">absent</field>
+        <field name="notes">Absent without advance notice.</field>
+    </record>
+
+    <record id="att_carlos_santana_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_carlos_santana"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_carlos_santana_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_carlos_santana"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- School Attendances: Leo Morris -->
+    <record id="att_sch_leo_d5" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_leo_morris"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Excused for medical leave.</field>
+    </record>
+
+    <record id="att_sch_leo_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_leo_morris"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Excused for medical leave.</field>
+    </record>
+
+    <record id="att_sch_leo_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_leo_morris"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_sch_leo_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_leo_morris"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_sch_leo_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_leo_morris"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- School Attendances: Mia Thompson -->
+    <record id="att_sch_mia_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_mia_thompson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_sch_mia_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_mia_thompson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Representing school at debate.</field>
+    </record>
+
+    <record id="att_sch_mia_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_mia_thompson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Representing school at debate.</field>
+    </record>
+
+    <record id="att_sch_mia_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_mia_thompson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- School Attendances: Noah Williams -->
+    <record id="att_sch_noah_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_noah_williams"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_sch_noah_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_noah_williams"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">late</field>
+        <field name="notes">School bus delay due to roadworks.</field>
+    </record>
+
+    <record id="att_sch_noah_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_noah_williams"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_sch_noah_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_sch_noah_williams"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- Corporate Attendances: Vikram Singh -->
+    <record id="att_corp_vikram_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_vikram_singh"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Excused for critical client deployment.</field>
+    </record>
+
+    <record id="att_corp_vikram_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_vikram_singh"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Excused for critical client deployment.</field>
+    </record>
+
+    <record id="att_corp_vikram_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_vikram_singh"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_corp_vikram_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_vikram_singh"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- Corporate Attendances: Laura Martinez -->
+    <record id="att_corp_laura_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_laura_martinez"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_corp_laura_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_laura_martinez"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_corp_laura_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_laura_martinez"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">excused</field>
+        <field name="notes">Medical recovery leave.</field>
+    </record>
+
+    <record id="att_corp_laura_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_laura_martinez"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <!-- Corporate Attendances: James Wilson -->
+    <record id="att_corp_james_d4" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_james_wilson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_corp_james_d3" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_james_wilson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="state">late</field>
+        <field name="notes">Late join due to client standup meeting.</field>
+    </record>
+
+    <record id="att_corp_james_d2" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_james_wilson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+    <record id="att_corp_james_d1" model="education.attendance">
+        <field name="enrollment_id" ref="enrollment_corp_james_wilson"/>
+        <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="state">present</field>
+    </record>
+
+</odoo>

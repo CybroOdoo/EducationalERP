@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Portal Breadcrumbs Hierarchy ──────────────────────────────── -->
+    <template id="portal_my_breadcrumbs_education"
+              name="Portal Breadcrumbs: Education"
+              inherit_id="portal.portal_breadcrumbs"
+              priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <!-- 1. Enrollments Hierarchy -->
+            <li t-if="page_name in ('student_dashboard','student_enrollment')"
+                t-attf-class="breadcrumb-item #{'active' if page_name == 'student_dashboard' else ''}">
+                <a t-if="page_name == 'student_enrollment'" href="/student">My Enrollments</a>
+                <t t-else="">My Enrollments</t>
+            </li>
+            <li t-if="page_name == 'student_enrollment' and enrollment"
+                class="breadcrumb-item active">
+                <t t-out="enrollment.enrollment_no"/>
+            </li>
+
+            <!-- 2. Leaves Hierarchy -->
+            <li t-if="page_name in ('student_leave_list', 'student_leave_request')"
+                t-attf-class="breadcrumb-item #{'active ' if page_name == 'student_leave_list' else ''}">
+                <a t-if="page_name != 'student_leave_list'" href="/student/leave">Leaves</a>
+                <t t-else="">Leaves</t>
+            </li>
+            <li t-if="page_name == 'student_leave_request'" class="breadcrumb-item active">
+                Request Leave
+            </li>
+        </xpath>
+    </template>
+
+    <!-- Remove Connection and Security Portal Card -->
+    <template id="remove_connection_security" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@id='portal_common_category']/t[@t-call='portal.portal_docs_entry'][2]"
+               position="replace"/>
+    </template>
+
+    <!-- ── Portal Home — Enrollment count entry ──────────────────────── -->
+    <template id="portal_my_home_enrollment"
+              name="Portal My Home: Enrollment"
+              inherit_id="portal.portal_my_home"
+              priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">My Enrollments</t>
+                <t t-set="url">/student</t>
+                <t t-set="count" t-value="enrollment_count"/>
+                <t t-set="placeholder_count" t-value="'enrollment_count'"/>
+                <t t-set="icon" t-value="'/education_core/static/src/graduation-cap.svg'"/>
+                <t t-set="text">Active academic enrollments</t>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Leaves</t>
+                <t t-set="url">/student/leave</t>
+                <t t-set="icon" t-value="'/education_core/static/src/graduation-cap.svg'"/>
+                <t t-set="text">Leaves</t>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ── Student Dashboard ─────────────────────────────────────────── -->
+    <template id="portal_student_dashboard" name="Student Dashboard">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Enrollments</t>
+            </t>
+            <t t-if="not enrollments">
+                <div class="alert alert-warning text-center mt-4">
+                    <i class="fa fa-info-circle me-2"/>
+                    You have no active enrollments. Please contact the admission office.
+                </div>
+            </t>
+            <t t-if="enrollments">
+                <div class="row mt-4">
+                    <t t-foreach="enrollments" t-as="enr">
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-out="enr.program_id.name"/>
+                                    </h5>
+                                    <p class="card-text text-muted small">
+                                        <t t-out="enr.academic_year_id.name"/>
+                                        <t t-if="enr.class_id">
+                                            —
+                                            <t t-out="enr.class_id.name"/>
+                                        </t>
+                                    </p>
+                                    <p class="card-text">
+                                        <span t-attf-class="badge
+                                            #{'bg-success' if enr.state == 'active' else
+                                              'bg-warning' if enr.state == 'suspended' else
+                                              'bg-secondary'}">
+                                            <t t-out="dict(enr._fields['state'].selection).get(enr.state, enr.state)"/>
+                                        </span>
+                                    </p>
+                                    <div class="progress mb-2" style="height: 8px;">
+                                        <div class="progress-bar bg-info"
+                                             t-attf-style="width: #{enr.doc_completion_pct}%"/>
+                                    </div>
+                                    <small class="text-muted">
+                                        Documents:<t t-out="enr.doc_completion_pct"/>% verified
+                                    </small>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a t-attf-href="/student/enrollment/#{enr.id}"
+                                       class="btn btn-sm btn-outline-primary w-100">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- ── Enrollment Detail ─────────────────────────────────────────── -->
+    <template id="portal_student_enrollment" name="Student Enrollment Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title" t-value="enrollment.enrollment_no"/>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-graduation-cap me-2"/>
+                                    <t t-out="enrollment.program_id.name"/>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-4">Enrollment No.</dt>
+                                    <dd class="col-sm-8">
+                                        <t t-out="enrollment.enrollment_no"/>
+                                    </dd>
+                                    <dt class="col-sm-4">Academic Year</dt>
+                                    <dd class="col-sm-8">
+                                        <t t-out="enrollment.academic_year_id.name"/>
+                                    </dd>
+                                    <dt class="col-sm-4">Class / Section</dt>
+                                    <dd class="col-sm-8">
+                                        <t t-out="enrollment.class_id.name or '—'"/>
+                                    </dd>
+                                    <dt class="col-sm-4">Department</dt>
+                                    <dd class="col-sm-8">
+                                        <t t-out="enrollment.department_id.name or '—'"/>
+                                    </dd>
+                                    <dt class="col-sm-4">Status</dt>
+                                    <dd class="col-sm-8">
+                                        <span t-attf-class="badge
+                                            #{'bg-success' if enrollment.state == 'active' else 'bg-secondary'}">
+                                            <t t-out="dict(enrollment._fields['state'].selection).get(enrollment.state)"/>
+                                        </span>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span><i class="fa fa-file-text-o me-2"/>Document Checklist
+                                </span>
+                                <span class="badge bg-info">
+                                    <t t-out="enrollment.doc_completion_pct"/>% Complete
+                                </span>
+                            </div>
+                            <div class="card-body p-0">
+                                <t t-if="not documents">
+                                    <p class="text-muted p-3 mb-0">No documents required yet.</p>
+                                </t>
+                                <t t-if="documents">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Document</th>
+                                                <th>Required</th>
+                                                <th>Status</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="documents" t-as="doc">
+                                                <tr>
+                                                    <td>
+                                                        <t t-out="doc.document_type_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="doc.is_mandatory">
+                                                            <span class="badge bg-danger">Required</span>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="badge bg-secondary">Optional</span>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <span t-attf-class="badge
+                                                            #{'bg-success' if doc.state == 'verified' else
+                                                              'bg-warning text-dark' if doc.state == 'uploaded' else
+                                                              'bg-danger' if doc.state == 'rejected' else
+                                                              'bg-secondary'}">
+                                                            <t t-out="dict(doc._fields['state'].selection).get(doc.state)"/>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-muted small">
+                                                        <t t-out="doc.remarks or '—'"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card mb-3">
+                            <div class="card-header">Guardian</div>
+                            <div class="card-body small">
+                                <p class="mb-1">
+                                    <strong>
+                                        <t t-out="enrollment.guardian_name or '—'"/>
+                                    </strong>
+                                </p>
+                                <p class="mb-1">
+                                    <i class="fa fa-phone me-1"/>
+                                    <t t-out="enrollment.guardian_phone or '—'"/>
+                                </p>
+                                <p class="mb-0">
+                                    <i class="fa fa-envelope me-1"/>
+                                    <t t-out="enrollment.guardian_email or '—'"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ── Leave List ───────────────────────────────────────────────── -->
+    <template id="portal_student_leave" name="Student Leave">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Leaves</t>
+            </t>
+            <div class="container mt-4">
+                <t t-if="enrollment_status == 'notfound' or not enrollment">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fa fa-exclamation-triangle me-2"/>
+                        <div>
+                            <strong>Active Enrollment Not Found</strong>
+                            <br/>
+                            You do not have an active enrollment. Please contact the admission office before requesting
+                            leave.
+                        </div>
+                    </div>
+                </t>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3 class="mb-1">My Leave Requests</h3>
+                        <p class="text-muted mb-0">View your leave requests and their approval status.</p>
+                    </div>
+                    <t t-if="enrollment">
+                        <a href="/student/leave/request" class="btn btn-primary">
+                            <i class="fa fa-plus me-1"/>Request Leave
+                        </a>
+                    </t>
+                </div>
+
+                <t t-if="not leaves">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <i class="fa fa-calendar-o fa-3x text-muted mb-3"/>
+                            <h5>No Leave Requests</h5>
+                            <p class="text-muted mb-3">You have not submitted any leave requests yet.</p>
+                            <t t-if="enrollment">
+                                <a href="/student/leave/request" class="btn btn-primary">
+                                    <i class="fa fa-plus me-1"/>Request Leave
+                                </a>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+
+                <t t-if="leaves">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fa fa-calendar me-2"/>Leave History
+                            </h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Reference</th>
+                                        <th>Leave Type</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Days</th>
+                                        <th>Reason</th>
+                                        <th>Document</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="leaves" t-as="leave">
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    <t t-out="leave.reference"/>
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <t t-if="leave.leave_type == 'medical'">Medical / Sick Leave</t>
+                                                <t t-elif="leave.leave_type == 'personal'">Personal</t>
+                                                <t t-elif="leave.leave_type == 'family'">Family Emergency</t>
+                                                <t t-elif="leave.leave_type == 'event'">Participation in Event</t>
+                                                <t t-else="">Other</t>
+                                            </td>
+                                            <td>
+                                                <t t-out="leave.date_from"/>
+                                            </td>
+                                            <td>
+                                                <t t-out="leave.date_to"/>
+                                            </td>
+                                            <td>
+                                                <t t-out="leave.days_count"/>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">
+                                                    <t t-out="leave.reason"/>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <t t-if="leave.supporting_document">
+                                                    <span class="badge bg-info"><i class="fa fa-paperclip me-1"/>
+                                                        Attached
+                                                    </span>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="text-muted">—</span>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <span t-attf-class="badge
+                                                    #{'bg-secondary' if leave.state == 'draft' else
+                                                      'bg-warning text-dark' if leave.state == 'submitted' else
+                                                      'bg-success' if leave.state == 'approved' else
+                                                      'bg-danger'}">
+                                                    <t t-if="leave.state == 'draft'">Draft</t>
+                                                    <t t-elif="leave.state == 'submitted'">Pending Approval</t>
+                                                    <t t-elif="leave.state == 'approved'">Approved</t>
+                                                    <t t-else="">Rejected</t>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- ── Leave Request Form ────────────────────────────────────────── -->
+    <template id="portal_student_leave_request" name="Student Leave Request">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Request Leave</t>
+            </t>
+
+            <div class="container mt-4 mb-5">
+                <t t-if="not enrollment">
+                    <div class="alert alert-warning" role="alert">
+                        <div class="d-flex align-items-start">
+                            <i class="fa fa-exclamation-triangle me-2 mt-1"/>
+                            <div>
+                                <strong>Active Enrollment Not Found</strong>
+                                <p class="mb-0 mt-1">
+                                    You cannot submit a leave request because no active enrollment was found for your
+                                    account. Please contact the admission office.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/student/leave" class="btn btn-secondary">Back to Leaves</a>
+                </t>
+
+                <t t-if="enrollment">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fa fa-calendar-plus-o me-2"/>Leave Application
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form action="/student/leave/request" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="mb-3">
+                                    <label class="form-label">Student Enrollment</label>
+                                    <input type="text" class="form-control" t-att-value="enrollment.enrollment_no"
+                                           readonly="readonly"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Student</label>
+                                    <input type="text" class="form-control" t-att-value="enrollment.student_name"
+                                           readonly="readonly"/>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="leave_type" class="form-label">Leave Type
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select name="leave_type" id="leave_type" class="form-select"
+                                                required="required">
+                                            <option value="">Select Leave Type</option>
+                                            <option value="medical">Medical / Sick Leave</option>
+                                            <option value="personal">Personal</option>
+                                            <option value="family">Family Emergency</option>
+                                            <option value="event">Participation in Event</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="date_from" class="form-label">From Date
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="date" name="date_from" id="date_from" class="form-control"
+                                               required="required"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="date_to" class="form-label">To Date
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="date" name="date_to" id="date_to" class="form-control"
+                                               required="required"/>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reason" class="form-label">Reason
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <textarea name="reason" id="reason" rows="5" class="form-control"
+                                              placeholder="Enter the reason for your leave..." required="required"/>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="supporting_document" class="form-label">Supporting Document</label>
+                                    <input type="file" name="supporting_document" id="supporting_document"
+                                           class="form-control" accept=".pdf,.jpg,.jpeg,.png,.webp"/>
+                                    <div class="form-text">You may attach a PDF or image (JPG, JPEG, PNG, WEBP).</div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane me-1"/>
+                                        Submit Leave Request
+                                    </button>
+                                    <a href="/student/leave" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>

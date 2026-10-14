@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Rejection Wizard Form View (Modal without <sheet>) -->
+    <record id="education_application_reject_view_form" model="ir.ui.view">
+        <field name="name">education.application.reject.form</field>
+        <field name="model">education.application.reject</field>
+        <field name="arch" type="xml">
+            <form string="Reject Application">
+                <group>
+                    <field name="applicant_name" readonly="True"/>
+                    <field name="program_name" readonly="True"/>
+                    <field name="application_id" invisible="1"/>
+                </group>
+                <notebook>
+                    <page string="Rejection">
+                        <field name="rejection_reason" nolabel="1"
+                               placeholder="Provide a clear reason for rejection (min 10 characters)…"/>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="action_confirm_reject" type="object"
+                            string="Confirm Rejection" class="btn-danger"/>
+                    <button special="cancel" string="Cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

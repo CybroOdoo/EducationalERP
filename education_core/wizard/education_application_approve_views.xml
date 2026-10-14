@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Approval & Class Assignment Wizard Form View ─────────────────────── -->
+    <record id="education_application_approve_view_form" model="ir.ui.view">
+        <field name="name">education.application.approve.form</field>
+        <field name="model">education.application.approve</field>
+        <field name="arch" type="xml">
+            <form string="Approve Application &amp; Assign Class">
+                <group>
+                    <group string="Applicant Details">
+                        <field name="applicant_name" readonly="1"/>
+                        <field name="application_id" invisible="1"/>
+                    </group>
+                    <group string="Program Details">
+                        <field name="program_id" readonly="1"/>
+                        <field name="academic_year_id" readonly="1"/>
+                    </group>
+                </group>
+                <group string="Class / Section Allocation">
+                    <field name="class_id"
+                           domain="[('program_id', '=', program_id)]"
+                           context="{'default_program_id': program_id, 'default_academic_year_id': academic_year_id}"
+                           placeholder="Select or create a class..."/>
+                </group>
+                <footer>
+                    <button name="action_confirm_approve"
+                            type="object"
+                            string="Approve &amp; Enroll"
+                            class="btn-primary"/>
+                    <button special="cancel"
+                            string="Cancel"
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+ </odoo>

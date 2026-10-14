@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="education_timetable_generate_view_form" model="ir.ui.view">
+        <field name="name">education.timetable.generate.form</field>
+        <field name="model">education.timetable.generate</field>
+        <field name="arch" type="xml">
+            <form string="Auto-Generate Timetable Schedule">
+                <div class="alert alert-info py-2 mb-3" role="alert">
+                    Configure periods and default timing intervals to automatically populate all timetable slots.
+                </div>
+                <group>
+                    <group string="Schedule Days">
+                        <field name="mon"/>
+                        <field name="tue"/>
+                        <field name="wed"/>
+                        <field name="thu"/>
+                        <field name="fri"/>
+                        <field name="sat"/>
+                        <field name="sun"/>
+                    </group>
+                    <group string="Period Timings">
+                        <field name="periods_per_day"/>
+                        <field name="start_time" widget="float_time"/>
+                        <field name="period_duration"/>
+                        <separator string="Breaks &amp; Intervals"/>
+                        <field name="break_after_period"/>
+                        <field name="break_duration" invisible="not break_after_period"/>
+                        <field name="lunch_after_period"/>
+                        <field name="lunch_duration" invisible="not lunch_after_period"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_slots" string="Generate Schedule"
+                            type="object" class="btn-primary" icon="fa-magic"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

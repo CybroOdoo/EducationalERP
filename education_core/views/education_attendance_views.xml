@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Kanban View for attendance filtering ──────────────────────────────────── -->
+    <record id="education_calss_view_kanban" model="ir.ui.view">
+        <field name="name">education.class.kanban</field>
+        <field name="model">education.class</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" create="0" duplicate="0">
+                <field name="name"/>
+                <field name="program_id"/>
+                <field name="department_id"/>
+                <field name="academic_year_id"/>
+                <field name="class_teacher_id"/>
+                <field name="enrollment_count"/>
+                <field name="capacity"/>
+                <field name="seats_available"/>
+                <templates>
+                    <t t-name="card">
+                        <!-- Original Button Logic Restored -->
+                        <button type="object"
+                                name="action_open_attendance_list"
+                                class="btn text-reset w-100 text-start border-0 bg-transparent p-0">
+                            <div class="d-flex flex-column h-100 justify-content-between p-1">
+
+                                <!-- 1. Header: Class Name & Academic Year -->
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            <field name="name"/>
+                                        </span>
+                                        <span class="badge bg-100 text-dark border">
+                                            <field name="academic_year_id"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- 2. Subtitle: Program & Department -->
+                                    <div class="text-muted small mb-2">
+                                        <i class="fa fa-graduation-cap me-1" title="Program"/>
+                                        <field name="program_id"/>
+                                        <t t-if="record.department_id.raw_value">
+                                            <span class="mx-1">•</span>
+                                            <field name="department_id"/>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Teacher Info -->
+                                <div class="d-flex align-items-center my-2 text-muted small">
+                                    <i class="fa fa-user-circle-o me-1 fs-6" title="Class Teacher"/>
+                                    <t t-if="record.class_teacher_id.raw_value">
+                                        <field name="class_teacher_id"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="text-warning fst-italic">No Teacher Assigned</span>
+                                    </t>
+                                </div>
+
+                                <!-- 4. Footer: Enrollment & Capacity Metrics -->
+                                <div class="border-top pt-2 mt-2 d-flex justify-content-between align-items-center small">
+                                    <!-- Enrolled vs Max Capacity Counter -->
+                                    <div title="Enrolled / Capacity">
+                                        <i class="fa fa-users me-1 text-secondary"/>
+                                        <span class="fw-bold">
+                                            <field name="enrollment_count"/>
+                                        </span>
+                                        <span class="text-muted">/
+                                            <field name="capacity"/>
+                                            Enrolled
+                                        </span>
+                                    </div>
+
+                                    <!-- Availability Badge -->
+                                    <div>
+                                        <t t-if="record.seats_available.raw_value &gt; 0">
+                                            <span class="badge text-bg-success">
+                                                <field name="seats_available"/>
+                                                Seats Left
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge text-bg-danger">
+                                                Class Full
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </button>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="education_class_action_2_education_attendance" model="ir.actions.act_window">
+        <field name="name">Classes</field>
+        <field name="path">attendance_class</field>
+        <field name="res_model">education.class</field>
+        <field name="view_mode">kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first class / section
+            </p>
+            <p>
+                A class is a specific section of a program for a given
+                academic year, e.g. B.Tech CSE — Section A — 2025-2026.
+            </p>
+        </field>
+    </record>
+
+    <!-- ── Form View ──────────────────────────────────────────────────────────── -->
+    <record id="education_attendance_view_form" model="ir.ui.view">
+        <field name="name">education.attendance.form</field>
+        <field name="model">education.attendance</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Record">
+                <header>
+                    <button name="action_notify_parent" type="object"
+                            string="Notify Guardian"
+                            class="btn-secondary"
+                            invisible="state != 'absent'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="present,absent,late,excused"
+                           options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <group name="main">
+                        <group name="student_details" string="Student &amp; Class">
+                            <field name="date"/>
+                            <field name="class_id"/>
+                            <field name="enrollment_id" options="{'no_create': True}"
+                                   domain="[('class_id','=',class_id)]"/>
+                            <field name="student_name"/>
+                        </group>
+                        <group name="attendance_details" string="Attendance Details">
+                            <field name="state"/>
+                            <field name="marked_by_id" options="{'no_create': True}" optional="show"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="notes_group" string="Remarks">
+                            <group>
+                                <field name="notes" nolabel="1"
+                                       placeholder="Add remarks or reasons for delay/absence..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ──────────────────────────────────────────────────────────── -->
+    <record id="education_attendance_view_list" model="ir.ui.view">
+        <field name="name">education.attendance.list</field>
+        <field name="model">education.attendance</field>
+        <field name="arch" type="xml">
+            <list string="Attendance" default_order="date desc, student_name" editable="bottom" sample="1">
+                <field name="date"/>
+                <field name="class_id"/>
+                <field name="enrollment_id" options="{'no_create': True}" domain="[('class_id','=',class_id)]"/>
+                <field name="student_name"/>
+                <field name="state"
+                       decoration-success="state == 'present'"
+                       decoration-warning="state == 'late'"
+                       decoration-danger="state == 'absent'"
+                       decoration-info="state == 'excused'"
+                       decoration-muted="state == 'holiday'"/>
+                <field name="marked_by_id" optional="hide"/>
+                <field name="notes" optional="hide"/>
+                <button name="get_formview_action" type="object" string="View" icon="fa-external-link"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Calendar View ──────────────────────────────────────────────────────── -->
+    <record id="education_attendance_view_calendar" model="ir.ui.view">
+        <field name="name">education.attendance.calendar</field>
+        <field name="model">education.attendance</field>
+        <field name="arch" type="xml">
+            <calendar string="Attendance Calendar"
+                      date_start="date"
+                      color="state"
+                      mode="month"
+                      quick_create="false"
+                      event_open_popup="true">
+                <field name="student_name"/>
+                <field name="class_id"/>
+                <field name="state" filters="1"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ── Search View ────────────────────────────────────────────────────────── -->
+    <record id="education_attendance_view_search" model="ir.ui.view">
+        <field name="name">education.attendance.search</field>
+        <field name="model">education.attendance</field>
+        <field name="arch" type="xml">
+            <search string="Search Attendance">
+                <field name="student_name" string="Student"/>
+                <field name="enrollment_id"/>
+                <field name="class_id"/>
+                <field name="date"/>
+                <separator/>
+                <filter string="Present" name="filter_present" domain="[('state', '=', 'present')]"/>
+                <filter string="Absent" name="filter_absent" domain="[('state', '=', 'absent')]"/>
+                <filter string="Late" name="filter_late" domain="[('state', '=', 'late')]"/>
+                <filter string="Excused" name="filter_excused" domain="[('state', '=', 'excused')]"/>
+                <separator/>
+                <filter string="Today" name="filter_today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Date" name="filter_date" date="date"/>
+                <group>
+                    <filter string="Student" name="group_by_student" context="{'group_by': 'enrollment_id'}"/>
+                    <filter string="Class" name="group_by_class" context="{'group_by': 'class_id'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'date:day'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Action & Menu ──────────────────────────────────────────────────────── -->
+    <record id="education_attendance_action" model="ir.actions.act_window">
+        <field name="name">Attendance</field>
+        <field name="path">attendance</field>
+        <field name="res_model">education.attendance</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="search_view_id" ref="education_attendance_view_search"/>
+        <field name="context">{'search_default_filter_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Record attendance for students
+            </p>
+            <p>
+                Track daily attendance with automatic notifications for absent students.
+            </p>
+        </field>
+    </record>
+</odoo>

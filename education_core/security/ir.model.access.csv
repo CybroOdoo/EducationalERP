@@ -1,0 +1,72 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_department_admin,education.department admin,model_education_department,education_core.group_education_admin,1,1,1,1
+access_department_user,education.department user,model_education_department,base.group_user,1,0,0,0
+access_academic_year_admin,education.academic.year admin,model_education_academic_year,education_core.group_education_admin,1,1,1,1
+access_academic_year_user,education.academic.year user,model_education_academic_year,base.group_user,1,0,0,0
+access_program_admin,education.program admin,model_education_program,education_core.group_education_admin,1,1,1,1
+access_program_admission,education.program admission,model_education_program,education_core.group_education_admission_officer,1,0,0,0
+access_program_user,education.program user,model_education_program,base.group_user,1,0,0,0
+access_class_admin,education.class admin,model_education_class,education_core.group_education_admin,1,1,1,1
+access_class_admission,education.class admission,model_education_class,education_core.group_education_admission_officer,1,1,1,0
+access_class_teacher,education.class teacher,model_education_class,education_core.group_education_teacher,1,0,0,0
+access_class_user,education.class user,model_education_class,base.group_user,1,0,0,0
+access_timetable_admin,education.timetable admin,model_education_timetable,education_core.group_education_admin,1,1,1,1
+access_timetable_teacher,education.timetable teacher,model_education_timetable,education_core.group_education_teacher,1,0,0,0
+access_timetable_user,education.timetable user,model_education_timetable,base.group_user,1,0,0,0
+access_application_admin,education.application admin,model_education_application,education_core.group_education_admin,1,1,1,1
+access_application_admission,education.application admission,model_education_application,education_core.group_education_admission_officer,1,1,1,0
+access_application_portal,education.application portal,model_education_application,base.group_portal,1,0,0,0
+access_enrollment_admin,education.enrollment admin,model_education_enrollment,education_core.group_education_admin,1,1,1,1
+access_enrollment_admission,education.enrollment admission,model_education_enrollment,education_core.group_education_admission_officer,1,1,1,0
+access_enrollment_teacher,education.enrollment teacher,model_education_enrollment,education_core.group_education_teacher,1,0,0,0
+access_enrollment_portal,education.enrollment portal,model_education_enrollment,base.group_portal,1,0,0,0
+access_document_type_admin,education.document.type admin,model_education_document_type,education_core.group_education_admin,1,1,1,1
+access_document_type_user,education.document.type user,model_education_document_type,base.group_user,1,0,0,0
+access_document_type_portal,education.document.type portal,model_education_document_type,base.group_portal,1,0,0,0
+access_document_admin,education.document admin,model_education_document,education_core.group_education_admin,1,1,1,1
+access_document_admission,education.document admission,model_education_document,education_core.group_education_admission_officer,1,1,1,1
+access_document_portal,education.document portal,model_education_document,base.group_portal,1,1,1,0
+access_approve_admin,education.application.approve admin,model_education_application_approve,education_core.group_education_admin,1,1,1,1
+access_approve_admission,education.application.approve admission,model_education_application_approve,education_core.group_education_admission_officer,1,1,1,1
+access_reject_admin,education.application.reject admin,model_education_application_reject,education_core.group_education_admin,1,1,1,1
+access_reject_admission,education.application.reject admission,model_education_application_reject,education_core.group_education_admission_officer,1,1,1,1
+access_portal_pwd_admin,education.portal.password admin,model_education_portal_password,education_core.group_education_admin,1,1,1,1
+access_timetable_slot_admin,education.timetable.slot admin,model_education_timetable_slot,education_core.group_education_admin,1,1,1,1
+access_timetable_slot_teacher,education.timetable.slot teacher,model_education_timetable_slot,education_core.group_education_teacher,1,0,0,0
+access_timetable_slot_user,education.timetable.slot user,model_education_timetable_slot,base.group_user,1,0,0,0
+access_attendance_admin,education.attendance admin,model_education_attendance,education_core.group_education_admin,1,1,1,1
+access_attendance_teacher,education.attendance teacher,model_education_attendance,education_core.group_education_teacher,1,1,1,0
+access_attendance_user,education.attendance user,model_education_attendance,base.group_user,1,0,0,0
+access_leave_admin,education.leave.request admin,model_education_leave_request,education_core.group_education_admin,1,1,1,1
+access_leave_teacher,education.leave.request teacher,model_education_leave_request,education_core.group_education_teacher,1,1,0,0
+access_leave_portal,education.leave.request portal,model_education_leave_request,base.group_portal,1,1,1,0
+access_att_summary_user,education.attendance.summary user,model_education_attendance_summary,education_core.group_education_admin,1,1,1,1
+access_att_summary_teacher,education.attendance.summary teacher,model_education_attendance_summary,education_core.group_education_teacher,1,1,1,1
+access_education_subject_admin,education.subject admin,model_education_subject,education_core.group_education_admin,1,1,1,1
+access_education_subject_teacher,education.subject teacher,model_education_subject,education_core.group_education_teacher,1,0,0,0
+access_education_subject_user,education.subject user,model_education_subject,base.group_user,1,0,0,0
+access_classroom_admin,education.classroom admin,model_education_classroom,education_core.group_education_admin,1,1,1,1
+access_classroom_type_admin,education.classroom.type admin,model_education_classroom_type,education_core.group_education_admin,1,1,1,1
+access_classroom_teacher,education.classroom teacher,model_education_classroom,education_core.group_education_teacher,1,0,0,0
+access_classroom_type_teacher,education.classroom.type teacher,model_education_classroom_type,education_core.group_education_teacher,1,0,0,0
+access_classroom_user,education.classroom user,model_education_classroom,base.group_user,1,0,0,0
+access_classroom_type_user,education.classroom.type,model_education_classroom_type,base.group_user,1,0,0,0
+access_faculty_admin,education.faculty admin,model_hr_employee,education_core.group_education_admin,1,1,1,1
+access_faculty_user,education.faculty user,model_hr_employee,base.group_user,1,0,0,0
+access_faculty_qualification_admin,education.faculty.qualification admin,model_education_faculty_qualification,education_core.group_education_admin,1,1,1,1
+access_faculty_qualification_teacher,education.faculty.qualification teacher,model_education_faculty_qualification,education_core.group_education_teacher,1,0,0,0
+access_faculty_qualification_user,education.faculty.qualification user,model_education_faculty_qualification,base.group_user,1,0,0,0
+access_tt_generate_admin,education.timetable.generate admin,model_education_timetable_generate,education_core.group_education_admin,1,1,1,1
+access_tt_generate_teacher,education.timetable.generate teacher,model_education_timetable_generate,education_core.group_education_teacher,1,1,1,1
+access_account_move,account.move admission,model_account_move,education_core.group_education_admission_officer,1,0,0,0
+access_hr_employee_teacher,hr.employee teacher,model_hr_employee,education_core.group_education_teacher,1,0,0,0
+access_hr_department_teacher,hr.department teacher,hr.model_hr_department,education_core.group_education_teacher,1,0,0,0
+access_hr_tag_teacher,hr.employee.category teacher,hr.model_hr_employee_category,education_core.group_education_teacher,1,0,0,0
+access_attendance_report_admin,education.attendance.report admin,model_education_attendance_report,education_core.group_education_admin,1,0,0,0
+access_attendance_report_teacher,education.attendance.report teacher,model_education_attendance_report,education_core.group_education_teacher,1,0,0,0
+access_res_company_admin,res.company admin,model_res_company,education_core.group_education_admin,1,1,1,1
+access_res_company_user,res.company user,model_res_company,base.group_user,1,0,0,0
+access_analytics_enrollment_admin,analytics enrollment admin,model_education_analytics_enrollment_summary,education_core.group_education_admin,1,0,0,0
+access_analytics_enrollment_user,analytics enrollment user,model_education_analytics_enrollment_summary,base.group_user,1,0,0,0
+access_analytics_attendance_admin,analytics attendance admin,model_education_analytics_attendance_rate,education_core.group_education_admin,1,0,0,0
+access_analytics_attendance_user,analytics attendance user,model_education_analytics_attendance_rate,base.group_user,1,0,0,0

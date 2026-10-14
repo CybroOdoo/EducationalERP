@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Search View ────────────────────────────────────────────────── -->
+    <record id="res_company_view_search" model="ir.ui.view">
+        <field name="name">res.company.view.search</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <search string="Search Institution Profiles">
+                <!-- Search Fields -->
+                <field name="name" string="Institution Name"/>
+                <field name="short_name"/>
+                <field name="registration_number"/>
+                <field name="institution_type"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="city"/>
+                <field name="country_id"/>
+
+                <!-- Preset Filters -->
+                <filter string="Universities" name="filter_university"
+                        domain="[('institution_type', '=', 'university')]"/>
+                <filter string="Colleges" name="filter_college"
+                        domain="[('institution_type', '=', 'college')]"/>
+                <filter string="Schools" name="filter_school"
+                        domain="[('institution_type', '=', 'school')]"/>
+                <separator/>
+
+                <!-- Group By -->
+                <group>
+                    <filter string="Institution Type" name="group_institution_type"
+                            context="{'group_by': 'institution_type'}"/>
+                    <filter string="Country" name="group_country"
+                            context="{'group_by': 'country_id'}"/>
+                    <filter string="State" name="group_state"
+                            context="{'group_by': 'state_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Form View ─────────────────────────────────────────────────── -->
+    <record id="res_company_institution_view_form" model="ir.ui.view">
+        <field name="name">res.company.view.form</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_all_company_branches" type="object"
+                                invisible="not all_child_ids" icon="fa-sitemap" string="Branches"/>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <field name="logo" widget="contact_image" class="oe_avatar text-start float-none" nolabel="1"
+                               options="{'size': [100,100], 'img_class': 'rounded-4'}"/>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. My Company"/>
+                            </h1>
+                            <h3>
+                                <field name="short_name" placeholder="e.g. OXF"/>
+                            </h3>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="General &amp; Identity" name="page_identity">
+                            <group>
+                                <group name="identity_left" string="Accreditation &amp; Classification">
+                                    <field name="institution_type"/>
+                                    <field name="registration_number" placeholder="e.g. REG-2025-001"/>
+                                    <field name="established_date"/>
+                                    <field name="accreditation_body" placeholder="e.g. NAAC, UGC, ISO 21001:2018"/>
+                                </group>
+
+                            </group>
+                        </page>
+
+                        <page string="Contact Details" name="page_contact">
+                            <group>
+                                <group name="contact_communication" string="Communication">
+                                    <field name="phone" widget="phone"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <field name="email" widget="email"/>
+                                    <field name="website" widget="url" placeholder="https://www.example.edu"/>
+                                </group>
+                                <group name="contact_address" string="Postal Address">
+                                    <label for="street" string="Address"/>
+                                    <div class="o_address_format">
+                                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                        <field name="city" placeholder="City" class="o_address_city"/>
+                                        <field name="state_id" class="o_address_state" placeholder="State"
+                                               options="{&quot;no_open&quot;: True}"/>
+                                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                        <field name="country_id" placeholder="Country" class="o_address_country"
+                                               options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Academic Calendar Defaults" name="page_calendar">
+                            <group>
+                                <group name="cal_settings" string="Calendar Schedule">
+                                    <field name="academic_year_start_month"/>
+                                    <field name="working_days"/>
+                                    <field name="max_periods_per_day"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Branding" name="page_branding">
+                            <group>
+                                <group name="branding_colors" string="Theme Colors">
+                                    <field name="branding_color" widget="color"/>
+                                    <field name="branding_color_secondary" widget="color"/>
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <!-- ── List View ─────────────────────────────────────────────────── -->
+    <record id="res_company_view_list" model="ir.ui.view">
+        <field name="name">res.company.view.list</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <list string="Institution Profiles">
+                <field name="logo" widget="image" options="{'size': [32, 32]}"/>
+                <field name="name"/>
+                <field name="short_name" optional="show"/>
+                <field name="institution_type"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="country_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Window Action ─────────────────────────────────────────────── -->
+    <record id="res_company_action" model="ir.actions.act_window">
+        <field name="name">Institution Profile</field>
+        <field name="path">institution</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="res_company_view_list"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'sequence': 1, 'view_mode': 'list', 'view_id': ref('res_company_view_list')}),
+            (0, 0, {'sequence': 2, 'view_mode': 'form', 'view_id': ref('res_company_institution_view_form')}),
+        ]"/>
+        <field name="search_view_id" ref="res_company_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure your institution profile
+            </p>
+            <p>
+                Set up your institution's name, logo, branding, and
+                academic calendar defaults here.
+            </p>
+        </field>
+    </record>
+
+</odoo>

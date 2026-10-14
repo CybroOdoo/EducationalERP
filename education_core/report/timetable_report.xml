@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Paperformat for Horizontal/Landscape Timetable ─────────────── -->
+    <record id="paperformat_timetable_landscape" model="report.paperformat">
+        <field name="name">Timetable Landscape (A4)</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">12</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">8</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- ── Report Action ──────────────────────────────────────────────── -->
+    <record id="action_report_education_timetable" model="ir.actions.report">
+        <field name="name">Class Timetable (PDF)</field>
+        <field name="model">education.timetable</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_core.report_timetable_template</field>
+        <field name="report_file">education_core.report_timetable_template</field>
+        <field name="print_report_name">'Timetable - %s' % (object.name or '')</field>
+        <field name="binding_model_id" ref="model_education_timetable"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="education_core.paperformat_timetable_landscape"/>
+    </record>
+
+    <!-- ── QWeb Template (Horizontal Grid Layout) ─────────────────────── -->
+    <template id="report_timetable_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="tt">
+                <t t-call="web.external_layout">
+                    <div class="page"
+                         style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                        <!-- Header / Title -->
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+
+                        <div class="row align-items-center mb-3 pb-2 border-bottom">
+                            <div class="col-7">
+                                <h2 class="mb-0 fw-bold text-primary" style="font-size: 20px; letter-spacing: -0.5px;">
+                                    CLASS TIMETABLE
+                                </h2>
+                                <div class="text-muted small">
+                                    <span t-out="tt.class_id.program_id.name or ''"/>
+                                    <t t-if="tt.class_id.department_id">
+                                        &amp;nbsp;·&amp;nbsp;
+                                        <span t-out="tt.class_id.department_id.name"/>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <span class="badge bg-light text-dark border px-2 py-1" style="font-size: 13px;">
+                                    <strong t-out="tt.name"/>
+                                </span>
+                                <t t-if="tt.state == 'published'">
+                                    <span class="badge bg-success ms-1 px-2 py-1" style="font-size: 11px;">Published
+                                    </span>
+                                </t>
+                                <t t-elif="tt.state == 'draft'">
+                                    <span class="badge bg-warning text-dark ms-1 px-2 py-1" style="font-size: 11px;">
+                                        Draft
+                                    </span>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Metadata Grid -->
+                        <div class="row mb-3" style="font-size: 11px;">
+                            <div class="col-3">
+                                <div class="p-2 bg-light rounded border">
+                                    <div class="text-muted small text-uppercase fw-semibold" style="font-size: 9px;">
+                                        Class / Section
+                                    </div>
+                                    <div class="fw-bold fs-6 text-dark" t-out="tt.class_id.name"/>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="p-2 bg-light rounded border">
+                                    <div class="text-muted small text-uppercase fw-semibold" style="font-size: 9px;">
+                                        Academic Year
+                                    </div>
+                                    <div class="fw-bold fs-6 text-dark" t-out="tt.academic_year_id.name"/>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="p-2 bg-light rounded border">
+                                    <div class="text-muted small text-uppercase fw-semibold" style="font-size: 9px;">
+                                        Class Teacher
+                                    </div>
+                                    <div class="fw-bold fs-6 text-dark"
+                                         t-out="tt.class_id.class_teacher_id.name or 'Unassigned'"/>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="p-2 bg-light rounded border">
+                                    <div class="text-muted small text-uppercase fw-semibold" style="font-size: 9px;">
+                                        Effective Validity
+                                    </div>
+                                    <div class="fw-bold fs-6 text-dark">
+                                        <t t-if="tt.effective_from">
+                                            <span t-out="tt.effective_from.strftime('%d %b %Y')"/>
+                                            <t t-if="tt.effective_to">
+                                                to
+                                                <span t-out="tt.effective_to.strftime('%d %b %Y')"/>
+                                            </t>
+                                        </t>
+                                        <t t-else="">Active Academic Term</t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Fetch -->
+                        <t t-set="grid" t-value="tt._get_timetable_grid_data()"/>
+                        <t t-set="columns" t-value="grid.get('columns', [])"/>
+                        <t t-set="day_rows" t-value="grid['days']"/>
+
+                        <!-- Weekly Timetable Matrix -->
+                        <table class="table table-bordered table-sm mb-3 align-middle text-center"
+                               style="font-size: 10px; border-collapse: collapse; table-layout: fixed; width: 100%;">
+                            <thead>
+                                <tr style="background-color: #f1f5f9; border-bottom: 2px solid #94a3b8;">
+                                    <th style="width: 90px; padding: 6px 4px; vertical-align: middle; background-color: #e2e8f0; color: #1e293b; border: 1px solid #cbd5e1;"
+                                        class="text-uppercase fw-bold text-center">
+                                        Day / Period
+                                    </th>
+                                    <t t-foreach="columns" t-as="col">
+                                        <t t-if="col['type'] == 'period'">
+                                            <th style="padding: 5px 3px; vertical-align: middle; background-color: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1;">
+                                                <div class="fw-bold" style="font-size: 10.5px; color: #0f172a;">
+                                                    Period
+                                                    <t t-out="col['period_no']"/>
+                                                </div>
+                                                <t t-if="col.get('time')">
+                                                    <div class="small fw-semibold"
+                                                         style="font-size: 8.5px; color: #475569; white-space: nowrap;">
+                                                        <t t-out="col['time']"/>
+                                                    </div>
+                                                </t>
+                                            </th>
+                                        </t>
+                                        <t t-elif="col['type'] == 'break'">
+                                            <th style="width: 24px; padding: 4px 1px; vertical-align: middle; background-color: #e2e8f0; color: #64748b; border: 1px solid #cbd5e1; font-size: 8px;">
+                                                <span>☕</span>
+                                            </th>
+                                        </t>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="day_rows" t-as="d">
+                                    <t t-set="day_idx" t-value="d_index"/>
+                                    <tr>
+                                        <!-- Day column header -->
+                                        <td class="fw-bold text-start ps-2"
+                                            style="background-color: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-right: 2px solid #94a3b8;">
+                                            <span t-out="d['name']"/>
+                                        </td>
+                                        <!-- Columns iteration -->
+                                        <t t-foreach="columns" t-as="col">
+                                            <!-- Period Slot Cell -->
+                                            <t t-if="col['type'] == 'period'">
+                                                <t t-set="slot" t-value="d['slots'].get(col['period_no'])"/>
+                                                <td style="height: 46px; vertical-align: middle; padding: 3px 4px; border: 1px solid #e2e8f0;"
+                                                    t-attf-style="#{ 'background-color: #ffffff; color: #0f172a;' if slot else 'background-color: #f8fafc; color: #94a3b8;' }">
+                                                    <t t-if="slot">
+                                                        <div class="fw-bold text-primary mb-1"
+                                                             style="font-size: 10.5px; line-height: 1.2;">
+                                                            <t t-out="slot.subject_id.name or '—'"/>
+                                                        </div>
+                                                        <t t-if="slot.classroom_id">
+                                                            <div class="small"
+                                                                 style="font-size: 8.5px; line-height: 1.1; color: #64748b;">
+                                                                📍
+                                                                <t t-out="slot.classroom_id.display_name"/>
+                                                            </div>
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span style="font-size: 11px; color: #cbd5e1;">—</span>
+                                                    </t>
+                                                </td>
+                                            </t>
+                                            <!-- Vertical Break Spanning All Days -->
+                                            <t t-elif="col['type'] == 'break' and day_idx == 0">
+                                                <td t-att-rowspan="len(day_rows)" class="text-center align-middle"
+                                                    style="width: 24px; background-color: #f1f5f9; border: 1px solid #cbd5e1; padding: 4px 1px; vertical-align: middle;">
+                                                    <div style="font-weight: 800; font-size: 9px; color: #475569; line-height: 1.35; text-align: center; text-transform: uppercase;">
+                                                        <t t-foreach="col['label_chars']" t-as="ch">
+                                                            <div>
+                                                                <t t-out="ch"/>
+                                                            </div>
+                                                        </t>
+                                                    </div>
+                                                </td>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Bottom Section: Subject Legend & Notes / Signatures -->
+                        <div class="row pt-1" style="font-size: 9.5px;">
+                            <!-- Subject Summary -->
+                            <div class="col-7">
+                                <div class="border rounded p-2 bg-light h-100">
+                                    <strong class="text-uppercase text-muted d-block mb-1"
+                                            style="font-size: 9px; letter-spacing: 0.5px;">
+                                        Subject &amp; Faculty Summary
+                                    </strong>
+                                    <table class="table table-sm table-bordered mb-0"
+                                           style="font-size: 9.5px; background-color: #ffffff;">
+                                        <thead>
+                                            <tr style="background-color: #f1f5f9; color: #1e293b;">
+                                                <th style="padding: 3px 6px; width: 70px; border: 1px solid #cbd5e1;">
+                                                    Code
+                                                </th>
+                                                <th style="padding: 3px 6px; border: 1px solid #cbd5e1;">Subject</th>
+                                                <th style="padding: 3px 6px; border: 1px solid #cbd5e1;">Teacher(s)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="grid['subject_summary']" t-as="sub">
+                                                <tr>
+                                                    <td class="fw-semibold text-secondary"
+                                                        style="padding: 3px 6px; border: 1px solid #e2e8f0;"
+                                                        t-out="sub['code']"/>
+                                                    <td class="fw-bold text-dark"
+                                                        style="padding: 3px 6px; border: 1px solid #e2e8f0;"
+                                                        t-out="sub['name']"/>
+                                                    <td class="text-dark"
+                                                        style="padding: 3px 6px; border: 1px solid #e2e8f0;"
+                                                        t-out="sub['teachers']"/>
+                                                </tr>
+                                            </t>
+                                            <t t-if="not grid['subject_summary']">
+                                                <tr>
+                                                    <td colspan="3" class="text-muted fst-italic"
+                                                        style="padding: 3px 6px; border: 1px solid #e2e8f0;">No subjects
+                                                        assigned yet.
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Notes and Signatures -->
+                            <div class="col-5">
+                                <div class="border rounded p-2 bg-light h-100 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <strong class="text-uppercase text-muted d-block mb-1"
+                                                style="font-size: 9px; letter-spacing: 0.5px;">
+                                            Notes / Instructions
+                                        </strong>
+                                        <p class="mb-2 text-secondary" style="font-size: 9px; line-height: 1.2;">
+                                            <t t-out="tt.notes or 'Students are required to be present in their respective classrooms 5 minutes before the start of each period.'"/>
+                                        </p>
+                                    </div>
+                                    <div class="row pt-3 text-center" style="font-size: 8.5px;">
+                                        <div class="col-4">
+                                            <div class="border-top pt-1 text-muted">Prepared By</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="border-top pt-1 text-muted">Class Teacher</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="border-top pt-1 text-muted">Principal / Dean</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generated Timestamp -->
+                        <div class="text-end text-muted small mt-2" style="font-size: 8px;">
+                            Generated on
+                            <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d %b %Y %H:%M')"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+ </odoo>

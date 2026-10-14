@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--
+        education_core — Scheduled Actions (S3-T05)
+        Attendance threshold check runs daily at 06:00.
+    -->
+
+    <record id="ir_cron_attendance_threshold" model="ir.cron">
+        <field name="name">Education: Daily Attendance Threshold Check (75%)</field>
+        <field name="model_id" ref="model_education_enrollment"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_attendance_threshold_check()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+
+ </odoo>

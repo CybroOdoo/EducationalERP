@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action to view enrollments for an academic year (smart button) -->
+    <record id="education_enrollment_action_academic_year" model="ir.actions.act_window">
+        <field name="name">Enrollments</field>
+        <field name="res_model">education.enrollment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('academic_year_id', '=', active_id)]</field>
+        <field name="context">{'default_academic_year_id': active_id}</field>
+    </record>
+
+    <!-- ── Form View ────────────────────────────────────────────────── -->
+    <record id="education_academic_year_view_form" model="ir.ui.view">
+        <field name="name">education.academic.year.form</field>
+        <field name="model">education.academic.year</field>
+        <field name="arch" type="xml">
+            <form string="Academic Year" duplicate="0">
+                <header>
+                    <button name="action_set_current" type="object"
+                            string="Set as Current Year"
+                            class="btn-primary"
+                            invisible="is_current"
+                            confirm="This will unset the current active academic year. Continue?"/>
+                </header>
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <field name="is_current" invisible="1"/>
+
+                    <!-- Visual status ribbons -->
+                    <widget name="web_ribbon" title="Current Year" bg_color="text-bg-success" invisible="not is_current"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(education_enrollment_action_academic_year)d"
+                                type="action"
+                                class="oe_stat_button" icon="fa-users">
+                            <field name="enrollment_count" widget="statinfo" string="Enrollments"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. 2025-2026"/>
+                        </h1>
+                        <h2>
+                            <field name="code" placeholder="e.g. AY2526" class="text-muted"/>
+                        </h2>
+                    </div>
+
+                    <group name="main">
+                        <group name="period_details" string="Duration">
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group name="configuration" string="Settings">
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes" nolabel="1" placeholder="Description or additional notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ────────────────────────────────────────────────── -->
+    <record id="education_academic_year_view_list" model="ir.ui.view">
+        <field name="name">education.academic.year.list</field>
+        <field name="model">education.academic.year</field>
+        <field name="arch" type="xml">
+            <list string="Academic Years" default_order="sequence, date_start desc" sample="1" duplicate="0">
+                <field name="sequence" widget="handle"/>
+                <field name="name" decoration-bf="1"/>
+                <field name="code"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="is_current" widget="boolean"/>
+                <field name="enrollment_count" string="Enrollments" optional="show"/>
+                <field name="active" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Search View ──────────────────────────────────────────────── -->
+    <record id="education_academic_year_view_search" model="ir.ui.view">
+        <field name="name">education.academic.year.search</field>
+        <field name="model">education.academic.year</field>
+        <field name="arch" type="xml">
+            <search string="Search Academic Years">
+                <field name="name" string="Academic Year"
+                       filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="code"/>
+                <separator/>
+                <filter string="Current Year" name="current" domain="[('is_current', '=', True)]"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window Action ────────────────────────────────────────────── -->
+    <record id="education_academic_year_action" model="ir.actions.act_window">
+        <field name="name">Academic Years</field>
+        <field name="path">academic_years</field>
+        <field name="res_model">education.academic.year</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="education_academic_year_view_search"/>
+        <field name="context">{'search_default_current': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first academic year
+            </p>
+            <p>
+                Academic years define the time frame for enrollments,
+                examinations and fee cycles.
+            </p>
+        </field>
+    </record>
+</odoo>

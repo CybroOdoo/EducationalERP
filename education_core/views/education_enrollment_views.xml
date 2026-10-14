@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Smart Button Action: Documents for an Enrollment ──────────── -->
+    <record id="education_document_action_enrollment" model="ir.actions.act_window">
+        <field name="name">Enrollment Documents</field>
+        <field name="path">enrollment_documents</field>
+        <field name="res_model">education.document</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('enrollment_id', '=', active_id)]</field>
+        <field name="context">{'default_enrollment_id': active_id}</field>
+    </record>
+
+    <!-- ── Form View ──────────────────────────────────────────────────────── -->
+    <record id="education_enrollment_view_form" model="ir.ui.view">
+        <field name="name">education.enrollment.form</field>
+        <field name="model">education.enrollment</field>
+        <field name="arch" type="xml">
+            <form string="Student Enrollment" create="0" delete="0">
+                <header>
+                    <button name="action_pay_fee" type="object"
+                            string="Create Fee"
+                            class="btn-primary"
+                            groups="education_core.group_education_admin,education_core.group_education_admission_officer"
+                            invisible="not admission_fee or admission_fee_invoice_id"/>
+
+                    <button name="action_grant_portal_access" type="object"
+                            string="Grant Portal Access"
+                            class="btn-primary"
+                            invisible="student_user_id"
+                            groups="education_core.group_education_admin,education_core.group_education_admission_officer"
+                            confirm="Create a portal account and send login invitation?"/>
+                    <button name="action_set_portal_password" type="object"
+                            string="Set Portal Password"
+                            invisible="not student_user_id or portal_password_set"
+                            groups="education_core.group_education_admin"/>
+                    <button name="action_suspend" type="object"
+                            string="Suspend"
+                            invisible="state != 'active'"
+                            groups="education_core.group_education_admin"/>
+                    <button name="action_reactivate" type="object"
+                            string="Reactivate"
+                            invisible="state != 'suspended'"
+                            groups="education_core.group_education_admin"/>
+                    <button name="action_graduate" type="object"
+                            string="Mark Graduated"
+                            invisible="state not in ('active', 'suspended')"
+                            groups="education_core.group_education_admin"/>
+                    <button name="action_withdraw" type="object"
+                            string="Withdraw"
+                            invisible="state not in ('active', 'suspended')"
+                            groups="education_core.group_education_admin"
+                            confirm="Mark this enrollment as withdrawn?"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="active,suspended,graduated,withdrawn"/>
+                </header>
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <field name="portal_password_set" invisible="1"/>
+                    <field name="student_user_id" invisible="1"/>
+
+                    <!-- Visual status ribbon for archived/inactive enrollments -->
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box" groups="!education_core.group_education_teacher">
+                        <button name="action_view_application" type="object"
+                                class="oe_stat_button" icon="fa-file-text-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Application</span>
+                            </div>
+                        </button>
+                        <button name="%(education_document_action_enrollment)d" type="action"
+                                class="oe_stat_button" icon="fa-file">
+                            <field name="document_count" widget="statinfo" string="Documents"/>
+                        </button>
+                        <button name="action_view_fees" type="object"
+                                class="oe_stat_button" icon="fa-money">
+                            <field name="fee_count" widget="statinfo" string="Fees"/>
+                        </button>
+                    </div>
+
+                    <!-- Native Odoo Photo + Title Block -->
+                    <field name="photo" widget="image" class="oe_avatar"
+                           options="{'preview_image': 'photo', 'size': [96, 96]}"/>
+                    <div class="oe_title">
+                        <label for="student_name"/>
+                        <h1>
+                            <field name="student_name" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="enrollment_no" readonly="1" class="text-muted"/>
+                        </h2>
+                    </div>
+
+                    <notebook>
+                        <page name="placement" string="Academic Placement">
+                            <group name="placement_group">
+                                <group name="academic_details" string="Curriculum &amp; Class">
+                                    <field name="program_id" options="{'no_create': True}"/>
+                                    <field name="academic_year_id" options="{'no_create': True}"/>
+                                    <field name="class_id" required="1" options="{'no_create': True}"/>
+                                    <field name="department_id" readonly="1"/>
+                                </group>
+                                <group name="enrollment_details" string="Enrollment &amp; Portal">
+                                    <field name="enrollment_date"/>
+                                    <field name="student_email" readonly="1"/>
+                                    <field name="student_partner_id" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page name="documents" string="Document Checklist"
+                              groups="!education_core.group_education_hostel_warden,!education_core.group_education_teacher">
+                            <div class="d-flex align-items-center mb-3">
+                                <strong class="me-2">Verification Completion:</strong>
+                                <span class="badge text-bg-primary fs-6">
+                                    <field name="doc_completion_pct" readonly="1"/>%
+                                </span>
+                            </div>
+                            <field name="document_ids" mode="list" nolabel="1">
+                                <list string="Documents" editable="bottom">
+                                    <field name="document_type_id" options="{'no_create': True}"/>
+                                    <field name="is_mandatory" readonly="1"/>
+                                    <field name="file_name" column_invisible="1"/>
+                                    <field name="file" filename="file_name"
+                                           options="{'accepted_file_extensions': '.pdf,.jpg,.jpeg,.png'}"/>
+                                    <field name="expiry_date"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'verified'"
+                                           decoration-warning="state == 'uploaded'"
+                                           decoration-danger="state == 'rejected'"
+                                           decoration-muted="state == 'pending'"/>
+                                    <button name="action_verify" type="object"
+                                            string="Verify" icon="fa-check"
+                                            invisible="state != 'uploaded'"
+                                            groups="education_core.group_education_admin,education_core.group_education_admission_officer"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page name="guardian" string="Guardian / Parent">
+                            <group name="guardian_group">
+                                <group name="guardian_info" string="Contact Information">
+                                    <field name="guardian_name" readonly="1"/>
+                                    <field name="guardian_phone" readonly="1"/>
+                                    <field name="guardian_email" readonly="1"/>
+                                </group>
+                                <group name="guardian_portal" string="Portal Account">
+                                    <field name="guardian_partner_id" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page name="notes" string="Notes">
+                            <field name="notes" nolabel="1" placeholder="Internal remarks or enrollment history..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ──────────────────────────────────────────────────────── -->
+    <record id="education_enrollment_view_list" model="ir.ui.view">
+        <field name="name">education.enrollment.list</field>
+        <field name="model">education.enrollment</field>
+        <field name="arch" type="xml">
+            <list string="Enrollments" default_order="enrollment_date desc" create="0" delete="0" sample="1">
+                <field name="enrollment_no" decoration-bf="1"/>
+                <field name="student_name"/>
+                <field name="program_id"/>
+                <field name="academic_year_id"/>
+                <field name="class_id"/>
+                <field name="enrollment_date"/>
+                <field name="doc_completion_pct" string="Docs %" widget="progressbar"
+                       groups="!education_core.group_education_hostel_warden,!education_core.group_education_teacher" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-warning="state == 'suspended'"
+                       decoration-muted="state in ('graduated', 'withdrawn')"/>
+                <field name="active" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Search View ────────────────────────────────────────────────────── -->
+    <record id="education_enrollment_view_search" model="ir.ui.view">
+        <field name="name">education.enrollment.search</field>
+        <field name="model">education.enrollment</field>
+        <field name="arch" type="xml">
+            <search string="Search Enrollments">
+                <field name="enrollment_no"/>
+                <field name="student_name"/>
+                <field name="student_email"/>
+                <field name="program_id"/>
+                <field name="class_id"/>
+                <separator/>
+                <filter string="Active State" name="filter_state_active" domain="[('state', '=', 'active')]"/>
+                <filter string="Suspended" name="filter_suspended" domain="[('state', '=', 'suspended')]"/>
+                <filter string="Graduated" name="filter_graduated" domain="[('state', '=', 'graduated')]"/>
+                <filter string="Withdrawn" name="filter_withdrawn" domain="[('state', '=', 'withdrawn')]"/>
+                <separator/>
+                <filter string="Current Year" name="current_year" domain="[('academic_year_id.is_current', '=', True)]"/>
+                <filter string="No Portal Yet" name="no_portal" domain="[('student_user_id', '=', False)]"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Program" name="group_by_program" context="{'group_by': 'program_id'}"/>
+                    <filter string="Class" name="group_by_class" context="{'group_by': 'class_id'}"/>
+                    <filter string="Academic Year" name="group_by_year" context="{'group_by': 'academic_year_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window Action ──────────────────────────────────────────────────── -->
+    <record id="education_enrollment_action" model="ir.actions.act_window">
+        <field name="name">Student Enrollments</field>
+        <field name="path">enrollments</field>
+        <field name="res_model">education.enrollment</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="education_enrollment_view_search"/>
+        <field name="context">{'search_default_filter_state_active': 1, 'search_default_current_year': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No enrollments yet
+            </p>
+            <p>
+                Enrollments are created automatically when an application is approved.
+            </p>
+        </field>
+    </record>
+
+ </odoo>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Attendance Report — QWeb PDF (S3-T08)
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- ir.actions.report record -->
+    <record id="action_report_attendance_period" model="ir.actions.report">
+        <field name="name">Attendance Report</field>
+        <field name="model">education.attendance</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_core.report_attendance_period_template</field>
+        <field name="report_file">education_core.report_attendance_period_template</field>
+        <field name="binding_model_id" ref="model_education_attendance"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Attendance_Report_' + (object.class_id.name or '')</field>
+    </record>
+
+    <!-- QWeb template -->
+    <template id="report_attendance_period_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <!-- Header -->
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h2>Attendance Report</h2>
+                            <t t-if="class_name">
+                                <p class="text-muted">
+                                    Class:
+                                    <strong t-out="class_name"/>
+                                    &amp;nbsp;|&amp;nbsp;
+                                    Date Range:
+                                    <strong
+                                            t-out="date_from"/>
+                                    to
+                                    <strong t-out="date_to"/>
+                                </p>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Per-student summary rows, computed by the wizard and
+                         handed over as plain values through 'data' — the
+                         template just displays them, no ORM lookups here. -->
+                    <table class="table table-bordered table-sm" style="font-size: 11px;">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Student</th>
+                                <th class="text-center">Total Days</th>
+                                <th class="text-center">Present</th>
+                                <th class="text-center">Absent</th>
+                                <th class="text-center">Late</th>
+                                <th class="text-center">Excused</th>
+                                <th class="text-center">Attendance %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="summary_lines or []" t-as="line">
+                                <t t-set="is_danger" t-value="float(line['pct'] or 0) &lt; 75"/>
+                                <t t-set="text_color" t-value="'#dc3545' if is_danger else '#000000'"/>
+
+                                <tr>
+                                    <td>
+                                        <span t-attf-style="color: #{text_color} !important;"
+                                              t-out="line['student_name']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-attf-style="color: #{text_color} !important;" t-out="line['total']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-attf-style="color: #{text_color} !important;" t-out="line['present']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-attf-style="color: #{text_color} !important;" t-out="line['absent']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-attf-style="color: #{text_color} !important;" t-out="line['late']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-attf-style="color: #{text_color} !important;" t-out="line['excused']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong t-attf-style="color: #{'#dc3545' if is_danger else '#28a745'} !important;">
+                                            <t t-out="line['pct']"/>%
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-2">
+                        ⚠️ Rows highlighted in red indicate attendance below 75%.
+                    </p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

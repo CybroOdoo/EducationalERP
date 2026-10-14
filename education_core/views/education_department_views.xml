@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Form View ──────────────────────────────────────────────────────── -->
+    <record id="education_department_view_form" model="ir.ui.view">
+        <field name="name">education.department.form</field>
+        <field name="model">education.department</field>
+        <field name="arch" type="xml">
+            <form string="Department">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_programs" type="object"
+                                class="oe_stat_button" icon="fa-graduation-cap"
+                                invisible="program_count == 0">
+                            <field name="program_count" widget="statinfo"
+                                   string="Programs"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Department Name…"/>
+                        </h1>
+                        <h3>
+                            <field name="code" placeholder="Code (e.g. CSE)"/>
+                        </h3>
+                    </div>
+                    <group name="main">
+                        <group name="left">
+                            <field name="head_id"
+                                   context="{'default_is_faculty': True}"
+                                   options="{'no_quick_create': True}"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                        <field name="description" nolabel="1" placeholder="Department description and objectives…"/>
+                    </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ──────────────────────────────────────────────────────── -->
+    <record id="education_department_view_list" model="ir.ui.view">
+        <field name="name">education.department.list</field>
+        <field name="model">education.department</field>
+        <field name="arch" type="xml">
+            <list string="Departments" default_order="sequence, name">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="head_id"/>
+                <field name="program_count" string="Programs"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Search View ────────────────────────────────────────────────────── -->
+    <record id="education_department_view_search" model="ir.ui.view">
+        <field name="name">education.department.search</field>
+        <field name="model">education.department</field>
+        <field name="arch" type="xml">
+            <search string="Search Departments">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="head_id"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window Action ──────────────────────────────────────────────────── -->
+    <record id="education_department_action" model="ir.actions.act_window">
+        <field name="name">Departments</field>
+        <field name="path">education_departments</field>
+        <field name="res_model">education.department</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="education_department_view_search"/>
+        <field name="context">{"search_default_active": 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first department
+            </p>
+            <p>
+                Departments group academic programs (e.g. Computer Science,
+                Business Administration, Medicine).
+            </p>
+        </field>
+    </record>
+ </odoo>

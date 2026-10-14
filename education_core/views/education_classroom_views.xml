@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Form View ──────────────────────────────────────────────────────── -->
+    <record id="education_classroom_view_form" model="ir.ui.view">
+        <field name="name">education.classroom.form</field>
+        <field name="model">education.classroom</field>
+        <field name="arch" type="xml">
+            <form string="Classroom">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="True"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="location_details" string="Location">
+                            <field name="room_no"/>
+                            <field name="block"/>
+                            <field name="floor"/>
+                        </group>
+                        <group name="capacity_details" string="Specifications">
+                            <field name="room_type"/>
+                            <field name="capacity"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                        <field name="notes" nolabel="1" placeholder="Add facilities or equipment details (e.g. Projector, Whiteboard, AC)…"/>
+                    </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ──────────────────────────────────────────────────────── -->
+    <record id="education_classroom_view_list" model="ir.ui.view">
+        <field name="name">education.classroom.list</field>
+        <field name="model">education.classroom</field>
+        <field name="arch" type="xml">
+            <list string="Classrooms" editable="bottom">
+                <field name="room_no"/>
+                <field name="block"/>
+                <field name="floor" optional="show"/>
+                <field name="room_type"/>
+                <field name="capacity"/>
+                <field name="active" column_invisible="True"/>
+                <button name="get_formview_action" type="object" string="View" icon="fa-external-link"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Search View ────────────────────────────────────────────────────── -->
+    <record id="education_classroom_view_search" model="ir.ui.view">
+        <field name="name">education.classroom.search</field>
+        <field name="model">education.classroom</field>
+        <field name="arch" type="xml">
+            <search string="Search Classrooms">
+                <field name="room_no"/>
+                <field name="block"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Block" name="group_block" context="{'group_by': 'block'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by': 'room_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window Action ──────────────────────────────────────────────────── -->
+    <record id="education_classroom_action" model="ir.actions.act_window">
+        <field name="name">Classrooms &amp; Halls</field>
+        <field name="path">classrooms</field>
+        <field name="res_model">education.classroom</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="education_classroom_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No classrooms yet
+            </p>
+            <p>
+                Add classrooms, laboratories, and exam halls for academic scheduling.
+            </p>
+        </field>
+    </record>
+ </odoo>

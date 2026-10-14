@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="education_core.KpiCard">
+        <div class="o_ed_card o_ed_clickable" t-on-click="props.onClick" role="button">
+            <div t-attf-class="o_ed_icon bg-#{props.tone || 'primary'} text-white"><i t-attf-class="fa #{props.icon}"/></div>
+            <div class="o_ed_card_body">
+                <div class="o_ed_value"><t t-out="state.text"/></div>
+                <div class="o_ed_label"><t t-out="props.label"/></div>
+                <div t-if="props.sub" class="o_ed_sub"><t t-out="props.sub"/></div>
+            </div>
+            <i class="fa fa-angle-right o_ed_card_arrow"/>
+        </div>
+    </t>
+
+    <t t-name="education_core.DonutChart">
+        <div class="d-flex align-items-center justify-content-around gap-3 flex-wrap">
+            <div class="o_ed_donut">
+                <svg viewBox="0 0 36 36">
+                    <circle class="o_ed_seg_track" cx="18" cy="18" r="15.9155" fill="none" stroke-width="4"/>
+                    <t t-foreach="arcs" t-as="arc" t-key="arc_index">
+                        <circle t-attf-class="o_ed_seg_#{arc.tone}" cx="18" cy="18" r="15.9155" fill="none" stroke-width="4"
+                                t-att-stroke-dasharray="arc.dash" t-att-stroke-dashoffset="arc.offset"
+                                t-attf-style="--dash: #{arc.dash}"/>
+                    </t>
+                </svg>
+                <div class="o_ed_donut_center">
+                    <div class="o_ed_value"><t t-out="props.centerValue"/></div>
+                    <small class="text-muted"><t t-out="props.centerLabel"/></small>
+                </div>
+            </div>
+            <div>
+                <div t-if="props.legendTitle" class="small text-muted mb-1"><t t-out="props.legendTitle"/></div>
+                <t t-foreach="props.segments" t-as="seg" t-key="seg_index">
+                    <div class="py-1" t-att-class="{'o_ed_clickable': seg.onClick}" t-on-click="() => seg.onClick and seg.onClick()">
+                        <span t-attf-class="o_ed_dot bg-#{seg.tone}"/>
+                        <t t-out="seg.label"/>
+                        <strong class="ms-1"><t t-out="seg.value"/></strong>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="education_core.TrendBars">
+        <div class="o_ed_bars">
+            <t t-foreach="props.rows" t-as="row" t-key="row_index">
+                <div class="o_ed_bar_group" t-att-class="{'o_ed_clickable': props.onBarClick}"
+                     t-on-click="() => props.onBarClick and props.onBarClick(row)">
+                    <div class="o_ed_bar_pair">
+                        <div class="o_ed_bar_col">
+                            <small class="o_ed_bar_val"><t t-out="text(row.value)"/></small>
+                            <div t-attf-class="o_ed_bar bg-#{props.tone || 'primary'}"
+                                 t-attf-style="height: #{height(row.value)}%" t-att-title="row.tip"/>
+                        </div>
+                        <div class="o_ed_bar_col" t-if="row.value2 !== undefined">
+                            <small class="o_ed_bar_val"><t t-out="text(row.value2)"/></small>
+                            <div t-attf-class="o_ed_bar bg-#{props.tone2 || 'success'}"
+                                 t-attf-style="height: #{height(row.value2)}%" t-att-title="row.tip2"/>
+                        </div>
+                    </div>
+                    <small class="text-muted"><t t-out="row.label"/></small>
+                </div>
+            </t>
+            <div t-if="!props.rows.length" class="o_ed_empty">No data for the selected filters.</div>
+        </div>
+    </t>
+
+    <t t-name="education_core.BarList">
+        <div class="o_ed_barlist">
+            <t t-foreach="scaled" t-as="row" t-key="row_index">
+                <div class="o_ed_barrow" t-att-class="{'o_ed_clickable': row.onClick}"
+                     t-on-click="() => row.onClick and row.onClick()">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-truncate"><t t-out="row.label"/></span>
+                        <strong class="ms-2"><t t-out="row.value"/></strong>
+                    </div>
+                    <div class="progress" style="height: 8px">
+                        <div t-attf-class="progress-bar bg-#{props.tone || 'primary'}" t-attf-style="width: #{row.pct}%"/>
+                    </div>
+                </div>
+            </t>
+            <div t-if="!scaled.length" class="o_ed_empty">No data for the selected filters.</div>
+        </div>
+    </t>
+
+</templates>

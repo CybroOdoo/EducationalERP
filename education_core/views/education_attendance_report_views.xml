@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         ATTENDANCE ANALYSIS  (education.attendance.report)
+         List / pivot / graph with filters by class, student, date, status.
+         ═══════════════════════════════════════════════════════════════════ -->
+    <record id="education_attendance_report_view_list" model="ir.ui.view">
+        <field name="name">education.attendance.report.list</field>
+        <field name="model">education.attendance.report</field>
+        <field name="arch" type="xml">
+            <list string="Attendance Records" create="false" edit="false" delete="false"
+                  decoration-danger="state == 'absent'" decoration-warning="state == 'late'"
+                  decoration-muted="state == 'holiday'">
+                <field name="date"/>
+                <field name="weekday" optional="show"/>
+                <field name="student_name"/>
+                <field name="class_id"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'present'"
+                       decoration-danger="state == 'absent'"
+                       decoration-warning="state == 'late'"
+                       decoration-info="state == 'excused'"/>
+                <field name="notes"/>
+                <field name="marked_by_id" optional="show"/>
+                <field name="academic_year_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="education_attendance_report_view_pivot" model="ir.ui.view">
+        <field name="name">education.attendance.report.pivot</field>
+        <field name="model">education.attendance.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Attendance Analysis" sample="1">
+                <field name="enrollment_id" type="row"/>
+                <field name="present_count" type="measure"/>
+                <field name="absent_count" type="measure"/>
+                <field name="late_count" type="measure"/>
+                <field name="excused_count" type="measure"/>
+                <field name="attendance_rate" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="education_attendance_report_view_graph" model="ir.ui.view">
+        <field name="name">education.attendance.report.graph</field>
+        <field name="model">education.attendance.report</field>
+        <field name="arch" type="xml">
+            <graph string="Attendance Analysis" type="bar" sample="1">
+                <field name="class_id"/>
+                <field name="attendance_rate" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="education_attendance_report_view_search" model="ir.ui.view">
+        <field name="name">education.attendance.report.search</field>
+        <field name="model">education.attendance.report</field>
+        <field name="arch" type="xml">
+            <search string="Attendance Analysis">
+                <field name="student_name" string="Student"/>
+                <field name="enrollment_id"/>
+                <field name="class_id"/>
+                <field name="academic_year_id"/>
+                <field name="marked_by_id"/>
+                <separator/>
+                <filter name="filter_present" string="Present" domain="[('state', '=', 'present')]"/>
+                <filter name="filter_absent" string="Absent" domain="[('state', '=', 'absent')]"/>
+                <filter name="filter_late" string="Late" domain="[('state', '=', 'late')]"/>
+                <filter name="filter_excused" string="Excused" domain="[('state', '=', 'excused')]"/>
+                <filter name="filter_holiday" string="Holiday / Off" domain="[('state', '=', 'holiday')]"/>
+                <separator/>
+                <filter name="filter_today" string="Today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_7d" string="Last 7 days"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(days=6)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_30d" string="Last 30 days"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(days=29)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_date" string="Date" date="date"/>
+                <group>
+                    <filter name="group_by_student" string="Student" context="{'group_by': 'enrollment_id'}"/>
+                    <filter name="group_by_class" string="Class" context="{'group_by': 'class_id'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_day" string="Day" context="{'group_by': 'date:day'}"/>
+                    <filter name="group_by_week" string="Week" context="{'group_by': 'date:week'}"/>
+                    <filter name="group_by_month" string="Month" context="{'group_by': 'date:month'}"/>
+                    <filter name="group_by_weekday" string="Weekday" context="{'group_by': 'weekday'}"/>
+                    <filter name="group_by_year" string="Academic Year" context="{'group_by': 'academic_year_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="education_attendance_report_action" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="path">attendance_analysis</field>
+        <field name="res_model">education.attendance.report</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="education_attendance_report_view_search"/>
+        <field name="context">{'search_default_filter_30d': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No attendance recorded yet</p>
+            <p>Daily attendance, rates and absences by class or student appear here once attendance is marked.</p>
+        </field>
+    </record>
+
+</odoo>

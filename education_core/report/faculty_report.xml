@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_faculty_profile" model="ir.actions.report">
+        <field name="name">Faculty Profile</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_core.report_faculty_profile_template</field>
+        <field name="report_file">education_core.report_faculty_profile_template</field>
+        <field name="print_report_name">'Faculty Profile - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_hr_employee"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_faculty_profile_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="faculty">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <div class="row mb-4">
+                            <div class="col-3 text-center">
+                                <t t-if="faculty.image_1920">
+                                    <img t-att-src="image_data_uri(faculty.image_1920)"
+                                         style="max-height:100px;max-width:100px;border-radius:50%;border:2px solid #dee2e6;"/>
+                                </t>
+                                <t t-else="">
+                                    <div style="height:100px;width:100px;border-radius:50%;background:#e9ecef;display:inline-flex;align-items:center;justify-content:center;font-size:2rem;color:#6c757d;">
+                                        <i class="fa fa-user"/>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="col-9">
+                                <h2 class="mb-1"><t t-out="faculty.name"/></h2>
+                                <p class="text-muted mb-1">
+                                    <t t-out="faculty.designation or ''"/>
+                                    <t t-if="faculty.designation"> · </t>
+                                    <t t-out="faculty.edu_department_id.name or ''"/>
+                                </p>
+                                <p class="mb-0">
+                                    <strong>Faculty ID:</strong> <t t-out="faculty.faculty_id"/>
+                                    &#160;&#160;
+                                    <strong>Employment:</strong>
+                                    <t t-out="dict(faculty._fields['edu_employment_type'].selection).get(faculty.edu_employment_type, '')"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h4 class="mt-3 mb-2">Personal Information</h4>
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                <tr>
+                                    <td class="bg-light fw-bold" style="width:30%">Date of Birth</td>
+                                    <td><t t-out="faculty.birthday or '—'"/></td>
+                                    <td class="bg-light fw-bold" style="width:30%">Gender</td>
+                                    <td><t t-out="faculty._get_sex_display()"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Nationality</td>
+                                    <td><t t-out="faculty.private_country_id.name or '—'"/></td>
+                                    <td class="bg-light fw-bold">Blood Group</td>
+                                    <td><t t-out="dict(faculty._fields['blood_group'].selection).get(faculty.blood_group, '—')"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Work Email</td>
+                                    <td><t t-out="faculty.work_email or '—'"/></td>
+                                    <td class="bg-light fw-bold">Phone</td>
+                                    <td><t t-out="faculty.work_phone or faculty.mobile_phone or '—'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 class="mt-3 mb-2">Academic Profile</h4>
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                <tr>
+                                    <td class="bg-light fw-bold" style="width:30%">Department</td>
+                                    <td><t t-out="faculty.edu_department_id.name or '—'"/></td>
+                                    <td class="bg-light fw-bold" style="width:30%">Specialization</td>
+                                    <td><t t-out="faculty.specialization or '—'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Date Joined</td>
+                                    <td><t t-out="faculty.date_joined or '—'"/></td>
+                                    <td class="bg-light fw-bold">Highest Qualification</td>
+                                    <td><t t-out="faculty.highest_qualification or '—'"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-light fw-bold">Weekly Periods</td>
+                                    <td>
+                                        <t t-out="faculty.weekly_periods"/>
+                                        <t t-if="faculty.is_overloaded">
+                                            <span class="badge bg-danger ms-2">Overloaded</span>
+                                        </t>
+                                    </td>
+                                    <td class="bg-light fw-bold">HR Employee</td>
+                                    <td><t t-out="faculty.name or '—'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <t t-if="faculty.qualification_ids">
+                            <h4 class="mt-3 mb-2">Qualifications</h4>
+                            <table class="table table-bordered table-sm">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th><th>Degree</th><th>Field of Study</th>
+                                        <th>Institution</th><th>Year</th><th>Grade / GPA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="faculty.qualification_ids" t-as="q">
+                                        <tr>
+                                            <td><t t-out="q_index + 1"/></td>
+                                            <td><t t-out="dict(q._fields['degree'].selection).get(q.degree, q.degree)"/></td>
+                                            <td><t t-out="q.field_of_study"/></td>
+                                            <td><t t-out="q.institution"/></td>
+                                            <td><t t-out="q.year_obtained"/></td>
+                                            <td><t t-out="q.grade or '—'"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <p class="text-muted small mt-4 text-end">
+                            Generated on <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d %b %Y %H:%M')"/>
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+ </odoo>

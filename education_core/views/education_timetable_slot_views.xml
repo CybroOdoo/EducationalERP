@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Form View ────────────────────────────────────────────────── -->
+    <record id="education_timetable_slot_view_form" model="ir.ui.view">
+        <field name="name">education.timetable.slot.form</field>
+        <field name="model">education.timetable.slot</field>
+        <field name="arch" type="xml">
+            <form string="Timetable Slot">
+                <sheet>
+                    <group name="main">
+                        <group name="schedule_info" string="Schedule &amp; Period">
+                            <field name="timetable_id" options="{'no_create': True}"/>
+                            <field name="class_id" readonly="1"/>
+                            <field name="weekday"/>
+                            <field name="period_no"/>
+                            <label for="start_time" string="Time Period"/>
+                            <div class="o_row">
+                                <field name="start_time" widget="float_time"/>
+                                <span>–</span>
+                                <field name="end_time" widget="float_time"/>
+                            </div>
+                        </group>
+                        <group name="assignment_info" string="Subject &amp; Faculty">
+                            <field name="program_id" invisible="1"/>
+                            <field name="subject_id" options="{'no_create': True}"/>
+                            <field name="teacher_id" domain="[('is_faculty', '=', True)]" options="{'no_create': True}"/>
+                            <field name="classroom_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group name="notes_group" string="Notes">
+                        <field name="notes" nolabel="1" placeholder="Add slot-specific instructions or lab requirements..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── List View ────────────────────────────────────────────────── -->
+    <record id="education_timetable_slot_view_list" model="ir.ui.view">
+        <field name="name">education.timetable.slot.list</field>
+        <field name="model">education.timetable.slot</field>
+        <field name="arch" type="xml">
+            <list string="Timetable Slots" editable="bottom" default_order="weekday, period_no" sample="1">
+                <field name="is_today" column_invisible="1"/>
+                <field name="program_id" column_invisible="1"/>
+                <field name="timetable_id" options="{'no_create': True}"/>
+                <field name="class_id" readonly="1" optional="show"/>
+                <field name="weekday"/>
+                <field name="period_no"/>
+                <field name="start_time" widget="float_time"/>
+                <field name="end_time" widget="float_time"/>
+                <field name="subject_id" options="{'no_create': True}"/>
+                <field name="teacher_id" domain="[('is_faculty', '=', True)]" options="{'no_create': True}"/>
+                <field name="classroom_id" optional="show" options="{'no_create': True}"/>
+                <field name="notes" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Kanban View — Day/Period Grid ────────────────────────────── -->
+    <record id="education_timetable_slot_view_kanban" model="ir.ui.view">
+        <field name="name">education.timetable.slot.kanban</field>
+        <field name="model">education.timetable.slot</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="weekday"
+                    class="o_kanban_small_column"
+                    quick_create="false"
+                    sample="1"
+                    create="0">
+                <field name="is_today"/>
+                <field name="weekday"/>
+                <field name="period_no"/>
+                <field name="subject_id"/>
+                <field name="teacher_id"/>
+                <field name="classroom_id"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="class_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge text-bg-primary">
+                                P<field name="period_no"/>
+                            </span>
+                            <span class="text-muted small">
+                                <field name="start_time" widget="float_time"/>
+                                <span> – </span>
+                                <field name="end_time" widget="float_time"/>
+                            </span>
+                        </div>
+                        <div class="fw-bold fs-6 mb-1 text-primary">
+                            <field name="subject_id"/>
+                        </div>
+                        <div class="text-muted small mb-1">
+                            <i class="fa fa-user me-1 text-secondary" title="warning"/>
+                            <field name="teacher_id"/>
+                        </div>
+                        <div class="text-muted small mb-1" invisible="not classroom_id">
+                            <i class="fa fa-map-marker me-1 text-danger" title="danger"/>
+                            <field name="classroom_id"/>
+                        </div>
+                        <div class="text-muted small">
+                            <i class="fa fa-graduation-cap me-1 text-info" title="info"/>
+                            <field name="class_id"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ── Search View ──────────────────────────────────────────────── -->
+    <record id="education_timetable_slot_view_search" model="ir.ui.view">
+        <field name="name">education.timetable.slot.search</field>
+        <field name="model">education.timetable.slot</field>
+        <field name="arch" type="xml">
+            <search string="Search Timetable Slots">
+                <field name="subject_id"/>
+                <field name="teacher_id"/>
+                <field name="class_id"/>
+                <field name="classroom_id"/>
+                <field name="timetable_id"/>
+                <separator/>
+                <filter string="Today" name="filter_today" domain="[('is_today', '=', True)]"/>
+                <filter string="Monday" name="filter_mon" domain="[('weekday', '=', '0')]"/>
+                <filter string="Tuesday" name="filter_tue" domain="[('weekday', '=', '1')]"/>
+                <filter string="Wednesday" name="filter_wed" domain="[('weekday', '=', '2')]"/>
+                <filter string="Thursday" name="filter_thu" domain="[('weekday', '=', '3')]"/>
+                <filter string="Friday" name="filter_fri" domain="[('weekday', '=', '4')]"/>
+                <filter string="Saturday" name="filter_sat" domain="[('weekday', '=', '5')]"/>
+                <filter string="Sunday" name="filter_sun" domain="[('weekday', '=', '6')]"/>
+                <group>
+                    <filter string="Day" name="group_day" context="{'group_by': 'weekday'}"/>
+                    <filter string="Subject" name="group_subject" context="{'group_by': 'subject_id'}"/>
+                    <filter string="Teacher" name="group_teacher" context="{'group_by': 'teacher_id'}"/>
+                    <filter string="Room / Hall" name="group_classroom" context="{'group_by': 'classroom_id'}"/>
+                    <filter string="Class" name="group_class" context="{'group_by': 'class_id'}"/>
+                    <filter string="Period" name="group_period" context="{'group_by': 'period_no'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Window Action ────────────────────────────────────────────── -->
+    <record id="education_timetable_slot_action" model="ir.actions.act_window">
+        <field name="name">Weekly Schedule</field>
+        <field name="path">schedules</field>
+        <field name="res_model">education.timetable.slot</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="education_timetable_slot_view_search"/>
+        <field name="context">{'search_default_group_class': 1,
+            'search_default_filter_today': 1,
+            }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No timetable slots yet
+            </p>
+            <p>
+                Create a timetable first, then add period slots for each day.
+            </p>
+        </field>
+    </record>
+
+</odoo>
